@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { CodigoTipoEnum } from "../enums/codigo-tipo.enum";
 import { EncuestaDTO } from "../interfaces/encuesta.dto";
 
+// lo usamos para comunicarnos con los endpoints que creamos en nest//
 
 @Injectable({providedIn: 'root'})
 
