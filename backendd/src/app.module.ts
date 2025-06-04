@@ -3,10 +3,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 import { EncuestasModule } from './modules/encuestas/encuestas.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RespuestasModule } from './modules/respuestas/respuestas.module';
+
 
 @Module({
   imports: [
     EncuestasModule,
+    RespuestasModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
