@@ -1,91 +1,144 @@
-import { Injectable } from '@nestjs/common';
+// src/modules/respuestas/respuestas.service.ts
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-
-import { Respuesta } from '../../respuestas/entities/respuesta.entity';
-import { RespuestaAbierta } from '../../respuestas/entities/respuesta-abierta.entity';
-import { RespuestaOpcion } from '../../respuestas/entities/respuesta-opcion.entity';
-import { Encuesta } from '../../encuestas/entities/encuestas.entity';
-import { Pregunta } from '../../encuestas/entities/pregunta.entity';
-import { Opcion } from '../../encuestas/entities/opcion.entity';
-import { CreateRespuestaDTO } from '../../respuestas/dtos/create-respuesta.dto';
-import { TiposRespuestaEnum } from '../../respuestas/enums/tipo-respuesta.enum';
-import { CodigoTipoEnum } from '../../respuestas/enums/codigo-tipo.enum';
-
+import { Repository } from 'typeorm';
+import { Respuesta } from '../entities/respuesta.entity';
+import { RespuestaAbierta } from '../entities/respuesta-abierta.entity';
+import { RespuestaOpcion } from '../entities/respuesta-opcion.entity';
 
 @Injectable()
 export class RespuestasService {
   constructor(
     @InjectRepository(Respuesta)
-    private readonly respuestaRepo: Repository<Respuesta>,
-
+    private respuestaRepository: Repository<Respuesta>,
+    
     @InjectRepository(RespuestaAbierta)
-    private readonly respuestaAbiertaRepo: Repository<RespuestaAbierta>,
-
+    private respuestaAbiertaRepository: Repository<RespuestaAbierta>,
+    
     @InjectRepository(RespuestaOpcion)
-    private readonly respuestaOpcionRepo: Repository<RespuestaOpcion>,
-
-    @InjectRepository(Encuesta)
-    private readonly encuestaRepo: Repository<Encuesta>,
-
-    @InjectRepository(Pregunta)
-    private readonly preguntaRepo: Repository<Pregunta>,
-
-    @InjectRepository(Opcion)
-    private readonly opcionRepo: Repository<Opcion>,
+    private respuestaOpcionRepository: Repository<RespuestaOpcion>,
   ) {}
 
-  async crearRespuesta(data: CreateRespuestaDTO) {
-    const encuesta = await this.encuestaRepo.findOneBy({ id: data.idEncuesta });
-    if (!encuesta) throw new Error('Encuesta no encontrada');
-
-    const nuevaRespuesta = this.respuestaRepo.create({
-      encuesta,
-      codigo: CodigoTipoEnum.RESPUESTA,
+  // Crear una nueva respuesta completa a una encuesta
+  async crearRespuesta(encuestaId: number, respuestasData: any) {
+    // Crear la respuesta principal
+    const respuesta = this.respuestaRepository.create({
+      encuesta: { id: encuestaId }
     });
+    
+    const respuestaGuardada = await this.respuestaRepository.save(respuesta);
 
-    await this.respuestaRepo.save(nuevaRespuesta);
-
-    for (const r of data.respuestas) {
-      const pregunta = await this.preguntaRepo.findOneBy({ id: r.idPregunta });
-      if (!pregunta) continue;
-
-      switch (r.tipo) {
-        case TiposRespuestaEnum.ABIERTA:
-          if (r.texto) {
-            const abierta = this.respuestaAbiertaRepo.create({
-              respuesta: nuevaRespuesta,
-              pregunta,
-              texto: r.texto,
-            });
-            await this.respuestaAbiertaRepo.save(abierta);
-          }
-          break;
-
-        case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE:
-        case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE:
-          if (r.opciones?.length) {
-            const opciones = await this.opcionRepo.findBy({
-              id: In(r.opciones),
-            });
-
-            const respuestasOpciones = opciones.map((opcion) =>
-              this.respuestaOpcionRepo.create({
-                respuesta: nuevaRespuesta,
-                opcion,
-              }),
-            );
-
-            await this.respuestaOpcionRepo.save(respuestasOpciones);
-          }
-          break;
-
-        default:
-          console.warn(`Tipo de respuesta no reconocido: ${r.tipo}`);
-          break;
-      }
+    // Procesar respuestas abiertas
+    if (respuestasData.respuestasAbiertas && respuestasData.respuestasAbiertas.length > 0) {
+      const respuestasAbiertas = respuestasData.respuestasAbiertas.map(ra => 
+        this.respuestaAbiertaRepository.create({
+          respuesta: respuestaGuardada,
+          pregunta: { id: ra.preguntaId },
+          texto: ra.texto
+        })
+      );
+      await this.respuestaAbiertaRepository.save(respuestasAbiertas);
     }
 
-    return { mensaje: 'Respuestas guardadas correctamente' };
+    // Procesar respuestas de opciones
+    if (respuestasData.respuestasOpciones && respuestasData.respuestasOpciones.length > 0) {
+      const respuestasOpciones = respuestasData.respuestasOpciones.map(ro =>
+        this.respuestaOpcionRepository.create({
+          respuesta: respuestaGuardada,
+          opcion: { id: ro.opcionId }
+        })
+      );
+      await this.respuestaOpcionRepository.save(respuestasOpciones);
+    }
+
+    return this.obtenerRespuestaCompleta(respuestaGuardada.id);
+  }
+
+  // Obtener una respuesta completa con todas sus sub-respuestas
+  async obtenerRespuestaCompleta(respuestaId: number) {
+    const respuesta = await this.respuestaRepository.findOne({
+      where: { id: respuestaId },
+      relations: [
+        'encuesta',
+        'respuestasAbiertas',
+        'respuestasAbiertas.pregunta',
+        'respuestasOpciones',
+        'respuestasOpciones.opcion',
+        'respuestasOpciones.opcion.pregunta'
+      ]
+    });
+
+    if (!respuesta) {
+      throw new NotFoundException(`Respuesta con ID ${respuestaId} no encontrada`);
+    }
+
+    return respuesta;
+  }
+
+  // Obtener todas las respuestas de una encuesta específica
+  async obtenerRespuestasPorEncuesta(encuestaId: number) {
+    return await this.respuestaRepository.find({
+      where: { encuesta: { id: encuestaId } },
+      relations: [
+        'respuestasAbiertas',
+        'respuestasAbiertas.pregunta',
+        'respuestasOpciones',
+        'respuestasOpciones.opcion',
+        'respuestasOpciones.opcion.pregunta'
+      ],
+      order: { fechaCreacion: 'DESC' }
+    });
+  }
+
+  // Obtener estadísticas básicas de respuestas por encuesta
+  async obtenerEstadisticasEncuesta(encuestaId: number) {
+    const totalRespuestas = await this.respuestaRepository.count({
+      where: { encuesta: { id: encuestaId } }
+    });
+
+    const respuestasAbiertas = await this.respuestaAbiertaRepository
+      .createQueryBuilder('ra')
+      .innerJoin('ra.respuesta', 'r')
+      .innerJoin('ra.pregunta', 'p')
+      .where('r.id_encuesta = :encuestaId', { encuestaId })
+      .select(['p.id as pregunta_id', 'p.texto as pregunta', 'COUNT(*) as total_respuestas'])
+      .groupBy('p.id, p.texto')
+      .getRawMany();
+
+    const respuestasOpciones = await this.respuestaOpcionRepository
+      .createQueryBuilder('ro')
+      .innerJoin('ro.respuesta', 'r')
+      .innerJoin('ro.opcion', 'o')
+      .innerJoin('o.pregunta', 'p')
+      .where('r.id_encuesta = :encuestaId', { encuestaId })
+      .select([
+        'p.id as pregunta_id', 
+        'p.texto as pregunta',
+        'o.id as opcion_id',
+        'o.texto as opcion',
+        'COUNT(*) as votos'
+      ])
+      .groupBy('p.id, p.texto, o.id, o.texto')
+      .getRawMany();
+
+    return {
+      totalRespuestas,
+      respuestasAbiertas,
+      respuestasOpciones
+    };
+  }
+
+  // Eliminar una respuesta (por si es necesario para testing)
+  async eliminarRespuesta(respuestaId: number) {
+    const respuesta = await this.respuestaRepository.findOne({
+      where: { id: respuestaId }
+    });
+
+    if (!respuesta) {
+      throw new NotFoundException(`Respuesta con ID ${respuestaId} no encontrada`);
+    }
+
+    await this.respuestaRepository.remove(respuesta);
+    return { message: 'Respuesta eliminada correctamente' };
   }
 }

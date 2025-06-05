@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Respuesta } from './respuesta.entity';
 import { Pregunta } from '../../encuestas/entities/pregunta.entity';
 
@@ -7,12 +7,17 @@ export class RespuestaAbierta {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Respuesta)
+  @ManyToOne(() => Respuesta, respuesta => respuesta.respuestasAbiertas, { 
+    nullable: false, 
+    onDelete: 'CASCADE' 
+  })
+  @JoinColumn({ name: 'id_respuesta' })
   respuesta: Respuesta;
 
-  @ManyToOne(() => Pregunta)
+  @ManyToOne(() => Pregunta, { nullable: false })
+  @JoinColumn({ name: 'id_pregunta' })
   pregunta: Pregunta;
 
-  @Column()
+  @Column({ type: 'text', nullable: false })
   texto: string;
 }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Respuesta } from './respuesta.entity';
 import { Opcion } from '../../encuestas/entities/opcion.entity';
 
@@ -7,9 +7,14 @@ export class RespuestaOpcion {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Respuesta)
+  @ManyToOne(() => Respuesta, respuesta => respuesta.respuestasOpciones, { 
+    nullable: false, 
+    onDelete: 'CASCADE' 
+  })
+  @JoinColumn({ name: 'id_respuesta' })
   respuesta: Respuesta;
 
-  @ManyToOne(() => Opcion)
+  @ManyToOne(() => Opcion, { nullable: false })
+  @JoinColumn({ name: 'id_opcion' })
   opcion: Opcion;
 }
