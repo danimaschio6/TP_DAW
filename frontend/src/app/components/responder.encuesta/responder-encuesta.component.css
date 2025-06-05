@@ -1,0 +1,80 @@
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  :host {
+    padding: 0.5rem;
+  }
+}
+
+
+.encuesta-header {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+}
+
+.encuesta-header h1 {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.encuesta-header .descripcion {
+  opacity: 0.9;
+  font-size: 1.1rem;
+}
+
+
+.pregunta-card {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.pregunta-card:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+.pregunta-numero {
+  background: #3b82f6;
+  color: white;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.pregunta-titulo {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.pregunta-tipo {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+
+.respuesta-contenedor {
+  padding: 1.5rem;
+}
+
+
+textarea.p-inputtextarea {
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.3
+}
