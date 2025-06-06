@@ -1,28 +1,34 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+// src/app/components/responder-encuesta/responder-encuesta.component.ts
 
-// PrimeNG imports
+import { Component, signal, inject } from '@angular/core';
+// Importar ValidatorFn
+import { FormBuilder, FormGroup, FormArray, FormControl, Validators, ReactiveFormsModule, ValidationErrors, ValidatorFn, AbstractControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+// PrimeNG Imports
 import { InputTextModule } from 'primeng/inputtext';
-import { FloatLabel } from 'primeng/floatlabel';
-import { ButtonModule } from 'primeng/button';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { DividerModule } from 'primeng/divider';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessageModule } from 'primeng/message';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
-// DTOs y servicios
-import { EncuestasService } from '../../services/encuestas.service';
+// Interfaces
 import { EncuestaDTO } from '../../interfaces/encuesta.dto';
-import { PreguntaDTO } from '../../interfaces/pregunta.dto';
-import { CrearRespuestaDTO, RespuestaAbiertaDTO, RespuestaOpcionDTO } from '../responder.encuesta/responder-encuesta.component';
+import { CrearRespuestaDTO } from '../../interfaces/crear-respuesta.dto';
+import { RespuestaAbiertaDTO } from '../../interfaces/respuesta-abierta.dto';
+import { RespuestaOpcionDTO } from '../../interfaces/respuesta-opcion.dto';
+
+// Services y Enums
 import { TiposRespuestaEnum } from '../../enums/tipos-pregunta.enum';
-import { CodigoTipoEnum } from '../../enums/codigo-tipo.enum';
+import { EncuestasService } from '../../services/encuestas.service';
+
+// Componentes
 import { TextoErrorComponent } from '../texto-error/texto-error.component';
+import { SeccionComponent } from '../seccion/seccion.component'; 
 
 @Component({
   selector: 'app-responder-encuesta',
@@ -31,214 +37,197 @@ import { TextoErrorComponent } from '../texto-error/texto-error.component';
     CommonModule,
     ReactiveFormsModule,
     InputTextModule,
-    FloatLabel,
-    ButtonModule,
     RadioButtonModule,
     CheckboxModule,
-    InputTextareaModule,
+    ButtonModule,
     CardModule,
-    DividerModule,
     ProgressSpinnerModule,
-    TextoErrorComponent
+    MessageModule,
+    TextoErrorComponent,
+    SeccionComponent,
+    FloatLabelModule
   ],
   templateUrl: './responder-encuesta.component.html',
   styleUrl: './responder-encuesta.component.css'
 })
-export class ResponderEncuestaComponent implements OnInit {
-  
+export class ResponderEncuestaComponent {
+  // Servicios
+  private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private messageService = inject(MessageService);
   private encuestasService = inject(EncuestasService);
 
-  // Signals para manejo de estado
+  // Signals
   encuesta = signal<EncuestaDTO | null>(null);
-  cargando = signal<boolean>(true);
-  enviando = signal<boolean>(false);
+  cargando = signal(false);
+  enviando = signal(false);
+  mensaje = signal<string | null>(null);
 
-  // Enums para el template
-  TiposRespuesta = TiposRespuestaEnum;
-  
-  // Form principal
-  form!: FormGroup;
+  // Form
+  form: FormGroup = this.fb.group({});
 
-  ngOnInit() {
-    this.obtenerParametrosYCargarEncuesta();
+  // Enum para template
+  TiposRespuestaEnum = TiposRespuestaEnum;
+
+  constructor() {
+    this.cargarEncuesta();
   }
 
-  private obtenerParametrosYCargarEncuesta() {
-    this.route.queryParams.subscribe(params => {
-      const idEncuesta = params['id-encuesta'];
-      const codigoRespuesta = params['codigo-respuesta'];
-      
-      if (!idEncuesta || !codigoRespuesta) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Parámetros de encuesta faltantes'
-        });
-        this.router.navigateByUrl('/');
-        return;
-      }
-
-      this.cargarEncuesta(Number(idEncuesta), codigoRespuesta);
-    });
-  }
-
-  private cargarEncuesta(idEncuesta: number, codigo: string) {
-    this.cargando.set(true);
-    
-    this.encuestasService.traerEncuesta(idEncuesta, codigo, CodigoTipoEnum.RESPUESTA)
-      .subscribe({
-        next: (encuesta) => {
-          this.encuesta.set(encuesta);
-          this.inicializarFormulario();
-          this.cargando.set(false);
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se pudo cargar la encuesta'
-          });
-          this.cargando.set(false);
-          this.router.navigateByUrl('/');
-        }
-      });
-  }
-
-  private inicializarFormulario() {
-    const encuesta = this.encuesta();
-    if (!encuesta) return;
-
-    const formControls: any = {};
-
-    // Crear controles para cada pregunta
-    encuesta.preguntas.forEach(pregunta => {
-      if (pregunta.tipo === TiposRespuestaEnum.ABIERTA) {
-        // Pregunta abierta: campo de texto
-        formControls[`pregunta_${pregunta.id}`] = new FormControl('', Validators.required);
-        
-      } else if (pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE) {
-        // Selección simple: radio button
-        formControls[`pregunta_${pregunta.id}`] = new FormControl(null, Validators.required);
-        
-      } else if (pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE) {
-        // Selección múltiple: array de checkboxes
-        const checkboxArray = new FormArray(
-          pregunta.opciones?.map(() => new FormControl(false)) || [],
-          this.alMenosUnoSeleccionado
-        );
-        formControls[`pregunta_${pregunta.id}`] = checkboxArray;
-      }
-    });
-
-    this.form = new FormGroup(formControls);
-  }
-
-  // Validador personalizado para checkboxes
-  private alMenosUnoSeleccionado(formArray: FormArray): any {
-    const seleccionados = formArray.controls.some(control => control.value === true);
-    return seleccionados ? null : { alMenosUnoRequerido: true };
-  }
-
-  enviarRespuesta() {
-    if (!this.form.valid) {
-      this.form.markAllAsTouched();
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Por favor complete todas las preguntas requeridas'
-      });
+  private cargarEncuesta(): void {
+    const codigo = this.route.snapshot.paramMap.get('codigo');
+    if (!codigo) {
+      this.mensaje.set('Error: No se encontró el código de la encuesta.');
       return;
     }
 
-    const encuesta = this.encuesta();
-    if (!encuesta) return;
+    this.cargando.set(true);
+    this.encuestasService.obtenerEncuestaPorCodigoRespuesta(codigo).subscribe({
+      next: (encuesta) => {
+        this.encuesta.set(encuesta);
+        this.inicializarFormulario(encuesta);
+        this.cargando.set(false);
+      },
+      error: (error) => {
+        console.error('Error al cargar encuesta:', error);
+        this.cargando.set(false);
+        this.mensaje.set('No se pudo cargar la encuesta. Intenta más tarde.');
+      }
+    });
+  }
 
-    this.enviando.set(true);
+  private inicializarFormulario(encuesta: EncuestaDTO): void {
+    const controles: { [key: string]: FormControl | FormGroup } = {};
 
-    const respuestaDto: CrearRespuestaDTO = {
-      encuestaId: encuesta.id,
-      respuestasAbiertas: [],
-      respuestasOpciones: []
-    };
-
-    // Procesar respuestas por tipo de pregunta
     encuesta.preguntas.forEach(pregunta => {
-      const valorRespuesta = this.form.get(`pregunta_${pregunta.id}`)?.value;
+      const nombreControl = `pregunta_${pregunta.id}`;
 
-      if (pregunta.tipo === TiposRespuestaEnum.ABIERTA) {
-        // Respuesta abierta
-        respuestaDto.respuestasAbiertas.push({
-          preguntaId: pregunta.id,
-          texto: valorRespuesta
-        });
+      switch (pregunta.tipo) {
+        case TiposRespuestaEnum.ABIERTA:
+          controles[nombreControl] = new FormControl('', Validators.required);
+          break;
 
-      } else if (pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE) {
-        // Selección simple
-        if (valorRespuesta !== null) {
-          respuestaDto.respuestasOpciones.push({
-            opcionId: valorRespuesta
+        case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE:
+          controles[nombreControl] = new FormControl(null, Validators.required);
+          break;
+
+        case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE:
+          const opcionesControles: { [key: string]: FormControl } = {};
+          pregunta.opciones?.forEach(opcion => {
+            opcionesControles[`opcion_${opcion.id}`] = new FormControl(false);
           });
-        }
 
-      } else if (pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE) {
-        // Selección múltiple
-        if (Array.isArray(valorRespuesta)) {
-          valorRespuesta.forEach((seleccionado, index) => {
-            if (seleccionado && pregunta.opciones?.[index]) {
-              respuestaDto.respuestasOpciones.push({
-                opcionId: pregunta.opciones[index].id
-              });
-            }
-          });
-        }
+          // CORRECCIÓN: el validador se pasa como un array de ValidatorFn
+          controles[nombreControl] = new FormGroup(
+            opcionesControles,
+            { validators: [this.alMenosUnoSeleccionadoValidator()] } // <--- ¡CAMBIO AQUÍ!
+          );
+          break;
+        default:
+          console.warn(`Tipo de pregunta desconocido: ${pregunta.tipo}`);
+          break;
       }
     });
 
-    // Enviar respuesta al backend
-    this.encuestasService.crearRespuesta(respuestaDto).subscribe({
-      next: (respuesta) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Su respuesta ha sido enviada correctamente'
-        });
-        
-        // Redirigir a página de confirmación o inicio
-        this.router.navigateByUrl('/respuesta-enviada');
+    this.form = this.fb.group(controles);
+  }
+
+  // CORRECCIÓN CLAVE: El validador ahora es una función que retorna otra función (ValidatorFn)
+  // Esta función interna recibe AbstractControl y luego lo "asegura" como FormGroup.
+  private alMenosUnoSeleccionadoValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const group = control as FormGroup; // <--- Hacemos un type assertion a FormGroup
+      if (!group || !group.controls) { // Manejo de caso donde no es un FormGroup
+        return null;
+      }
+
+      const algunoSeleccionado = Object.keys(group.controls).some(key => group.get(key)?.value === true);
+      return algunoSeleccionado ? null : { alMenosUnoRequerido: true };
+    };
+  }
+
+
+  onSubmit(): void {
+    if (this.form.invalid || !this.encuesta()) {
+      this.mensaje.set('Por favor, completa todos los campos requeridos.');
+      return;
+    }
+
+    this.enviando.set(true);
+    const respuestas = this.construirRespuestas();
+
+    this.encuestasService.crearRespuesta(respuestas).subscribe({
+      next: () => {
+        this.mensaje.set('¡Respuesta enviada exitosamente!');
+        this.form.reset();
         this.enviando.set(false);
       },
       error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'No se pudo enviar la respuesta. Intente nuevamente.'
-        });
+        console.error('Error al enviar respuesta:', error);
+        this.mensaje.set('Error al enviar la respuesta. Intenta de nuevo.');
         this.enviando.set(false);
       }
     });
   }
 
-  // Helpers para el template
-  esPreguntaAbierta(pregunta: PreguntaDTO): boolean {
-    return pregunta.tipo === TiposRespuestaEnum.ABIERTA;
+  private construirRespuestas(): CrearRespuestaDTO {
+    const encuesta = this.encuesta()!;
+    const respuestasAbiertas: RespuestaAbiertaDTO[] = [];
+    const respuestasOpciones: RespuestaOpcionDTO[] = [];
+
+    encuesta.preguntas.forEach(pregunta => {
+      const nombreControl = `pregunta_${pregunta.id}`;
+      const valor = this.form.get(nombreControl)?.value;
+
+      switch (pregunta.tipo) {
+        case TiposRespuestaEnum.ABIERTA:
+          if (valor) {
+            respuestasAbiertas.push({
+              preguntaId: pregunta.id, // Asegúrate de que este nombre (preguntaId) coincide con el backend
+              texto: valor
+            });
+          }
+          break;
+
+        case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE:
+          if (valor !== null) {
+            respuestasOpciones.push({
+              preguntaId: pregunta.id, // ¡Importante! Probablemente necesites esto para el backend
+              opcionId: valor // Asegúrate de que este nombre (opcionId) coincide con el backend
+            });
+          }
+          break;
+
+        case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE:
+          if (valor && typeof valor === 'object') {
+            Object.keys(valor).forEach(key => {
+              if (valor[key] === true) {
+                const opcionId = parseInt(key.replace('opcion_', ''));
+                respuestasOpciones.push({
+                  preguntaId: pregunta.id, // Asegúrate de que este nombre (preguntaId) coincide con el backend
+                  opcionId: opcionId
+                });
+              }
+            });
+          }
+          break;
+      }
+    });
+
+    return {
+      encuestaId: encuesta.id, // Asegúrate de que este nombre (encuestaId) coincide con el backend
+      respuestasAbiertas,
+      respuestasOpciones
+    };
   }
 
-  esPreguntaSeleccionSimple(pregunta: PreguntaDTO): boolean {
-    return pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE;
+  getFormGroupErrors(controlName: string): ValidationErrors | null | undefined {
+    const control = this.form.get(controlName);
+    return control?.errors;
   }
 
-  esPreguntaSeleccionMultiple(pregunta: PreguntaDTO): boolean {
-    return pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE;
-  }
 
-  obtenerControlPregunta(preguntaId: number): FormControl {
-    return this.form.get(`pregunta_${preguntaId}`) as FormControl;
-  }
 
-  obtenerArrayControlPregunta(preguntaId: number): FormArray {
-    return this.form.get(`pregunta_${preguntaId}`) as FormArray;
+   getPreguntaFormGroup(preguntaId: number): FormGroup {
+    return this.form.get(`pregunta_${preguntaId}`) as FormGroup;
   }
 }
+

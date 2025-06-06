@@ -1,0 +1,56 @@
+<!-- src/app/components/resultados-encuesta/resultados-encuesta.component.html -->
+<app-seccion>
+  <div class="container">
+    <div class="header">
+      <h1>Resultados de la Encuesta</h1>
+    </div>
+
+    <div *ngIf="cargando()" class="loading">
+      <p>Cargando resultados...</p>
+    </div>
+
+    <div *ngIf="!cargando() && estadisticas()" class="results-container">
+      <p-card>
+        <ng-template pTemplate="header">
+          <h2>{{ estadisticas()?.nombreEncuesta }}</h2>
+        </ng-template>
+        
+        <div class="summary-stats">
+          <h3>Resumen General</h3>
+          <p><strong>Total de respuestas:</strong> {{ estadisticas()?.totalRespuestas }}</p>
+        </div>
+
+        <div class="questions-stats">
+          <h3>Estadísticas por Pregunta</h3>
+          
+          <div *ngFor="let preguntaStats of estadisticas()?.estadisticasPreguntas" class="question-stats">
+            <h4>{{ preguntaStats.textoPregunta }}</h4>
+            
+            <div class="stats-list">
+              <div *ngFor="let stat of preguntaStats.estadisticas" class="stat-item">
+                <div class="stat-content">
+                  <span class="stat-text">
+                    {{ stat.textoOpcion || stat.respuestaTexto }}
+                  </span>
+                  <span class="stat-numbers">
+                    {{ stat.cantidad }} respuestas ({{ stat.porcentaje.toFixed(1) }}%)
+                  </span>
+                </div>
+                <p-progressBar 
+                  [value]="stat.porcentaje" 
+                  [showValue]="false"
+                  styleClass="custom-progress">
+                </p-progressBar>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <div *ngIf="!cargando() && !estadisticas()" class="no-results">
+      <p>No se encontraron resultados para esta encuesta.</p>
+      <button pButton type="button" label="Volver al inicio" routerLink="/"></button>
+    </div>
+  </div>
+</app-seccion>

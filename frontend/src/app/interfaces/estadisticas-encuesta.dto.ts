@@ -1,27 +1,26 @@
 export interface EstadisticasEncuestaDTO {
-    encuestaId: number;
-    nombreEncuesta: string;
+  encuesta: {
+    id: number;
+    nombre: string;
+  };
+  totalRespuestas: number;
+  estadisticasPorPregunta: {
+    pregunta: {
+      id: number;
+      numero: number;
+      texto: string;
+      tipo: string;
+    };
     totalRespuestas: number;
-    fechaCreacion: Date;
-    estadisticasPorPregunta: EstadisticaPreguntaDTO[];
-}
-
-export interface EstadisticaPreguntaDTO {
-    preguntaId: number;
-    textoPregunta: string;
-    tipoPregunta: string;
-    orden: number;
-    totalRespuestas: number;
-    // Para preguntas abiertas
     respuestasAbiertas?: string[];
-    // Para preguntas de opción múltiple
-    estadisticasOpciones?: EstadisticaOpcionDTO[];
-}
-
-export interface EstadisticaOpcionDTO {
-    opcionId: number;
-    textoOpcion: string;
-    cantidadRespuestas: number;
-    porcentaje: number;
-    orden: number;
+    estadisticasOpciones?: {
+      opcion: {
+        id: number;
+        texto: string;
+        numero: number;
+      };
+      cantidad: number;
+      porcentaje: number;
+    }[];
+  }[];
 }
