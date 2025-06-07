@@ -1,52 +1,49 @@
-// src/app/services/respuestas.service.ts
+import { HttpClient } from "@angular/common/http";
+import { Injectable, inject } from "@angular/core";
+import { Observable } from "rxjs";
+import { CrearRespuestaDTO } from "../interfaces/crear-respuesta.dto";
 
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { CrearRespuestaDTO } from '../interfaces/crear-respuesta.dto';
-import { RespuestaDTO } from '../interfaces/respuesta.dto';
-import { EstadisticasEncuestaDTO } from '../interfaces/estadisticas-encuesta.dto';
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class RespuestasService {
-  private readonly API_URL = 'http://localhost:3000/api/v1/respuestas';
-  
-  private http = inject(HttpClient);
+    private httpClient = inject(HttpClient);
+    
+    /**
+     * Crea una nueva respuesta
+     * POST /api/v1/respuestas
+     */
+    crearRespuesta(dto: CrearRespuestaDTO): Observable<any> {
+        return this.httpClient.post<any>('/api/v1/respuestas', dto);
+    }
 
-  /**
-   * Crear una nueva respuesta a una encuesta
-   */
-  crearRespuesta(respuesta: CrearRespuestaDTO): Observable<RespuestaDTO> {
-    return this.http.post<RespuestaDTO>(this.API_URL, respuesta);
-  }
+    /**
+     * Obtiene una respuesta específica
+     * GET /api/v1/respuestas/:id
+     */
+    obtenerRespuesta(id: number): Observable<any> {
+        return this.httpClient.get<any>(`/api/v1/respuestas/${id}`);
+    }
 
-  /**
-   * Obtener una respuesta específica por ID
-   */
-  obtenerRespuesta(id: number): Observable<RespuestaDTO> {
-    return this.http.get<RespuestaDTO>(`${this.API_URL}/${id}`);
-  }
+    /**
+     * Obtiene todas las respuestas de una encuesta
+     * GET /api/v1/respuestas/encuesta/:encuestaId
+     */
+    obtenerRespuestasPorEncuesta(encuestaId: number): Observable<any[]> {
+        return this.httpClient.get<any[]>(`/api/v1/respuestas/encuesta/${encuestaId}`);
+    }
 
-  /**
-   * Obtener todas las respuestas de una encuesta
-   */
-  obtenerRespuestasPorEncuesta(encuestaId: number): Observable<RespuestaDTO[]> {
-    return this.http.get<RespuestaDTO[]>(`${this.API_URL}/encuesta/${encuestaId}`);
-  }
+    /**
+     * Obtiene estadísticas de una encuesta
+     * GET /api/v1/respuestas/encuesta/:encuestaId/estadisticas
+     */
+    obtenerEstadisticasEncuesta(encuestaId: number): Observable<any> {
+        return this.httpClient.get<any>(`/api/v1/respuestas/encuesta/${encuestaId}/estadisticas`);
+    }
 
-  /**
-   * Obtener estadísticas de una encuesta
-   */
-  obtenerEstadisticasEncuesta(encuestaId: number): Observable<EstadisticasEncuestaDTO> {
-    return this.http.get<EstadisticasEncuestaDTO>(`${this.API_URL}/encuesta/${encuestaId}/estadisticas`);
-  }
-
-  /**
-   * Eliminar una respuesta (para testing/admin)
-   */
-  eliminarRespuesta(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/${id}`);
-  }
+    /**
+     * Elimina una respuesta (para testing/admin)
+     * DELETE /api/v1/respuestas/:id
+     */
+    eliminarRespuesta(id: number): Observable<any> {
+        return this.httpClient.delete<any>(`/api/v1/respuestas/${id}`);
+    }
 }

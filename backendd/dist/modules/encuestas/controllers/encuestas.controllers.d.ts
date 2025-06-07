@@ -11,4 +11,6 @@ export declare class EncuestaController {
         codigoResultados: string;
     }>;
     obtenerEncuesta(id: number, dto: ObtenerEncuestaDto): Promise<Encuesta>;
+    obtenerEncuestaPorCodigoRespuesta(codigo: string): Promise<Encuesta>;
+    obtenerEncuestaPorCodigoResultados(codigo: string): Promise<Encuesta>;
 }

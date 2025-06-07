@@ -1,15 +1,16 @@
-<!-- src/app/components/responder-encuesta/responder-encuesta.component.html -->
 <app-seccion>
   <div class="container">
     <div class="header">
       <h1>Responder Encuesta</h1>
     </div>
 
+    <!-- Muestra un mensaje mientras carga la encuesta -->
     <div *ngIf="cargando()" class="loading">
       <p>Cargando encuesta...</p>
     </div>
 
-    <div *ngIf="!cargando() && encuesta()" class="survey-form">
+    <!-- El formulario se muestra solo si la encuesta está cargada y no ha sido enviada -->
+    <div *ngIf="!cargando() && encuesta() && !enviadoConExito()" class="survey-form">
       <h2>{{ encuesta()?.nombre }}</h2>
       
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -35,7 +36,9 @@
 
           <!-- Selección Simple -->
           <div *ngIf="pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE" class="question-options">
-            <div *ngFor="let opcion of pregunta.opciones" class="radio-option">
+            <div *ngFor="let opcion of pregunta.opciones" 
+                 class="option-wrapper" 
+                 [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === opcion.id}">
               <p-radioButton 
                 [formControlName]="'pregunta_' + pregunta.id"
                 [value]="opcion.id"
@@ -52,12 +55,16 @@
           </div>
 
           <!-- Selección Múltiple -->
-          <div *ngIf="pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE" class="question-options">
-            <div *ngFor="let opcion of pregunta.opciones" class="checkbox-option" 
-                 [formGroup]="getPreguntaFormGroup(pregunta.id)">
+          <div *ngIf="pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE" 
+               class="question-options"
+               [formGroup]="getPreguntaFormGroup(pregunta.id)">
+            <div *ngFor="let opcion of pregunta.opciones" 
+                 class="option-wrapper"
+                 [ngClass]="{'selected': getPreguntaFormGroup(pregunta.id).get('opcion_' + opcion.id)?.value}">
               <p-checkbox 
                 [formControlName]="'opcion_' + opcion.id"
-                [inputId]="'check_' + pregunta.id + '_' + opcion.id">
+                [inputId]="'check_' + pregunta.id + '_' + opcion.id"
+                [binary]="true">
               </p-checkbox>
               <label [for]="'check_' + pregunta.id + '_' + opcion.id" class="option-label">
                 {{ opcion.texto }}
@@ -78,5 +85,12 @@
         </div>
       </form>
     </div>
+    
+    <!-- Mensaje de éxito que se muestra después de enviar la respuesta -->
+    <div *ngIf="enviadoConExito()" class="success-message">
+        <h2>¡Respuesta Enviada!</h2>
+        <p>Gracias por completar la encuesta.</p>
+    </div>
+
   </div>
 </app-seccion>

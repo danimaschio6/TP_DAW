@@ -1,26 +1,22 @@
+// Estructura probable de tu EstadisticasEncuestaDTO
 export interface EstadisticasEncuestaDTO {
-  encuesta: {
-    id: number;
-    nombre: string;
-  };
+  encuestaId: number;
+  titulo: string; // ← Probablemente sea esto, no 'nombreEncuesta'
   totalRespuestas: number;
-  estadisticasPorPregunta: {
-    pregunta: {
-      id: number;
-      numero: number;
-      texto: string;
-      tipo: string;
-    };
-    totalRespuestas: number;
-    respuestasAbiertas?: string[];
-    estadisticasOpciones?: {
-      opcion: {
-        id: number;
-        texto: string;
-        numero: number;
-      };
-      cantidad: number;
-      porcentaje: number;
-    }[];
+  estadisticasPorPregunta: EstadisticaPreguntaDTO[]; // ← Probablemente sea esto
+}
+
+export interface EstadisticaPreguntaDTO {
+  preguntaId: number;
+  textoPregunta: string;
+  tipo: 'abierta' | 'opcion_multiple';
+  // Para preguntas de opción múltiple:
+  estadisticasOpciones?: {
+    opcionId: number;
+    textoOpcion: string;
+    cantidadRespuestas: number;
+    porcentaje: number;
   }[];
+  // Para preguntas abiertas:
+  respuestasAbiertas?: string[];
 }

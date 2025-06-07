@@ -7,7 +7,6 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ProgressSpinnerModule } from 'primeng/progressspinner'; // 🔧 MEJORA: Spinner para carga
-import { SeccionComponent } from '../seccion/seccion.component';
 import { EncuestasService } from '../../services/encuestas.service';
 import { RespuestasService } from '../../services/respuestas.service'; // 🔧 CAMBIO: Usar servicio correcto
 import { EstadisticasEncuestaDTO } from '../../interfaces/estadisticas-encuesta.dto';
@@ -21,7 +20,6 @@ import { CommonModule } from '@angular/common';
     CardModule,
     ProgressBarModule,
     ProgressSpinnerModule,
-    SeccionComponent,
   ],
   templateUrl: './resultados-encuesta.component.html',
   styleUrl: './resultados-encuesta.component.css'
@@ -90,7 +88,7 @@ export class ResultadosEncuestaComponent implements OnInit {
     });
   }
 
-  // 🔧 MEJORA: Método para recargar estadísticas
+   // 🔧 MEJORA: Método para recargar estadísticas
   recargarEstadisticas(): void {
     const codigo = this.route.snapshot.paramMap.get('codigo');
     if (codigo) {
@@ -103,14 +101,19 @@ export class ResultadosEncuestaComponent implements OnInit {
     return `${porcentaje.toFixed(1)}%`;
   }
 
-  // 🔧 MEJORA: Método para determinar si una pregunta tiene respuestas
+  // Método para determinar si una pregunta tiene respuestas
   tieneRespuestas(): boolean {
     const stats = this.estadisticas();
     return stats ? stats.totalRespuestas > 0 : false;
   }
 
+
+
   // 🔧 MEJORA: Navegación de vuelta
   volverInicio(): void {
     this.router.navigate(['/']);
   }
+
+
+  
 }

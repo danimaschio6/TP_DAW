@@ -1,12 +1,9 @@
-// src/app/components/responder-encuesta/responder-encuesta.component.ts
-
-import { Component, signal, inject } from '@angular/core';
-// Importar ValidatorFn
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators, ReactiveFormsModule, ValidationErrors, ValidatorFn, AbstractControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
-// PrimeNG Imports
+// Importaciones de PrimeNG y componentes personalizados
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -15,20 +12,18 @@ import { CardModule } from 'primeng/card';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageModule } from 'primeng/message';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { TextoErrorComponent } from '../texto-error/texto-error.component'
+import { SeccionComponent } from '../seccion/seccion.component'
 
-// Interfaces
-import { EncuestaDTO } from '../../interfaces/encuesta.dto';
+// Importaciones de servicios y DTOs (ajusta las rutas si es necesario)
+import { EncuestasService } from '../../services/encuestas.service';
+import { RespuestasService } from '../../services/respuestas.service';
+import { EncuestaDTO } from '../../interfaces/encuesta.dto'
+import { TiposRespuestaEnum } from '../../enums/tipos-pregunta.enum';
 import { CrearRespuestaDTO } from '../../interfaces/crear-respuesta.dto';
 import { RespuestaAbiertaDTO } from '../../interfaces/respuesta-abierta.dto';
 import { RespuestaOpcionDTO } from '../../interfaces/respuesta-opcion.dto';
 
-// Services y Enums
-import { TiposRespuestaEnum } from '../../enums/tipos-pregunta.enum';
-import { EncuestasService } from '../../services/encuestas.service';
-
-// Componentes
-import { TextoErrorComponent } from '../texto-error/texto-error.component';
-import { SeccionComponent } from '../seccion/seccion.component'; 
 
 @Component({
   selector: 'app-responder-encuesta',
@@ -43,9 +38,9 @@ import { SeccionComponent } from '../seccion/seccion.component';
     CardModule,
     ProgressSpinnerModule,
     MessageModule,
+    FloatLabelModule,
     TextoErrorComponent,
     SeccionComponent,
-    FloatLabelModule
   ],
   templateUrl: './responder-encuesta.component.html',
   styleUrl: './responder-encuesta.component.css'
@@ -55,17 +50,19 @@ export class ResponderEncuestaComponent {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private encuestasService = inject(EncuestasService);
+  private respuestasService = inject(RespuestasService);
 
   // Signals
   encuesta = signal<EncuestaDTO | null>(null);
   cargando = signal(false);
   enviando = signal(false);
-  mensaje = signal<string | null>(null);
+  enviadoConExito = signal(false); // Renombrada para claridad y sincronización con el HTML
+  mensajeError = signal<string | null>(null);
 
   // Form
   form: FormGroup = this.fb.group({});
 
-  // Enum para template
+  // Enum para usar en la plantilla
   TiposRespuestaEnum = TiposRespuestaEnum;
 
   constructor() {
@@ -75,7 +72,7 @@ export class ResponderEncuestaComponent {
   private cargarEncuesta(): void {
     const codigo = this.route.snapshot.paramMap.get('codigo');
     if (!codigo) {
-      this.mensaje.set('Error: No se encontró el código de la encuesta.');
+      this.mensajeError.set('Error: No se encontró el código de la encuesta.');
       return;
     }
 
@@ -89,40 +86,31 @@ export class ResponderEncuestaComponent {
       error: (error) => {
         console.error('Error al cargar encuesta:', error);
         this.cargando.set(false);
-        this.mensaje.set('No se pudo cargar la encuesta. Intenta más tarde.');
+        this.mensajeError.set('No se pudo cargar la encuesta. Intenta más tarde.');
       }
     });
   }
 
   private inicializarFormulario(encuesta: EncuestaDTO): void {
-    const controles: { [key: string]: FormControl | FormGroup } = {};
+    const controles: { [key: string]: AbstractControl } = {};
 
     encuesta.preguntas.forEach(pregunta => {
       const nombreControl = `pregunta_${pregunta.id}`;
-
       switch (pregunta.tipo) {
         case TiposRespuestaEnum.ABIERTA:
           controles[nombreControl] = new FormControl('', Validators.required);
           break;
-
         case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE:
           controles[nombreControl] = new FormControl(null, Validators.required);
           break;
-
         case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE:
           const opcionesControles: { [key: string]: FormControl } = {};
           pregunta.opciones?.forEach(opcion => {
             opcionesControles[`opcion_${opcion.id}`] = new FormControl(false);
           });
-
-          // CORRECCIÓN: el validador se pasa como un array de ValidatorFn
-          controles[nombreControl] = new FormGroup(
-            opcionesControles,
-            { validators: [this.alMenosUnoSeleccionadoValidator()] } // <--- ¡CAMBIO AQUÍ!
-          );
-          break;
-        default:
-          console.warn(`Tipo de pregunta desconocido: ${pregunta.tipo}`);
+          controles[nombreControl] = new FormGroup(opcionesControles, { 
+            validators: [this.alMenosUnoSeleccionadoValidator()] 
+          });
           break;
       }
     });
@@ -130,39 +118,35 @@ export class ResponderEncuestaComponent {
     this.form = this.fb.group(controles);
   }
 
-  // CORRECCIÓN CLAVE: El validador ahora es una función que retorna otra función (ValidatorFn)
-  // Esta función interna recibe AbstractControl y luego lo "asegura" como FormGroup.
   private alMenosUnoSeleccionadoValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const group = control as FormGroup; // <--- Hacemos un type assertion a FormGroup
-      if (!group || !group.controls) { // Manejo de caso donde no es un FormGroup
-        return null;
-      }
-
+      const group = control as FormGroup;
+      if (!group || !group.controls) return null;
       const algunoSeleccionado = Object.keys(group.controls).some(key => group.get(key)?.value === true);
       return algunoSeleccionado ? null : { alMenosUnoRequerido: true };
     };
   }
 
-
   onSubmit(): void {
-    if (this.form.invalid || !this.encuesta()) {
-      this.mensaje.set('Por favor, completa todos los campos requeridos.');
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.mensajeError.set('Por favor, completa todos los campos requeridos.');
       return;
     }
+    if (!this.encuesta()) return;
 
     this.enviando.set(true);
+    this.mensajeError.set(null);
+    
     const respuestas = this.construirRespuestas();
-
-    this.encuestasService.crearRespuesta(respuestas).subscribe({
+    this.respuestasService.crearRespuesta(respuestas).subscribe({
       next: () => {
-        this.mensaje.set('¡Respuesta enviada exitosamente!');
-        this.form.reset();
+        this.enviadoConExito.set(true); // Muestra el mensaje de éxito y oculta el form
         this.enviando.set(false);
       },
       error: (error) => {
         console.error('Error al enviar respuesta:', error);
-        this.mensaje.set('Error al enviar la respuesta. Intenta de nuevo.');
+        this.mensajeError.set('Error al enviar la respuesta. Intenta de nuevo.');
         this.enviando.set(false);
       }
     });
@@ -176,35 +160,23 @@ export class ResponderEncuestaComponent {
     encuesta.preguntas.forEach(pregunta => {
       const nombreControl = `pregunta_${pregunta.id}`;
       const valor = this.form.get(nombreControl)?.value;
-
       switch (pregunta.tipo) {
         case TiposRespuestaEnum.ABIERTA:
-          if (valor) {
-            respuestasAbiertas.push({
-              preguntaId: pregunta.id, // Asegúrate de que este nombre (preguntaId) coincide con el backend
-              texto: valor
-            });
+          if (valor && valor.trim()) {
+            respuestasAbiertas.push({ preguntaId: pregunta.id, texto: valor.trim() });
           }
           break;
-
         case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE:
-          if (valor !== null) {
-            respuestasOpciones.push({
-              preguntaId: pregunta.id, // ¡Importante! Probablemente necesites esto para el backend
-              opcionId: valor // Asegúrate de que este nombre (opcionId) coincide con el backend
-            });
+          if (valor !== null && valor !== undefined) {
+            respuestasOpciones.push({ opcionId: valor });
           }
           break;
-
         case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE:
           if (valor && typeof valor === 'object') {
             Object.keys(valor).forEach(key => {
               if (valor[key] === true) {
                 const opcionId = parseInt(key.replace('opcion_', ''));
-                respuestasOpciones.push({
-                  preguntaId: pregunta.id, // Asegúrate de que este nombre (preguntaId) coincide con el backend
-                  opcionId: opcionId
-                });
+                respuestasOpciones.push({ opcionId: opcionId });
               }
             });
           }
@@ -213,21 +185,13 @@ export class ResponderEncuestaComponent {
     });
 
     return {
-      encuestaId: encuesta.id, // Asegúrate de que este nombre (encuestaId) coincide con el backend
+      encuestaId: encuesta.id,
       respuestasAbiertas,
       respuestasOpciones
     };
   }
-
-  getFormGroupErrors(controlName: string): ValidationErrors | null | undefined {
-    const control = this.form.get(controlName);
-    return control?.errors;
-  }
-
-
-
-   getPreguntaFormGroup(preguntaId: number): FormGroup {
+  
+  getPreguntaFormGroup(preguntaId: number): FormGroup {
     return this.form.get(`pregunta_${preguntaId}`) as FormGroup;
   }
 }
-

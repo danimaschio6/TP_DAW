@@ -5,41 +5,62 @@ import { Observable } from "rxjs";
 import { CodigoTipoEnum } from "../enums/codigo-tipo.enum";
 import { EncuestaDTO } from "../interfaces/encuesta.dto";
 
-// lo usamos para comunicarnos con los endpoints que creamos en nest//
-
 @Injectable({providedIn: 'root'})
-
-export class EncuestasService{
+export class EncuestasService {
     private httpClient = inject(HttpClient);
-
+    
     crearEncuesta(dto: CreateEncuestaDTO): Observable<{
         id: number;
         codigoRespuesta: string;
         codigoResultados: string;
-
-    }>{
+    }> {
         return this.httpClient.post<{
-            id:number;
+            id: number;
             codigoRespuesta: string;
             codigoResultados: string;
         }>('/api/v1/encuestas', dto);
     }
-
+    
     traerEncuesta(
         idEncuesta: number,
         codigo: string,
         tipo: CodigoTipoEnum,
-    ):Observable<EncuestaDTO>{
+    ): Observable<EncuestaDTO> {
         return this.httpClient.get<EncuestaDTO>(
-            '/api/v1/encuestas/' + idEncuesta + '?codigo=' + codigo + '&tipo='
+            `/api/v1/encuestas/${idEncuesta}?codigo=${codigo}&tipo=${tipo}`
         );
     }
 
+    // 🔧 NUEVOS MÉTODOS - Adaptados a tu backend existente
+    
+    /**
+     * Obtiene una encuesta por su código de respuesta
+     * Usa el endpoint existente pero busca primero por código
+     */
+    obtenerEncuestaPorCodigoRespuesta(codigo: string): Observable<EncuestaDTO> {
+        // Opción 1: Si agregas endpoint específico al backend (RECOMENDADO)
+        return this.httpClient.get<EncuestaDTO>(`/api/v1/encuestas/respuesta/${codigo}`);
+        
+        // Opción 2: Si no puedes modificar el backend, necesitarías una consulta diferente
+        // return this.httpClient.get<EncuestaDTO>(`/api/v1/encuestas/por-codigo?codigo=${codigo}&tipo=RESPUESTA`);
+    }
 
-    test(){
-        this.traerEncuesta(1,'codigo-test', CodigoTipoEnum.RESPUESTA).subscribe({
-            next:(res)=> console.log(res),
-            error: (err)=> console.log(err),
-        })
+
+    obtenerEncuestaPorCodigoResultados(codigo: string): Observable<EncuestaDTO> {
+        return this.httpClient.get<EncuestaDTO>(`/api/v1/encuestas/resultados/${codigo}`);
+       
+    }
+
+
+    obtenerEncuestaPorCodigo(codigo: string, tipo: CodigoTipoEnum = CodigoTipoEnum.RESPUESTA): Observable<EncuestaDTO> {
+        const tipoStr = tipo === CodigoTipoEnum.RESPUESTA ? 'respuesta' : 'resultados';
+        return this.httpClient.get<EncuestaDTO>(`/api/v1/encuestas/${tipoStr}/${codigo}`);
+    }
+
+    test() {
+        this.traerEncuesta(1, 'codigo-test', CodigoTipoEnum.RESPUESTA).subscribe({
+            next: (res) => console.log(res),
+            error: (err) => console.log(err),
+        });
     }
 }
