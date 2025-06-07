@@ -1,0 +1,148 @@
+<div class="lista-respuestas-container">
+  
+  <!-- Loading State -->
+  @if (cargando()) {
+    <div class="loading-section">
+      <p-progressSpinner></p-progressSpinner>
+      <p>Cargando respuestas...</p>
+    </div>
+  }
+  
+  <!-- Error State -->
+  @else if (error()) {
+    <p-card>
+      <div class="error-section">
+        <h3>Error al cargar respuestas</h3>
+        <p>{{ error() }}</p>
+        <p-button 
+          label="Reintentar" 
+          icon="pi pi-refresh"
+          (click)="recargarRespuestas()">
+        </p-button>
+        <p-button 
+          label="Volver al inicio" 
+          icon="pi pi-home"
+          severity="secondary"
+          (click)="volverInicio()">
+        </p-button>
+      </div>
+    </p-card>
+  }
+  
+  <!-- Lista de Respuestas -->
+  @else if (encuesta()) {
+    <div class="content-section">
+      
+      <!-- Header -->
+      <p-card>
+        <div class="header-section">
+          <h2>Lista de Respuestas</h2>
+          <h3>{{ encuesta()?.nombre }}</h3>
+          <div class="stats-info">
+            <p-tag 
+              [value]="'Total: ' + respuestas().length + ' respuestas'"
+              severity="info"
+              icon="pi pi-users">
+            </p-tag>
+          </div>
+        </div>
+      </p-card>
+
+      <p-divider></p-divider>
+
+      <!-- Tabla de Respuestas -->
+      @if (respuestas().length > 0) {
+        <p-card>
+          <p-table 
+            [value]="respuestas()" 
+            [paginator]="true" 
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} respuestas"
+            [rowsPerPageOptions]="[5, 10, 20]"
+            styleClass="p-datatable-striped">
+            
+            <ng-template pTemplate="header">
+              <tr>
+                <th>ID</th>
+                <th>Fecha de Respuesta</th>
+                <th>Respuestas Abiertas</th>
+                <th>Respuestas de Opción</th>
+                <th>Acciones</th>
+              </tr>
+            </ng-template>
+            
+            <ng-template pTemplate="body" let-respuesta>
+              <tr>
+                <td>
+                  <p-tag [value]="'#' + respuesta.id" severity="secondary"></p-tag>
+                </td>
+                <td>{{ formatearFecha(respuesta.fechaCreacion) }}</td>
+                <td>
+                  <span class="respuestas-count">
+                    {{ contarRespuestasAbiertas(respuesta) }}
+                  </span>
+                </td>
+                <td>
+                  <span class="respuestas-count">
+                    {{ contarRespuestasOpciones(respuesta) }}
+                  </span>
+                </td>
+                <td>
+                  <p-button 
+                    label="Ver Detalle" 
+                    icon="pi pi-eye"
+                    size="small"
+                    severity="success"
+                    (click)="verDetalleRespuesta(respuesta.id!)">
+                  </p-button>
+                </td>
+              </tr>
+            </ng-template>
+            
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="5" class="text-center">
+                  <div class="empty-message">
+                    <i class="pi pi-inbox"></i>
+                    <p>No se encontraron respuestas</p>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-card>
+      } @else {
+        <!-- No hay respuestas -->
+        <p-card>
+          <div class="no-responses">
+            <i class="pi pi-inbox"></i>
+            <h3>Sin respuestas</h3>
+            <p>Esta encuesta no ha recibido respuestas todavía.</p>
+          </div>
+        </p-card>
+      }
+
+      <!-- Actions -->
+      <div class="actions-section">
+        <p-button 
+          label="Ver Estadísticas" 
+          icon="pi pi-chart-bar"
+          severity="info"
+          (click)="verEstadisticas()">
+        </p-button>
+        <p-button 
+          label="Actualizar" 
+          icon="pi pi-refresh"
+          (click)="recargarRespuestas()">
+        </p-button>
+        <p-button 
+          label="Volver al inicio" 
+          icon="pi pi-home"
+          severity="secondary"
+          (click)="volverInicio()">
+        </p-button>
+      </div>
+    </div>
+  }
+</div>

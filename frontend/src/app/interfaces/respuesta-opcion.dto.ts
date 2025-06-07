@@ -1,3 +1,8 @@
+import { OpcionDTO } from './opcion.dto';
+
+
 export interface RespuestaOpcionDTO {
-  opcionId: number;
+  id: number;
+  opcion: OpcionDTO; 
 }
+

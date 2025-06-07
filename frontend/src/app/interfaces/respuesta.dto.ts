@@ -1,27 +1,12 @@
+import { RespuestaAbiertaDTO } from "./respuesta-abierta.dto";
+import { RespuestaOpcionDTO } from "./respuesta-opcion.dto";
+
+
 export interface RespuestaDTO {
   id: number;
-  fechaCreacion: string;
-  encuesta: {
-    id: number;
-    nombre: string;
-    codigoRespuesta: string;
-  };
-  respuestasAbiertas: {
-    id: number;
-    texto: string;
-    pregunta: {
-      id: number;
-      numero: number;
-      texto: string;
-      tipo: string;
-    };
-  }[];
-  respuestasOpciones: {
-    id: number;
-    opcion: {
-      id: number;
-      texto: string;
-      numero: number;
-    };
-  }[];
+  encuestaId: number; 
+  fechaCreacion: string; 
+  respuestasAbiertas: RespuestaAbiertaDTO[]; 
+  respuestasOpciones: RespuestaOpcionDTO[];
 }
+

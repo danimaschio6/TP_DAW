@@ -1,4 +1,8 @@
+import { PreguntaDTO } from "./pregunta.dto";
+
 export interface RespuestaAbiertaDTO {
-  preguntaId: number;
+  id: number;
+  pregunta: PreguntaDTO; // La Pregunta es un objeto anidado
   texto: string;
 }
+

@@ -57,6 +57,20 @@ export class EncuestasService {
         return this.httpClient.get<EncuestaDTO>(`/api/v1/encuestas/${tipoStr}/${codigo}`);
     }
 
+
+     obtenerEncuestaConCodigo(idEncuesta: number, codigo: string): Observable<EncuestaDTO> {
+        return this.traerEncuesta(idEncuesta, codigo, CodigoTipoEnum.RESULTADOS);
+    }
+
+    /**
+     * ✅ MÉTODO DE EMERGENCIA - Para probar si el problema es la obtención de la encuesta
+     * Simula obtener una encuesta directamente por ID (para testing)
+     */
+    obtenerEncuestaPorId(id: number): Observable<EncuestaDTO> {
+        return this.httpClient.get<EncuestaDTO>(`/api/v1/encuestas/${id}`);
+    }
+
+    
     test() {
         this.traerEncuesta(1, 'codigo-test', CodigoTipoEnum.RESPUESTA).subscribe({
             next: (res) => console.log(res),

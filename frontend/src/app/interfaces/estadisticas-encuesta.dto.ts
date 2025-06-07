@@ -9,7 +9,7 @@ export interface EstadisticasEncuestaDTO {
 export interface EstadisticaPreguntaDTO {
   preguntaId: number;
   textoPregunta: string;
-  tipo: 'abierta' | 'opcion_multiple';
+  tipo: 'opcion_multiple' | 'opcion_unica' | 'abierta';
   // Para preguntas de opción múltiple:
   estadisticasOpciones?: {
     opcionId: number;
@@ -19,4 +19,11 @@ export interface EstadisticaPreguntaDTO {
   }[];
   // Para preguntas abiertas:
   respuestasAbiertas?: string[];
+}
+
+export interface EstadisticaOpcionDTO {
+  opcionId: number;
+  textoOpcion: string;
+  cantidadRespuestas: number;
+  porcentaje: number;
 }

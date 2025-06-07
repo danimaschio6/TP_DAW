@@ -20,9 +20,7 @@ import { EncuestasService } from '../../services/encuestas.service';
 import { RespuestasService } from '../../services/respuestas.service';
 import { EncuestaDTO } from '../../interfaces/encuesta.dto'
 import { TiposRespuestaEnum } from '../../enums/tipos-pregunta.enum';
-import { CrearRespuestaDTO } from '../../interfaces/crear-respuesta.dto';
-import { RespuestaAbiertaDTO } from '../../interfaces/respuesta-abierta.dto';
-import { RespuestaOpcionDTO } from '../../interfaces/respuesta-opcion.dto';
+import { CrearRespuestaPayloadDTO,RespuestaAbiertaPayloadDTO, RespuestaOpcionPayloadDTO } from '../../interfaces/crear-respuesta-payload.dto';
 
 
 @Component({
@@ -152,10 +150,10 @@ export class ResponderEncuestaComponent {
     });
   }
 
-  private construirRespuestas(): CrearRespuestaDTO {
+  private construirRespuestas(): CrearRespuestaPayloadDTO {
     const encuesta = this.encuesta()!;
-    const respuestasAbiertas: RespuestaAbiertaDTO[] = [];
-    const respuestasOpciones: RespuestaOpcionDTO[] = [];
+    const respuestasAbiertas: RespuestaAbiertaPayloadDTO[] = [];
+    const respuestasOpciones: RespuestaOpcionPayloadDTO[] = [];
 
     encuesta.preguntas.forEach(pregunta => {
       const nombreControl = `pregunta_${pregunta.id}`;
@@ -163,7 +161,10 @@ export class ResponderEncuestaComponent {
       switch (pregunta.tipo) {
         case TiposRespuestaEnum.ABIERTA:
           if (valor && valor.trim()) {
-            respuestasAbiertas.push({ preguntaId: pregunta.id, texto: valor.trim() });
+            respuestasAbiertas.push({
+              preguntaId: pregunta.id,
+              texto: valor.trim(),
+            });
           }
           break;
         case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE:
@@ -186,8 +187,8 @@ export class ResponderEncuestaComponent {
 
     return {
       encuestaId: encuesta.id,
-      respuestasAbiertas,
-      respuestasOpciones
+      respuestasAbiertas: respuestasAbiertas.length > 0 ? respuestasAbiertas : [],
+      respuestasOpciones: respuestasOpciones.length > 0 ? respuestasOpciones : []
     };
   }
   

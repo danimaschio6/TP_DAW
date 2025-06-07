@@ -1,4 +1,4 @@
-<!-- resultados-encuesta.component.html - CORREGIDO -->
+<!-- resultados-encuesta.component.html - CON BOTÓN LISTA DE RESPUESTAS -->
 <div class="resultados-container">
   
   <!-- Loading State -->
@@ -37,7 +37,6 @@
       <!-- Survey Header -->
       <p-card>
         <div class="survey-header">
-          <!-- ✅ CORREGIDO: Cambiar 'nombreEncuesta' por 'titulo' -->
           <h2>{{ estadisticas()?.titulo }}</h2>
           <div class="survey-stats">
             <span class="total-responses">
@@ -51,7 +50,6 @@
       <!-- Questions Statistics -->
       @if (tieneRespuestas()) {
         <div class="questions-section">
-          <!-- ✅ CORREGIDO: Cambiar 'estadisticasPreguntas' por 'estadisticasPorPregunta' -->
           @for (preguntaStat of estadisticas()?.estadisticasPorPregunta; track preguntaStat.preguntaId) {
             <p-card>
               <div class="question-stats">
@@ -111,6 +109,12 @@
 
       <!-- Actions -->
       <div class="actions-section">
+        <p-button 
+          label="Ver Lista de Respuestas" 
+          icon="pi pi-list"
+          severity="success"
+          (click)="verListaRespuestas()">
+        </p-button>
         <p-button 
           label="Actualizar resultados" 
           icon="pi pi-refresh"

@@ -1,17 +1,19 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { Observable } from "rxjs";
-import { CrearRespuestaDTO } from "../interfaces/crear-respuesta.dto";
+import { CrearRespuestaPayloadDTO } from '../interfaces/crear-respuesta-payload.dto';
+
 
 @Injectable({providedIn: 'root'})
 export class RespuestasService {
     private httpClient = inject(HttpClient);
+
     
     /**
      * Crea una nueva respuesta
      * POST /api/v1/respuestas
      */
-    crearRespuesta(dto: CrearRespuestaDTO): Observable<any> {
+    crearRespuesta(dto: CrearRespuestaPayloadDTO): Observable<any> {
         return this.httpClient.post<any>('/api/v1/respuestas', dto);
     }
 

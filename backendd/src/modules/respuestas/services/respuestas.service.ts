@@ -72,8 +72,17 @@ export class RespuestasService {
       throw new NotFoundException(`Respuesta con ID ${respuestaId} no encontrada`);
     }
 
+
+   //LOGS PARA DEBUG
+    console.log('Respuesta encontrada:', respuesta);
+    console.log('Respuestas abiertas:', respuesta.respuestasAbiertas);
+    console.log('Respuestas opciones:', respuesta.respuestasOpciones);
+
+
     return respuesta;
   }
+
+  
 
   // Obtener todas las respuestas de una encuesta específica
   async obtenerRespuestasPorEncuesta(encuestaId: number) {
@@ -88,6 +97,7 @@ export class RespuestasService {
       ],
       order: { fechaCreacion: 'DESC' }
     });
+   
   }
 
   // Obtener estadísticas básicas de respuestas por encuesta
