@@ -1,14 +1,43 @@
-:host{
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    background-color: rgb(143, 190, 231);
-    width: 100vw;
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #b3cbe4, #cdd7e2);
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
 }
 
+h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
 
-h1{
-    margin: 0;
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 2rem 0;
+}
+
+li {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+::ng-deep .p-button {
+  background-color: #3498db;
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+::ng-deep .p-button:hover {
+  background-color: #2980b9;
 }

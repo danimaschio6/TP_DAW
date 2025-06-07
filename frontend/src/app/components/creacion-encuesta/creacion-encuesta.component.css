@@ -1,94 +1,105 @@
 :host {
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #ecffdc;
-  width: 100vw;
-  overflow: auto;
+  padding: 2rem;
+  background: linear-gradient(to right, #97b9df, #c2d3e6);
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-#contenedor-encuesta {
+.titulo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+form {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1.5rem;
 }
 
-.input {
-  height: 2rem;
-}
-
-.label {
-  height: 2rem;
-}
-
-#input-nombre {
-  max-width: 100%;
-}
-
-#float-label-nombre-encuesta {
-  max-width: 100%;
-}
-
-ul {
-  margin-left: 0;
-  margin-right: 0;
-  margin-top: 0.1rem;
-}
-
-.contenedor-opcion {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 100%;
-  margin: 1rem;
-}
-
-.boton-eliminar-pregunta {
-  margin-top: 1rem;
-}
-
-#boton-finalizar {
-  margin: 1rem;
-}
-
-.contenedor-pregunta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 100%;
-}
-
-.botonera-pregunta {
+.campo {
+  width: 100%;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
+  min-height: 4.5rem; /* FIX: reserva espacio para el label flotante */
 }
 
-#boton-eliminar-pregunta {
-  margin-right: 1rem;
-  margin-top: 0.3rem;
+.campo p-floatlabel {
+  width: 100%;
+  max-width: 400px;
+}
+
+.campo input {
+  padding-top: 1.2rem; /* espacio adicional para evitar que salte el label */
+}
+
+/* ✅ Evita que el mensaje de error modifique el alto del contenedor */
+app-texto-error {
+  min-height: 1.25rem;
+  display: block;
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  text-align: center;
+}
+
+.preguntas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.pregunta {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  background-color: #5ce5b3;
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .texto-pregunta {
   font-weight: bold;
-  margin: 0;
-  max-width: 50vw;
+  margin-bottom: 0.5rem;
+  text-align: center;
   word-wrap: break-word;
-  overflow-wrap: break-word;
 }
 
-.texto-opcion{
-  max-width: 30vw;
+.texto-opcion {
+  margin: 0.25rem 0;
+  text-align: center;
   word-wrap: break-word;
-  overflow-wrap: break-word;
 }
 
-@media (min-width: 500px) {
-  .texto-opcion{
-    max-width: 25vw;
-  }
-  .texto-pregunta{
-    max-width: 25vw;
-  }
+.botonera {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.boton-agregar {
+  align-self: center;
+}
+
+.boton-finalizar {
+  align-self: center;
 }
