@@ -1,0 +1,72 @@
+<h1>Responde la encuesta</h1>
+<h2>{{nombreEncuesta}}</h2>
+
+<form [formGroup]="form" (ngSubmit)="confirmarEnviarRespuestas()">
+  <div id="contenedor-encuesta">
+
+    <!--
+    <app-seccion>
+      <p-floatlabel variant="on" id="float-label-nombre-encuesta">
+        <input
+          pInputText
+          id="input-nombre"
+          formControlName="nombre"
+          autocomplete="off"
+        />
+        <label for="input-nombre">Nombre de la encuesta</label>
+      </p-floatlabel>
+      @if (nombre.invalid && nombre.touched) {
+        <app-texto-error>Requerido</app-texto-error>
+      }
+    </app-seccion>
+    -->
+
+    @for (pregunta of preguntas.numero; track idx; let idx = $index) {
+      <label>{{ pregunta.numero }}. {{ pregunta.texto }}</label>
+
+      @if (pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE) {
+        @for (pregunta of preguntas.opciones; track idx; let idx = $index) {
+          <label>
+            <input
+            type="radio"
+            formControlName="pregunta.id.toString()"
+            value="opcion.id"
+            />
+            {{ opcion.texto }}
+          </label>
+        }
+      }
+
+      @if (pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE) {
+        <div formArrayName="pregunta.id.toString()">
+          <ul>
+          @for (opcion of pregunta.opciones; track i; let i = $index) {
+            <li>
+              <input type="checkbox" formControlName="opcion.id" />
+              {{ opcion.texto }}
+            </li>
+          }
+          </ul>
+        </div>
+      }
+
+      @if (pregunta.tipo === TiposRespuestaEnum.ABIERTA) {
+        <input type="text" formControlName="pregunta.id.toString()" />
+      }
+    }
+
+    <button
+      id="boton-finalizar" 
+      pButton 
+      pRipple 
+      type="submit" 
+      icon="pi pi-check" 
+      severity="contrast" 
+    >
+      Enviar Respuestas.
+    </button>
+    <!-- Deberia hacer lo del abrir dialog dentro de la  seccion contenedora de preguntas (¿?)-->
+    <!-- O es mejor repetir lo de la seccion del nombre de la encuesta?-->
+    
+  </div>
+</form>

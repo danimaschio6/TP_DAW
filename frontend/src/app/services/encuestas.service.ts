@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { CodigoTipoEnum } from "../enums/codigo-tipo.enum";
 import { EncuestaDTO } from "../interfaces/encuesta.dto";
 
-// lo usamos para comunicarnos con los endpoints que creamos en nest//
+// lo usamos para comunicarnos con los endpoints que creamos en nest
 
 @Injectable({providedIn: 'root'})
 
@@ -19,7 +19,7 @@ export class EncuestasService{
 
     }>{
         return this.httpClient.post<{
-            id:number;
+            id: number;
             codigoRespuesta: string;
             codigoResultados: string;
         }>('/api/v1/encuestas', dto);
@@ -31,13 +31,13 @@ export class EncuestasService{
         tipo: CodigoTipoEnum,
     ):Observable<EncuestaDTO>{
         return this.httpClient.get<EncuestaDTO>(
-            '/api/v1/encuestas/' + idEncuesta + '?codigo=' + codigo + '&tipo='
+            '/api/v1/encuestas/' + idEncuesta + '?codigo=' + codigo + '&tipo=' + tipo,
         );
     }
 
 
     test(){
-        this.traerEncuesta(1,'codigo-test', CodigoTipoEnum.RESPUESTA).subscribe({
+        this.traerEncuesta(1, 'codigo-test', CodigoTipoEnum.RESPUESTA).subscribe({
             next:(res)=> console.log(res),
             error: (err)=> console.log(err),
         })

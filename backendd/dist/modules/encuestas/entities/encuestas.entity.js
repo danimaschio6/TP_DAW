@@ -13,12 +13,14 @@ exports.Encuesta = void 0;
 const typeorm_1 = require("typeorm");
 const class_transformer_1 = require("class-transformer");
 const pregunta_entity_1 = require("./pregunta.entity");
+const respuesta_entity_1 = require("../../respuestas/entities/respuesta.entity");
 let Encuesta = class Encuesta {
     id;
     nombre;
     preguntas;
     codigoRespuesta;
     codigoResultados;
+    respuestas;
 };
 exports.Encuesta = Encuesta;
 __decorate([
@@ -44,6 +46,12 @@ __decorate([
     (0, class_transformer_1.Exclude)(),
     __metadata("design:type", String)
 ], Encuesta.prototype, "codigoResultados", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => respuesta_entity_1.Respuesta, (respuesta) => respuesta.encuesta, {
+        cascade: ['insert'],
+    }),
+    __metadata("design:type", Array)
+], Encuesta.prototype, "respuestas", void 0);
 exports.Encuesta = Encuesta = __decorate([
     (0, typeorm_1.Entity)({ name: "encuestas" })
 ], Encuesta);

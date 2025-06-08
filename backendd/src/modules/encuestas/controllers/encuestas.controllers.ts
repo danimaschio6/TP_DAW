@@ -12,7 +12,7 @@ export class EncuestaController{
     }
 
     @Post()
-    async crearEncuesta(@Body() dto: CreateEncuestaDTO):Promise<{
+    async crearEncuesta(@Body() dto: CreateEncuestaDTO): Promise<{
         id: number,
         codigoRespuesta: string;
         codigoResultados: string;

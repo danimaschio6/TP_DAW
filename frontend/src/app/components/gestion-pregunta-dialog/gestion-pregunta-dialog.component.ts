@@ -50,8 +50,7 @@ export class GestionPreguntaDialogComponent {
 
     private messageService: MessageService = inject(MessageService);
 
-    private confirmationService: ConfirmationService =
-        inject(ConfirmationService);
+    private confirmationService: ConfirmationService = inject(ConfirmationService);
 
     constructor(){
         this.form = new FormGroup(
@@ -95,17 +94,17 @@ export class GestionPreguntaDialogComponent {
         return this.form.get('texto') as FormControl<string>;
     }
 
-    get tipo(): FormControl<TiposRespuestaEnum>{
+    get tipo(): FormControl<TiposRespuestaEnum> {
         return this.form.get('tipo') as FormControl<TiposRespuestaEnum>;
     }
 
-    get opciones(): FormArray<FormControl<Pick<CreateOpcionDTO, 'texto'>>>{
+    get opciones(): FormArray<FormControl<Pick<CreateOpcionDTO, 'texto'>>> {
         return this.form.get('opciones') as FormArray<
             FormControl<Pick<CreateOpcionDTO, 'texto'>>
         >;
     }
 
-    agregar(){
+    agregar() {
         if (!this.form.valid) {
             this.form.markAllAsTouched();
             this.messageService.add({
@@ -125,7 +124,7 @@ export class GestionPreguntaDialogComponent {
         this.visible.set(false);
     }
 
-    esMultipleChoice(tipo: TiposRespuestaEnum){
+    esMultipleChoice(tipo: TiposRespuestaEnum) {
         return [
             TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE,
             TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE,
@@ -133,7 +132,7 @@ export class GestionPreguntaDialogComponent {
     }
 
 
-    abrirAgregarOpcion(){
+    abrirAgregarOpcion() {
         this.dialogGestionOpcionVisible.set(true);
     }
 
@@ -145,29 +144,29 @@ export class GestionPreguntaDialogComponent {
         );
     }
 
-eliminarOpcion(index: number){
-    this.opciones.removeAt(index);
-}
+    eliminarOpcion(index: number) {
+        this.opciones.removeAt(index);
+    }
 
-confirmarEliminarOpcion(index:number){
-    this.confirmationService.confirm({
-        message: 'Confirmar eliminación?',
-        header: 'Confirmación',
-        closable: true,
-        closeOnEscape: true,
-        icon: 'pi pi-exclamation-triangule',
-        rejectButtonProps:{
-            label: 'Cancelar',
-            severity: 'secondary',
-            outlined: true,
-        },
-        acceptButtonProps: {
-            label: 'Confirmar',
-        },
-        accept: ()=>{
-            this.eliminarOpcion(index);
-        },
-    });
-}
+    confirmarEliminarOpcion(index:number) {
+        this.confirmationService.confirm({
+            message: 'Confirmar eliminación?',
+            header: 'Confirmación',
+            closable: true,
+            closeOnEscape: true,
+            icon: 'pi pi-exclamation-triangule',
+            rejectButtonProps:{
+                label: 'Cancelar',
+                severity: 'secondary',
+                outlined: true,
+            },
+            acceptButtonProps: {
+                label: 'Confirmar',
+            },
+            accept: ()=> {
+                this.eliminarOpcion(index);
+            },
+        });
+    }
 
 }

@@ -45,8 +45,7 @@ export class CreacionEncuestaComponent {
 
   private router: Router = inject(Router);
 
-  private confirmationService: ConfirmationService =
-    inject(ConfirmationService);
+  private confirmationService: ConfirmationService =  inject(ConfirmationService);
 
   private encuestasService: EncuestasService = inject(EncuestasService);
 

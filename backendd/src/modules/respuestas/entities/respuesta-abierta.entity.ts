@@ -1,18 +1,25 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
 import { Respuesta } from './respuesta.entity';
 import { Pregunta } from '../../encuestas/entities/pregunta.entity';
 
 @Entity('respuestas_abiertas')
 export class RespuestaAbierta {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @ManyToOne(() => Respuesta)
-  respuesta: Respuesta;
+    @Column()
+    texto: string;
 
-  @ManyToOne(() => Pregunta)
-  pregunta: Pregunta;
+    @ManyToOne(() => Pregunta)
+    @JoinColumn({ name: 'id_pregunta' })
+    @Exclude()
+    pregunta: Pregunta;
 
-  @Column()
-  texto: string;
+    /*//asi o uno-uno?*/
+    @ManyToOne(() => Respuesta)
+    @JoinColumn({ name: 'id_respuesta' })
+    @Exclude()
+    respuesta: Respuesta;
+    
 }

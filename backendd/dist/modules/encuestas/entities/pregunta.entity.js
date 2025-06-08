@@ -15,6 +15,7 @@ const encuestas_entity_1 = require("./encuestas.entity");
 const class_transformer_1 = require("class-transformer");
 const opcion_entity_1 = require("./opcion.entity");
 const tipos_respuesta_enum_1 = require("../enums/tipos-respuesta.enum");
+const respuesta_abierta_entity_1 = require("../../respuestas/entities/respuesta-abierta.entity");
 let Pregunta = class Pregunta {
     id;
     numero;
@@ -22,6 +23,7 @@ let Pregunta = class Pregunta {
     tipo;
     encuesta;
     opciones;
+    respuestasAbiertas;
 };
 exports.Pregunta = Pregunta;
 __decorate([
@@ -47,9 +49,17 @@ __decorate([
     __metadata("design:type", encuestas_entity_1.Encuesta)
 ], Pregunta.prototype, "encuesta", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => opcion_entity_1.Opcion, (opcion) => opcion.pregunta, { cascade: ['insert'] }),
+    (0, typeorm_1.OneToMany)(() => opcion_entity_1.Opcion, (opcion) => opcion.pregunta, {
+        cascade: ['insert']
+    }),
     __metadata("design:type", Array)
 ], Pregunta.prototype, "opciones", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => respuesta_abierta_entity_1.RespuestaAbierta, (respuestaAbierta) => respuestaAbierta.pregunta, {
+        cascade: ['insert']
+    }),
+    __metadata("design:type", Array)
+], Pregunta.prototype, "respuestasAbiertas", void 0);
 exports.Pregunta = Pregunta = __decorate([
     (0, typeorm_1.Entity)({ name: 'preguntas' })
 ], Pregunta);

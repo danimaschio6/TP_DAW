@@ -1,91 +1,75 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
 
-import { Respuesta } from '../../respuestas/entities/respuesta.entity';
-import { RespuestaAbierta } from '../../respuestas/entities/respuesta-abierta.entity';
-import { RespuestaOpcion } from '../../respuestas/entities/respuesta-opcion.entity';
-import { Encuesta } from '../../encuestas/entities/encuestas.entity';
-import { Pregunta } from '../../encuestas/entities/pregunta.entity';
-import { Opcion } from '../../encuestas/entities/opcion.entity';
-import { CreateRespuestaDTO } from '../../respuestas/dtos/create-respuesta.dto';
-import { TiposRespuestaEnum } from '../../respuestas/enums/tipo-respuesta.enum';
-import { CodigoTipoEnum } from '../../respuestas/enums/codigo-tipo.enum';
+import { CreateRespuestaDTO } from '../dtos/create-respuesta.dto';
+import { Respuesta } from '../entities/respuesta.entity';
+import { CodigoTipoEnum } from '../enums/codigo-tipo.enum';
+
 
 
 @Injectable()
 export class RespuestasService {
-  constructor(
-    @InjectRepository(Respuesta)
-    private readonly respuestaRepo: Repository<Respuesta>,
+    constructor(
+        @InjectRepository(Respuesta)
+        private respuestasRepository: Repository<Respuesta>,
+    ) {}
 
-    @InjectRepository(RespuestaAbierta)
-    private readonly respuestaAbiertaRepo: Repository<RespuestaAbierta>,
+    async crearRespuesta(dto: CreateRespuestaDTO): Promise<{
+        id: number;
+        //codigoRespuesta: string;
+        //codigoResultados: string;
+    }> {
+        
+        const respuesta: Respuesta = this.respuestasRepository.create(
+            dto
+        );
 
-    @InjectRepository(RespuestaOpcion)
-    private readonly respuestaOpcionRepo: Repository<RespuestaOpcion>,
+        const respuestaGuardada = await this.respuestasRepository.save(respuesta)
 
-    @InjectRepository(Encuesta)
-    private readonly encuestaRepo: Repository<Encuesta>,
-
-    @InjectRepository(Pregunta)
-    private readonly preguntaRepo: Repository<Pregunta>,
-
-    @InjectRepository(Opcion)
-    private readonly opcionRepo: Repository<Opcion>,
-  ) {}
-
-  async crearRespuesta(data: CreateRespuestaDTO) {
-    const encuesta = await this.encuestaRepo.findOneBy({ id: data.idEncuesta });
-    if (!encuesta) throw new Error('Encuesta no encontrada');
-
-    const nuevaRespuesta = this.respuestaRepo.create({
-      encuesta,
-      codigo: CodigoTipoEnum.RESPUESTA,
-    });
-
-    await this.respuestaRepo.save(nuevaRespuesta);
-
-    for (const r of data.respuestas) {
-      const pregunta = await this.preguntaRepo.findOneBy({ id: r.idPregunta });
-      if (!pregunta) continue;
-
-      switch (r.tipo) {
-        case TiposRespuestaEnum.ABIERTA:
-          if (r.texto) {
-            const abierta = this.respuestaAbiertaRepo.create({
-              respuesta: nuevaRespuesta,
-              pregunta,
-              texto: r.texto,
-            });
-            await this.respuestaAbiertaRepo.save(abierta);
-          }
-          break;
-
-        case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE:
-        case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE:
-          if (r.opciones?.length) {
-            const opciones = await this.opcionRepo.findBy({
-              id: In(r.opciones),
-            });
-
-            const respuestasOpciones = opciones.map((opcion) =>
-              this.respuestaOpcionRepo.create({
-                respuesta: nuevaRespuesta,
-                opcion,
-              }),
-            );
-
-            await this.respuestaOpcionRepo.save(respuestasOpciones);
-          }
-          break;
-
-        default:
-          console.warn(`Tipo de respuesta no reconocido: ${r.tipo}`);
-          break;
-      }
+        return {
+            id: respuestaGuardada.id,
+            //codigoRespuesta: encuestaGuardada.codigoRespuesta,
+            //codigoResultados: encuestaGuardada.codigoResultados
+        }
     }
 
-    return { mensaje: 'Respuestas guardadas correctamente' };
-  }
+    /*
+    //No tiene uso? Salvo que querramos mostrar resultados
+    async obtenerEncuesta(
+        id: number, 
+        codigo: string, 
+        codigoTipo: CodigoTipoEnum.RESPUESTA | CodigoTipoEnum.RESULTADOS,
+
+    ): Promise<Respuesta> {
+        const query = this.respuestasRepository
+            .createQueryBuilder('encuesta')
+            .innerJoinAndSelect('encuesta.preguntas', 'pregunta')
+            .leftJoinAndSelect('pregunta.opciones','preguntaOpcion')
+            .where('encuesta.id = :id', { id });
+
+        switch (codigoTipo){
+            case CodigoTipoEnum.RESPUESTA:
+                query.andWhere('encuesta.codigoRespuesta = :codigo', { codigo });
+                break;
+
+            case CodigoTipoEnum.RESULTADOS:
+                query.andWhere('encuesta.codigoResultados = :codigo', { codigo });
+                break;
+
+        }
+
+        query.orderBy('pregunta.numero', 'ASC');
+        query.addOrderBy('preguntaOpcion.numero', 'ASC');
+
+        const encuesta = await query.getOne();
+
+        if (!encuesta) {
+            throw new BadRequestException('Datos de encuesta no validos');
+        }
+
+        return encuesta;
+    }
+     */
+    
 }

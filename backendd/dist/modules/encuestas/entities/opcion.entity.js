@@ -13,11 +13,13 @@ exports.Opcion = void 0;
 const typeorm_1 = require("typeorm");
 const pregunta_entity_1 = require("./pregunta.entity");
 const class_transformer_1 = require("class-transformer");
+const respuesta_opcion_entity_1 = require("../../respuestas/entities/respuesta-opcion.entity");
 let Opcion = class Opcion {
     id;
     texto;
     numero;
     pregunta;
+    respuestasOpciones;
 };
 exports.Opcion = Opcion;
 __decorate([
@@ -38,6 +40,12 @@ __decorate([
     (0, class_transformer_1.Exclude)(),
     __metadata("design:type", pregunta_entity_1.Pregunta)
 ], Opcion.prototype, "pregunta", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => respuesta_opcion_entity_1.RespuestaOpcion, (respuestaOpcion) => respuestaOpcion.opcion, {
+        cascade: ['insert'],
+    }),
+    __metadata("design:type", Array)
+], Opcion.prototype, "respuestasOpciones", void 0);
 exports.Opcion = Opcion = __decorate([
     (0, typeorm_1.Entity)({ name: 'opciones' })
 ], Opcion);

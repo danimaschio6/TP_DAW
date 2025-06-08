@@ -25,7 +25,7 @@ export class EncuestasService {
 
         });
 
-        const encuestaGuardada = await this.encuestasRepository.save(encuesta)
+        const encuestaGuardada = await this.encuestasRepository.save(encuesta);
 
         return {
             id: encuestaGuardada.id,

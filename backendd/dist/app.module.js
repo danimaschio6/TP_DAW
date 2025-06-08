@@ -12,6 +12,7 @@ const config_1 = require("@nestjs/config");
 const configuration_1 = require("./config/configuration");
 const encuestas_module_1 = require("./modules/encuestas/encuestas.module");
 const typeorm_1 = require("@nestjs/typeorm");
+const respuestas_module_1 = require("./modules/respuestas/respuestas.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -19,6 +20,7 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             encuestas_module_1.EncuestasModule,
+            respuestas_module_1.RespuestasModule,
             config_1.ConfigModule.forRoot({
                 load: [configuration_1.default],
                 isGlobal: true,
