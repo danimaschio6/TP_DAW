@@ -68,6 +68,51 @@
   margin-top: 15px;
 }
 
+/* Filter Section */
+.filter-section {
+  padding: 20px;
+  text-align: center;
+  background-color: #f0f8ff; /* Un fondo suave para el filtro */
+  border-radius: 8px;
+  border: 1px solid #cceeff;
+}
+
+.filter-section h4 {
+  margin-top: 0;
+  color: #34495e;
+  margin-bottom: 20px;
+  font-size: 1.2em;
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  align-items: flex-end; /* Alinea los elementos en la parte inferior */
+}
+
+.filter-controls .p-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.filter-controls label {
+  font-weight: 600;
+  color: #555;
+  white-space: nowrap; /* Evita que el texto de la etiqueta se rompa */
+}
+
+.filter-controls p-calendar {
+  width: 150px; /* Ancho fijo para los calendarios */
+}
+
+.filter-controls p-button {
+  height: 40px; /* Asegura que los botones tengan una altura similar */
+}
+
 /* Table Customization */
 .p-datatable {
   border-radius: 8px;
@@ -164,23 +209,32 @@
   .lista-respuestas-container {
     padding: 15px;
   }
-  
+
   .header-section h2 {
     font-size: 1.5em;
   }
-  
+
   .header-section h3 {
     font-size: 1.1em;
   }
-  
+
   .actions-section {
     flex-direction: column;
   }
-  
+
   .actions-section p-button {
     width: 100%;
   }
-  
+
+  .filter-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .filter-controls p-calendar {
+    width: 100%; /* Ocupa todo el ancho disponible en móviles */
+  }
+
   /* Table responsive */
   .p-datatable .p-datatable-thead > tr > th,
   .p-datatable .p-datatable-tbody > tr > td {
@@ -193,13 +247,13 @@
   .header-section {
     padding: 15px;
   }
-  
+
   .p-datatable .p-datatable-thead > tr > th,
   .p-datatable .p-datatable-tbody > tr > td {
     padding: 6px;
     font-size: 0.8em;
   }
-  
+
   .respuestas-count {
     min-width: 25px;
     height: 25px;

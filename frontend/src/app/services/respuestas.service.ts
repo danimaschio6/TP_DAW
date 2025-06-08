@@ -33,6 +33,10 @@ export class RespuestasService {
         return this.httpClient.get<any[]>(`/api/v1/respuestas/encuesta/${encuestaId}`);
     }
 
+    obtenerTodasLasRespuestas(): Observable<CrearRespuestaPayloadDTO[]> { // <-- Nuevo método
+        return this.httpClient.get<CrearRespuestaPayloadDTO[]>(`/api/v1/respuestas`);
+    }
+
     /**
      * Obtiene estadísticas de una encuesta
      * GET /api/v1/respuestas/encuesta/:encuestaId/estadisticas
