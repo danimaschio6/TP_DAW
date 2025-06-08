@@ -5,7 +5,7 @@ import { ResponderEncuestaComponent } from './components/responder.encuesta/resp
 import { ResultadosEncuestaComponent } from './components/resultados-encuesta/resultados-encuesta.component'
 import { ListaRespuestasComponent } from './components/lista-respuestas/lista-respuestas.component';
 import { DetalleRespuestaComponent } from './components/detalle-respuesta/detalle-respuesta.component';
-
+import { EncuestaCreadaComponent } from './components/encuesta-creada/encuesta-creada.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +18,11 @@ export const routes: Routes = [
     path: 'crear-encuesta',
     component: CreacionEncuestaComponent,
     title: 'Crear Encuesta'
+  },
+
+  {
+    path: 'encuesta-creada-exitosamente',
+    component: EncuestaCreadaComponent
   },
  
   {
