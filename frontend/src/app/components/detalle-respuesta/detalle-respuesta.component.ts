@@ -14,7 +14,6 @@ import { RespuestasService } from '../../services/respuestas.service';
 import { EncuestaDTO } from '../../interfaces/encuesta.dto';
 import { RespuestaDTO } from '../../interfaces/respuesta.dto';
 import { TiposRespuestaEnum } from '../../enums/tipos-pregunta.enum';
-import { OpcionDTO } from '../../interfaces/opcion.dto';
 
 @Component({
   selector: 'app-detalle-respuesta',
@@ -37,7 +36,6 @@ export class DetalleRespuestaComponent implements OnInit {
   cargando = signal<boolean>(true);
   error = signal<string | null>(null);
 
-  // Enum para usar en template
   TiposRespuestaEnum = TiposRespuestaEnum;
 
   private route = inject(ActivatedRoute);
@@ -66,35 +64,18 @@ export class DetalleRespuestaComponent implements OnInit {
     this.cargando.set(true);
     this.error.set(null);
 
-    // Primero obtenemos la encuesta por código de resultados
     this.encuestasService.obtenerEncuestaPorCodigoResultados(codigo).subscribe({
       next: (encuesta) => {
         this.encuesta.set(encuesta);
         
-        // Luego obtenemos el detalle de la respuesta específica
         this.respuestasService.obtenerRespuesta(respuestaId).subscribe({
           next: (respuesta) => {
-              console.log('Valor de respuesta.encuestaId ANTES DE IF:', respuesta.encuesta?.id);
-             console.log('Valor de encuesta.id ANTES DE IF:', encuesta.id);
-              console.log('¿Son estrictamente iguales (===)?', respuesta.encuesta?.id === encuesta.id);
-              
-              // AGREGAR LOGS ADICIONALES PARA DEBUG
-              console.log('Tipo de respuestasAbiertas:', typeof respuesta.respuestasAbiertas);
-              console.log('¿Es array respuestasAbiertas?:', Array.isArray(respuesta.respuestasAbiertas));
-              console.log('Longitud respuestasAbiertas:', respuesta.respuestasAbiertas?.length);
-              console.log('Contenido respuestasAbiertas:', respuesta.respuestasAbiertas);
-              
-              console.log('Tipo de respuestasOpciones:', typeof respuesta.respuestasOpciones);
-              console.log('¿Es array respuestasOpciones?:', Array.isArray(respuesta.respuestasOpciones));
-              console.log('Longitud respuestasOpciones:', respuesta.respuestasOpciones?.length);
-              console.log('Contenido respuestasOpciones:', respuesta.respuestasOpciones);
-          
-          
+            console.log('🔍 Respuesta completa recibida:', respuesta);
+            console.log('📝 Respuestas abiertas:', respuesta.respuestasAbiertas);
+            console.log('✅ Respuestas opciones:', respuesta.respuestasOpciones);
+            
             if (respuesta.encuesta?.id === encuesta.id) {
               this.respuesta.set(respuesta);
-              console.log('Respuesta cargada:', this.respuesta());
-              console.log('Respuestas Abiertas:', this.respuesta()?.respuestasAbiertas);
-              console.log('Respuestas Opciones:', this.respuesta()?.respuestasOpciones);
             } else {
               this.manejarError('La respuesta no pertenece a esta encuesta');
             }
@@ -124,6 +105,83 @@ export class DetalleRespuestaComponent implements OnInit {
     });
   }
 
+  formatearFecha(fecha: Date | string): string {
+    const fechaObj = typeof fecha === 'string' ? new Date(fecha) : fecha;
+    return fechaObj.toLocaleString('es-AR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  obtenerRespuestaAbierta(preguntaId: number): string | null {
+    const respuesta = this.respuesta();
+    if (!respuesta?.respuestasAbiertas) return null;
+    
+    const respuestaAbierta = respuesta.respuestasAbiertas.find(
+      ra => ra.pregunta?.id === preguntaId
+    );
+    
+    return respuestaAbierta?.texto || null;
+  }
+
+  // 🔧 MÉTODO CORREGIDO: Obtener opciones seleccionadas con texto
+  obtenerRespuestasOpciones(preguntaId: number): any[] {
+    const respuesta = this.respuesta();
+    const encuesta = this.encuesta();
+
+    if (!respuesta?.respuestasOpciones || !encuesta?.preguntas) {
+      console.log('❌ Faltan datos para obtener respuestas de opciones');
+      return [];
+    }
+
+    // Buscar la pregunta
+    const pregunta = encuesta.preguntas.find(p => p.id === preguntaId);
+    if (!pregunta?.opciones) {
+      console.log('❌ No se encontró la pregunta o no tiene opciones');
+      return [];
+    }
+
+    // Filtrar respuestas que pertenecen a esta pregunta
+    const respuestasDeEstaPregunta = respuesta.respuestasOpciones.filter(ro => {
+      // Verificar si la opción pertenece a esta pregunta
+      return pregunta.opciones!.some(opt => opt.id === ro.opcion?.id);
+    });
+
+    // Mapear para incluir el texto de la opción
+    const respuestasConTexto = respuestasDeEstaPregunta.map(ro => ({
+      id: ro.id,
+      opcionId: ro.opcion?.id,
+      texto: pregunta.opciones!.find(opt => opt.id === ro.opcion?.id)?.texto || 'Opción no encontrada'
+    }));
+
+    console.log(`✅ Respuestas para pregunta ${preguntaId}:`, respuestasConTexto);
+    return respuestasConTexto;
+  }
+
+  tieneRespuesta(preguntaId: number, tipo: TiposRespuestaEnum): boolean {
+    if (tipo === TiposRespuestaEnum.ABIERTA) {
+      return this.obtenerRespuestaAbierta(preguntaId) !== null;
+    } else {
+      return this.obtenerRespuestasOpciones(preguntaId).length > 0;
+    }
+  }
+
+  // 🔧 MÉTODO CORREGIDO: Verificar si opción está seleccionada
+  esOpcionSeleccionada(preguntaId: number, opcionId: number): boolean {
+    const respuestasOpciones = this.obtenerRespuestasOpciones(preguntaId);
+    const seleccionada = respuestasOpciones.some(ro => ro.opcionId === opcionId);
+    
+    console.log(`🔍 ¿Opción ${opcionId} de pregunta ${preguntaId} seleccionada?`, seleccionada);
+    return seleccionada;
+  }
+
+  obtenerClaseOpcion(preguntaId: number, opcionId: number): string {
+    return this.esOpcionSeleccionada(preguntaId, opcionId) ? 'pi-check-circle' : 'pi-circle';
+  }
+
   volverListaRespuestas(): void {
     const codigo = this.route.snapshot.paramMap.get('codigo');
     this.router.navigate(['/lista-respuestas', codigo]);
@@ -136,90 +194,5 @@ export class DetalleRespuestaComponent implements OnInit {
 
   volverInicio(): void {
     this.router.navigate(['/']);
-  }
-
-  // CORREGIDO: Acepta tanto Date como string
-  formatearFecha(fecha: Date | string): string {
-    const fechaObj = typeof fecha === 'string' ? new Date(fecha) : fecha;
-    return fechaObj.toLocaleString('es-AR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
-  }
-
-  // Obtener respuesta abierta para una pregunta específica
-  obtenerRespuestaAbierta(preguntaId: number): string | null {
-    const respuesta = this.respuesta();
-    if (!respuesta || !respuesta.respuestasAbiertas) {
-      console.log('No hay respuesta o respuestasAbiertas es null/undefined');
-      return null;
-    }
-
-    
-    
-    const respuestaAbierta = respuesta.respuestasAbiertas?.find(
-      ra => ra.pregunta?.id === preguntaId
-    );
-    
-    return respuestaAbierta ? respuestaAbierta.texto : null;
-  }
-
-  // Obtener respuestas de opciones para una pregunta específica
-  obtenerRespuestasOpciones(preguntaId: number): any[] {
-    const respuesta = this.respuesta();
-    const encuesta = this.encuesta();
-
-
-    if (!respuesta || !encuesta || !encuesta.preguntas || !respuesta.respuestasOpciones) {
-       console.log('Faltan datos para obtener respuestas de opciones');
-       return [];
-    }
-
-    const question = encuesta.preguntas.find(
-        p => p.id === preguntaId && p.tipo !== this.TiposRespuestaEnum.ABIERTA
-    );
-
-    if (!question || !question.opciones) {
-        return [];
-    } 
-    
-    return respuesta.respuestasOpciones?.filter(
-      ro => question.opciones!.some(opt => opt.id === ro.opcion!.id)) || [];
-  }
-
-  // Verificar si una pregunta tiene respuesta
-  tieneRespuesta(preguntaId: number, tipo: TiposRespuestaEnum): boolean {
-    if (tipo === TiposRespuestaEnum.ABIERTA) {
-      return this.obtenerRespuestaAbierta(preguntaId) !== null;
-    } else {
-      return this.obtenerRespuestasOpciones(preguntaId).length > 0;
-    }
-  }
-
-  // NUEVO: Método para verificar si una opción está seleccionada
-  esOpcionSeleccionada(preguntaId: number, opcionId: number): boolean {
-  const respuesta = this.respuesta();
-      if (!respuesta?.respuestasOpciones) {
-      console.log(`[esOpcionSeleccionada][Pregunta ${preguntaId}] No hay respuestasOpciones en la respuesta total.`);
-      return false;
-  }
-
-
-
-
-
-
-    const seleccionada = this.obtenerRespuestasOpciones(preguntaId).some(ro => ro.opcionId === opcionId);
-    return seleccionada;
-  }
-
-
-  obtenerClaseOpcion(preguntaId: number, opcionId: number): string {
-    const seleccionada = this.esOpcionSeleccionada(preguntaId, opcionId);
-    return seleccionada ? 'pi-check-circle' : 'pi-circle';
   }
 }

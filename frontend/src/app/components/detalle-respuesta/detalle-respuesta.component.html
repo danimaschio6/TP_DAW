@@ -28,7 +28,7 @@
 
   @else if (respuesta() && encuesta()) {
     <div class="content-section">
-
+      <!-- Header -->
       <p-card>
         <div class="header-section">
           <h2>Detalle de Respuesta</h2>
@@ -49,11 +49,11 @@
 
       <p-divider></p-divider>
 
+      <!-- Preguntas -->
       <div class="preguntas-section">
         @for (pregunta of encuesta()?.preguntas; track pregunta.id) {
           <p-card>
             <div class="pregunta-detalle">
-
               <div class="pregunta-header">
                 <h4>{{ pregunta.texto }}</h4>
                 <p-tag
@@ -63,6 +63,7 @@
               </div>
 
               @if (pregunta.tipo === TiposRespuestaEnum.ABIERTA) {
+                <!-- Respuesta Abierta -->
                 <div class="respuesta-abierta-container">
                   @if (tieneRespuesta(pregunta.id, pregunta.tipo)) {
                     <p-panel header="Respuesta" [toggleable]="false">
@@ -79,21 +80,23 @@
                     </div>
                   }
                 </div>
-              }
-
-              @else {
+              } @else {
+                <!-- Respuesta de Opciones -->
                 <div class="respuesta-opciones-container">
                   @if (tieneRespuesta(pregunta.id, pregunta.tipo)) {
+                    <!-- Opciones Seleccionadas -->
                     <p-panel header="Respuesta(s) seleccionada(s)" [toggleable]="false">
                       <div class="opciones-seleccionadas">
                         @for (respuestaOpcion of obtenerRespuestasOpciones(pregunta.id); track respuestaOpcion.id) {
                           <div class="opcion-seleccionada">
                             <i class="pi pi-check-circle"></i>
-                            <span>{{ respuestaOpcion.texto }}</span> </div>
+                            <span>{{ respuestaOpcion.texto }}</span>
+                          </div>
                         }
                       </div>
                     </p-panel>
 
+                    <!-- Todas las opciones -->
                     <div class="todas-opciones">
                       <h5>Todas las opciones disponibles:</h5>
                       <div class="opciones-lista">
@@ -120,6 +123,7 @@
         }
       </div>
 
+      <!-- Actions -->
       <div class="actions-section">
         <p-button
           label="Volver a la lista"

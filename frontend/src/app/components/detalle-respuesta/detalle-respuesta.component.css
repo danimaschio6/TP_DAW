@@ -7,11 +7,12 @@
   gap: 20px;
 }
 
-.loading-section {
+/* Loading & Error */
+.loading-section, .error-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   text-align: center;
 }
 
@@ -19,12 +20,6 @@
   margin-top: 20px;
   font-size: 1.1em;
   color: #666;
-}
-
-/* Error State */
-.error-section {
-  text-align: center;
-  padding: 40px 20px;
 }
 
 .error-section h3 {
@@ -41,7 +36,7 @@
   margin: 0 10px;
 }
 
-/* Header Section */
+/* Header */
 .header-section {
   text-align: center;
   padding: 20px;
@@ -81,7 +76,7 @@
   color: #3498db;
 }
 
-/* Preguntas Section */
+/* Preguntas */
 .preguntas-section {
   display: flex;
   flex-direction: column;
@@ -124,7 +119,8 @@
   border-left: 4px solid #3498db;
 }
 
-.respuesta-texto i.pi-quote-left {
+.respuesta-texto i.pi-quote-left,
+.respuesta-texto i.pi-quote-right {
   color: #3498db;
   font-size: 1.2em;
   margin-top: 2px;
@@ -132,10 +128,6 @@
 }
 
 .respuesta-texto i.pi-quote-right {
-  color: #3498db;
-  font-size: 1.2em;
-  margin-top: 2px;
-  flex-shrink: 0;
   align-self: flex-end;
 }
 
@@ -146,7 +138,7 @@
   flex: 1;
 }
 
-/* Respuesta de Opciones - NUEVOS ESTILOS */
+/* Respuesta de Opciones */
 .respuesta-opciones-container {
   margin-top: 15px;
 }
@@ -161,7 +153,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px;
+  padding: 12px;
   background-color: #e8f5e8;
   border-radius: 6px;
   border-left: 3px solid #27ae60;
@@ -200,9 +192,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   border-radius: 4px;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .opcion-item:hover {
@@ -212,6 +204,7 @@
 .opcion-item.seleccionada {
   background-color: #e8f5e8;
   border-left: 2px solid #27ae60;
+  font-weight: 500;
 }
 
 .opcion-item i {
@@ -225,10 +218,6 @@
 
 .opcion-item span {
   color: #2c3e50;
-}
-
-.opcion-item.seleccionada span {
-  font-weight: 500;
 }
 
 /* Sin Respuesta */
@@ -248,7 +237,7 @@
   color: #f39c12;
 }
 
-/* Actions Section */
+/* Actions */
 .actions-section {
   display: flex;
   justify-content: center;

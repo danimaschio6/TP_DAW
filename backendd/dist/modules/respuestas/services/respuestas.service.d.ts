@@ -8,6 +8,7 @@ export declare class RespuestasService {
     private respuestaOpcionRepository;
     constructor(respuestaRepository: Repository<Respuesta>, respuestaAbiertaRepository: Repository<RespuestaAbierta>, respuestaOpcionRepository: Repository<RespuestaOpcion>);
     crearRespuesta(encuestaId: number, respuestasData: any): Promise<Respuesta>;
+    obtenerTodasLasRespuestas(): Promise<Respuesta[]>;
     obtenerRespuestaCompleta(respuestaId: number): Promise<Respuesta>;
     obtenerRespuestasPorEncuesta(encuestaId: number): Promise<Respuesta[]>;
     obtenerEstadisticasEncuesta(encuestaId: number): Promise<{

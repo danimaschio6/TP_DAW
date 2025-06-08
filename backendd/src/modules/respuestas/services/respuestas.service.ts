@@ -54,6 +54,23 @@ export class RespuestasService {
     return this.obtenerRespuestaCompleta(respuestaGuardada.id);
   }
 
+
+
+  // Obtener TODAS las respuestas de todas las encuestas
+async obtenerTodasLasRespuestas() {
+  return await this.respuestaRepository.find({
+    relations: [
+      'encuesta',
+      'respuestasAbiertas',
+      'respuestasAbiertas.pregunta',
+      'respuestasOpciones',
+      'respuestasOpciones.opcion',
+      'respuestasOpciones.opcion.pregunta'
+    ],
+    order: { fechaCreacion: 'DESC' }
+  });
+}
+
   // Obtener una respuesta completa con todas sus sub-respuestas
   async obtenerRespuestaCompleta(respuestaId: number) {
     const respuesta = await this.respuestaRepository.findOne({
@@ -71,12 +88,6 @@ export class RespuestasService {
     if (!respuesta) {
       throw new NotFoundException(`Respuesta con ID ${respuestaId} no encontrada`);
     }
-
-
-   //LOGS PARA DEBUG
-    console.log('Respuesta encontrada:', respuesta);
-    console.log('Respuestas abiertas:', respuesta.respuestasAbiertas);
-    console.log('Respuestas opciones:', respuesta.respuestasOpciones);
 
 
     return respuesta;

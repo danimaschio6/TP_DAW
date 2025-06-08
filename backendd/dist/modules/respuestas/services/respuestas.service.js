@@ -50,6 +50,19 @@ let RespuestasService = class RespuestasService {
         }
         return this.obtenerRespuestaCompleta(respuestaGuardada.id);
     }
+    async obtenerTodasLasRespuestas() {
+        return await this.respuestaRepository.find({
+            relations: [
+                'encuesta',
+                'respuestasAbiertas',
+                'respuestasAbiertas.pregunta',
+                'respuestasOpciones',
+                'respuestasOpciones.opcion',
+                'respuestasOpciones.opcion.pregunta'
+            ],
+            order: { fechaCreacion: 'DESC' }
+        });
+    }
     async obtenerRespuestaCompleta(respuestaId) {
         const respuesta = await this.respuestaRepository.findOne({
             where: { id: respuestaId },
@@ -65,9 +78,6 @@ let RespuestasService = class RespuestasService {
         if (!respuesta) {
             throw new common_1.NotFoundException(`Respuesta con ID ${respuestaId} no encontrada`);
         }
-        console.log('Respuesta encontrada:', respuesta);
-        console.log('Respuestas abiertas:', respuesta.respuestasAbiertas);
-        console.log('Respuestas opciones:', respuesta.respuestasOpciones);
         return respuesta;
     }
     async obtenerRespuestasPorEncuesta(encuestaId) {
