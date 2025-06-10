@@ -1,4 +1,4 @@
 export enum CodigoTipoEnum {
-    RESULTADOS = "RESULTADOS",
-    RESPUESTA = "RESPUESTA"
+  RESPUESTA = 'RESPUESTA',
+  RESULTADOS = 'RESULTADOS'
 }

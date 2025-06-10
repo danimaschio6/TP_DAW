@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-texto-error',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './texto-error.component.css'
 })
 export class TextoErrorComponent {
-
+  @Input() control!: AbstractControl | null; 
 }

@@ -1,0 +1,96 @@
+<app-seccion>
+  <div class="container">
+    <div class="header">
+      <h1>Responder Encuesta</h1>
+    </div>
+
+    <!-- Muestra un mensaje mientras carga la encuesta -->
+    <div *ngIf="cargando()" class="loading">
+      <p>Cargando encuesta...</p>
+    </div>
+
+    <!-- El formulario se muestra solo si la encuesta está cargada y no ha sido enviada -->
+    <div *ngIf="!cargando() && encuesta() && !enviadoConExito()" class="survey-form">
+      <h2>{{ encuesta()?.nombre }}</h2>
+      
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div *ngFor="let pregunta of encuesta()?.preguntas" class="question-container">
+          <h3>{{ pregunta.numero }}. {{ pregunta.texto }}</h3>
+          
+          <!-- Pregunta Abierta -->
+          <div *ngIf="pregunta.tipo === TiposRespuestaEnum.ABIERTA" class="question-input">
+            <p-floatlabel>
+              <textarea 
+                pTextarea 
+                [formControlName]="'pregunta_' + pregunta.id"
+                rows="3"
+                cols="50">
+              </textarea>
+              <label>Tu respuesta</label>
+            </p-floatlabel>
+            <app-texto-error 
+              [control]="form.get('pregunta_' + pregunta.id)!"
+              mensaje="Esta pregunta es requerida">
+            </app-texto-error>
+          </div>
+
+          <!-- Selección Simple -->
+          <div *ngIf="pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE" class="question-options">
+            <div *ngFor="let opcion of pregunta.opciones" 
+                 class="option-wrapper" 
+                 [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === opcion.id}">
+              <p-radioButton 
+                [formControlName]="'pregunta_' + pregunta.id"
+                [value]="opcion.id"
+                [inputId]="'radio_' + pregunta.id + '_' + opcion.id">
+              </p-radioButton>
+              <label [for]="'radio_' + pregunta.id + '_' + opcion.id" class="option-label">
+                {{ opcion.texto }}
+              </label>
+            </div>
+            <app-texto-error 
+              [control]="form.get('pregunta_' + pregunta.id)!"
+              mensaje="Debes seleccionar una opción">
+            </app-texto-error>
+          </div>
+
+          <!-- Selección Múltiple -->
+          <div *ngIf="pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE" 
+               class="question-options"
+               [formGroup]="getPreguntaFormGroup(pregunta.id)">
+            <div *ngFor="let opcion of pregunta.opciones" 
+                 class="option-wrapper"
+                 [ngClass]="{'selected': getPreguntaFormGroup(pregunta.id).get('opcion_' + opcion.id)?.value}">
+              <p-checkbox 
+                [formControlName]="'opcion_' + opcion.id"
+                [inputId]="'check_' + pregunta.id + '_' + opcion.id"
+                [binary]="true">
+              </p-checkbox>
+              <label [for]="'check_' + pregunta.id + '_' + opcion.id" class="option-label">
+                {{ opcion.texto }}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            pButton 
+            [disabled]="enviando()"
+            [loading]="enviando()"
+            class="submit-button">
+            {{ enviando() ? 'Enviando...' : 'Enviar Respuesta' }}
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Mensaje de éxito que se muestra después de enviar la respuesta -->
+    <div *ngIf="enviadoConExito()" class="success-message">
+        <h2>¡Respuesta Enviada!</h2>
+        <p>Gracias por completar la encuesta.</p>
+    </div>
+
+  </div>
+</app-seccion>

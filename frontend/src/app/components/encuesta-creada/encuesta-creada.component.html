@@ -1,0 +1,32 @@
+<div class="container-exito">
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="header-exito">
+        <i class="pi pi-check-circle icon-exito"></i>
+      </div>
+    </ng-template>
+    
+    <div class="contenido-exito">
+      <h2>¡Encuesta creada con éxito!</h2>
+      <p>Tu encuesta ha sido creada correctamente y ya está lista para ser compartida.</p>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="botones-exito">
+        <p-button 
+          label="Ver Enlaces" 
+          icon="pi pi-external-link"
+          (onClick)="irAPresentacionEnlaces()"
+          styleClass="p-button-success">
+        </p-button>
+        <p-button 
+          label="Crear Nueva Encuesta" 
+          icon="pi pi-plus"
+          (onClick)="crearNuevaEncuesta()"
+          severity="secondary"
+          [outlined]="true">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-card>
+</div>

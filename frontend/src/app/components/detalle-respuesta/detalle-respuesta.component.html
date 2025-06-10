@@ -1,0 +1,148 @@
+<div class="detalle-respuesta-container">
+  @if (cargando()) {
+    <div class="loading-section">
+      <p-progressSpinner></p-progressSpinner>
+      <p>Cargando detalle de respuesta...</p>
+    </div>
+  }
+
+  @else if (error()) {
+    <p-card>
+      <div class="error-section">
+        <h3>Error al cargar detalle</h3>
+        <p>{{ error() }}</p>
+        <p-button
+          label="Volver a la lista"
+          icon="pi pi-arrow-left"
+          (click)="volverListaRespuestas()">
+        </p-button>
+        <p-button
+          label="Volver al inicio"
+          icon="pi pi-home"
+          severity="secondary"
+          (click)="volverInicio()">
+        </p-button>
+      </div>
+    </p-card>
+  }
+
+  @else if (respuesta() && encuesta()) {
+    <div class="content-section">
+      <!-- Header -->
+      <p-card>
+        <div class="header-section">
+          <h2>Detalle de Respuesta</h2>
+          <h3>{{ encuesta()?.nombre }}</h3>
+          <div class="respuesta-info">
+            <p-tag
+              [value]="'Respuesta #' + respuesta()?.id"
+              severity="success"
+              icon="pi pi-check">
+            </p-tag>
+            <span class="fecha-respuesta">
+              <i class="pi pi-calendar"></i>
+              {{ formatearFecha(respuesta()?.fechaCreacion!) }}
+            </span>
+          </div>
+        </div>
+      </p-card>
+
+      <p-divider></p-divider>
+
+      <!-- Preguntas -->
+      <div class="preguntas-section">
+        @for (pregunta of encuesta()?.preguntas; track pregunta.id) {
+          <p-card>
+            <div class="pregunta-detalle">
+              <div class="pregunta-header">
+                <h4>{{ pregunta.texto }}</h4>
+                <p-tag
+                  [value]="pregunta.tipo === TiposRespuestaEnum.ABIERTA ? 'Abierta' : 'Opción'"
+                  [severity]="pregunta.tipo === TiposRespuestaEnum.ABIERTA ? 'info' : 'success'">
+                </p-tag>
+              </div>
+
+              @if (pregunta.tipo === TiposRespuestaEnum.ABIERTA) {
+                <!-- Respuesta Abierta -->
+                <div class="respuesta-abierta-container">
+                  @if (tieneRespuesta(pregunta.id, pregunta.tipo)) {
+                    <p-panel header="Respuesta" [toggleable]="false">
+                      <div class="respuesta-texto">
+                        <i class="pi pi-quote-left"></i>
+                        <span>{{ obtenerRespuestaAbierta(pregunta.id) }}</span>
+                        <i class="pi pi-quote-right"></i>
+                      </div>
+                    </p-panel>
+                  } @else {
+                    <div class="sin-respuesta">
+                      <i class="pi pi-minus-circle"></i>
+                      <span>Sin respuesta</span>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <!-- Respuesta de Opciones -->
+                <div class="respuesta-opciones-container">
+                  @if (tieneRespuesta(pregunta.id, pregunta.tipo)) {
+                    <!-- Opciones Seleccionadas -->
+                    <p-panel header="Respuesta(s) seleccionada(s)" [toggleable]="false">
+                      <div class="opciones-seleccionadas">
+                        @for (respuestaOpcion of obtenerRespuestasOpciones(pregunta.id); track respuestaOpcion.id) {
+                          <div class="opcion-seleccionada">
+                            <i class="pi pi-check-circle"></i>
+                            <span>{{ respuestaOpcion.texto }}</span>
+                          </div>
+                        }
+                      </div>
+                    </p-panel>
+
+                    <!-- Todas las opciones -->
+                    <div class="todas-opciones">
+                      <h5>Todas las opciones disponibles:</h5>
+                      <div class="opciones-lista">
+                        @for (opcion of pregunta.opciones; track opcion.id) {
+                          <div class="opcion-item"
+                               [class.seleccionada]="esOpcionSeleccionada(pregunta.id, opcion.id)">
+                            <i class="pi"
+                               [class]="obtenerClaseOpcion(pregunta.id, opcion.id)"></i>
+                            <span>{{ opcion.texto }}</span>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  } @else {
+                    <div class="sin-respuesta">
+                      <i class="pi pi-minus-circle"></i>
+                      <span>Sin respuesta</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </p-card>
+        }
+      </div>
+
+      <!-- Actions -->
+      <div class="actions-section">
+        <p-button
+          label="Volver a la lista"
+          icon="pi pi-arrow-left"
+          severity="info"
+          (click)="volverListaRespuestas()">
+        </p-button>
+        <p-button
+          label="Ver Estadísticas"
+          icon="pi pi-chart-bar"
+          (click)="verEstadisticas()">
+        </p-button>
+        <p-button
+          label="Volver al inicio"
+          icon="pi pi-home"
+          severity="secondary"
+          (click)="volverInicio()">
+        </p-button>
+      </div>
+    </div>
+  }
+</div>

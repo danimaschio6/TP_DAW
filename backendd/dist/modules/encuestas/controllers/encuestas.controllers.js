@@ -28,6 +28,12 @@ let EncuestaController = class EncuestaController {
     async obtenerEncuesta(id, dto) {
         return await this.encuestasService.obtenerEncuesta(id, dto.codigo, dto.tipo);
     }
+    async obtenerEncuestaPorCodigoRespuesta(codigo) {
+        return await this.encuestasService.obtenerEncuestaPorCodigoRespuesta(codigo);
+    }
+    async obtenerEncuestaPorCodigoResultados(codigo) {
+        return await this.encuestasService.obtenerEncuestaPorCodigoResultados(codigo);
+    }
 };
 exports.EncuestaController = EncuestaController;
 __decorate([
@@ -45,6 +51,20 @@ __decorate([
     __metadata("design:paramtypes", [Number, obtener_encuesta_dto_1.ObtenerEncuestaDto]),
     __metadata("design:returntype", Promise)
 ], EncuestaController.prototype, "obtenerEncuesta", null);
+__decorate([
+    (0, common_1.Get)('respuesta/:codigo'),
+    __param(0, (0, common_1.Param)('codigo')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], EncuestaController.prototype, "obtenerEncuestaPorCodigoRespuesta", null);
+__decorate([
+    (0, common_1.Get)('resultados/:codigo'),
+    __param(0, (0, common_1.Param)('codigo')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], EncuestaController.prototype, "obtenerEncuestaPorCodigoResultados", null);
 exports.EncuestaController = EncuestaController = __decorate([
     (0, common_1.Controller)("/encuestas"),
     __metadata("design:paramtypes", [encuestas_services_1.EncuestasService])

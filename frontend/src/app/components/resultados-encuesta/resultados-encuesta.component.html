@@ -1,0 +1,132 @@
+<!-- resultados-encuesta.component.html - CON BOTÓN LISTA DE RESPUESTAS -->
+<div class="resultados-container">
+  
+  <!-- Loading State -->
+  @if (cargando()) {
+    <div class="loading-section">
+      <p-progressSpinner></p-progressSpinner>
+      <p>Cargando resultados...</p>
+    </div>
+  } 
+  
+  <!-- Error State -->
+  @else if (error()) {
+    <p-card>
+      <div class="error-section">
+        <h3>Error al cargar resultados</h3>
+        <p>{{ error() }}</p>
+        <p-button 
+          label="Reintentar" 
+          icon="pi pi-refresh"
+          (click)="recargarEstadisticas()">
+        </p-button>
+        <p-button 
+          label="Volver al inicio" 
+          icon="pi pi-home"
+          severity="secondary"
+          (click)="volverInicio()">
+        </p-button>
+      </div>
+    </p-card>
+  }
+  
+  <!-- Results State -->
+  @else if (estadisticas()) {
+    <div class="results-section">
+      
+      <!-- Survey Header -->
+      <p-card>
+        <div class="survey-header">
+          <h2>{{ estadisticas()?.titulo }}</h2>
+          <div class="survey-stats">
+            <span class="total-responses">
+              <i class="pi pi-users"></i>
+              Total de respuestas: {{ estadisticas()?.totalRespuestas }}
+            </span>
+          </div>
+        </div>
+      </p-card>
+
+      <!-- Questions Statistics -->
+      @if (tieneRespuestas()) {
+        <div class="questions-section">
+          @for (preguntaStat of estadisticas()?.estadisticasPorPregunta; track preguntaStat.preguntaId) {
+            <p-card>
+              <div class="question-stats">
+                <h3>{{ preguntaStat.textoPregunta }}</h3>
+                
+                <!-- Multiple Choice Question -->
+                @if (preguntaStat.tipo === 'opcion_multiple' && preguntaStat.estadisticasOpciones) {
+                  <div class="opciones-stats">
+                    @for (opcion of preguntaStat.estadisticasOpciones; track opcion.opcionId) {
+                      <div class="opcion-stat">
+                        <div class="opcion-info">
+                          <span class="opcion-texto">{{ opcion.textoOpcion }}</span>
+                          <span class="opcion-count">{{ opcion.cantidadRespuestas }} respuestas</span>
+                        </div>
+                        <div class="opcion-progress">
+                          <p-progressBar 
+                            [value]="opcion.porcentaje"
+                            [showValue]="true"
+                            suffix="%">
+                          </p-progressBar>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+                
+                <!-- Open Question -->
+                @else if (preguntaStat.tipo === 'abierta' && preguntaStat.respuestasAbiertas) {
+                  <div class="respuestas-abiertas">
+                    <p class="respuestas-count">
+                      {{ preguntaStat.respuestasAbiertas.length }} respuestas abiertas
+                    </p>
+                    <div class="respuestas-list">
+                      @for (respuesta of preguntaStat.respuestasAbiertas; track $index) {
+                        <div class="respuesta-abierta">
+                          <i class="pi pi-quote-left"></i>
+                          <span>{{ respuesta }}</span>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </p-card>
+          }
+        </div>
+      } @else {
+        <!-- No Responses State -->
+        <p-card>
+          <div class="no-responses">
+            <i class="pi pi-inbox"></i>
+            <h3>Sin respuestas aún</h3>
+            <p>Esta encuesta no ha recibido respuestas todavía.</p>
+          </div>
+        </p-card>
+      }
+
+      <!-- Actions -->
+      <div class="actions-section">
+        <p-button 
+          label="Ver Lista de Respuestas" 
+          icon="pi pi-list"
+          severity="success"
+          (click)="verListaRespuestas()">
+        </p-button>
+        <p-button 
+          label="Actualizar resultados" 
+          icon="pi pi-refresh"
+          (click)="recargarEstadisticas()">
+        </p-button>
+        <p-button 
+          label="Volver al inicio" 
+          icon="pi pi-home"
+          severity="secondary"
+          (click)="volverInicio()">
+        </p-button>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,53 @@
+/* Estilos generales para los contenedores de las preguntas */
+.question-container {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #f9fafb; /* Un fondo gris muy claro */
+  border-radius: 12px;
+  border: 1px solid #e5e7eb; /* Un borde sutil */
+}
+
+/* Contenedor para cada opción (radio o checkbox) */
+.option-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  border: 2px solid transparent; /* Borde transparente por defecto */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out; /* Transición suave para los cambios */
+}
+
+/* Efecto al pasar el cursor sobre una opción */
+.option-wrapper:hover {
+  border-color: #d1d5db; /* El borde se hace visible */
+}
+
+/* Estilo para la opción que ha sido seleccionada */
+.option-wrapper.selected {
+  background-color: #e0f2fe; /* Fondo azul claro */
+  border-color: #38bdf8;   /* Borde azul brillante */
+}
+
+/* Etiqueta de texto de cada opción */
+.option-label {
+  margin-left: 0.75rem;
+  font-weight: 500; /* Texto semi-negrita */
+}
+
+/* Contenedor del mensaje de éxito */
+.success-message {
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: #dcfce7; /* Fondo verde muy claro */
+  color: #166534;           /* Texto verde oscuro */
+  text-align: center;
+  border-radius: 12px;
+}
+
+/* Título del mensaje de éxito */
+.success-message h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}

@@ -19,6 +19,7 @@ const encuestas_entity_1 = require("../entities/encuestas.entity");
 const typeorm_2 = require("typeorm");
 const uuid_1 = require("uuid");
 const codigo_tipo_enum_1 = require("../enums/codigo-tipo.enum");
+const common_2 = require("@nestjs/common");
 let EncuestasService = class EncuestasService {
     encuestasRepository;
     constructor(encuestasRepository) {
@@ -56,6 +57,26 @@ let EncuestasService = class EncuestasService {
         const encuesta = await query.getOne();
         if (!encuesta) {
             throw new common_1.BadRequestException('Datos de encuesta no validos');
+        }
+        return encuesta;
+    }
+    async obtenerEncuestaPorCodigoRespuesta(codigo) {
+        const encuesta = await this.encuestasRepository.findOne({
+            where: { codigoRespuesta: codigo },
+            relations: ['preguntas', 'preguntas.opciones']
+        });
+        if (!encuesta) {
+            throw new common_2.NotFoundException('Encuesta no encontrada');
+        }
+        return encuesta;
+    }
+    async obtenerEncuestaPorCodigoResultados(codigo) {
+        const encuesta = await this.encuestasRepository.findOne({
+            where: { codigoResultados: codigo },
+            relations: ['preguntas', 'preguntas.opciones']
+        });
+        if (!encuesta) {
+            throw new common_2.NotFoundException('Encuesta no encontrada');
         }
         return encuesta;
     }

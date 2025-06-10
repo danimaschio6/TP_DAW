@@ -5,6 +5,7 @@ import { Encuesta } from '../entities/encuestas.entity';
 import { Repository } from 'typeorm';
 import { v4 } from 'uuid'
 import { CodigoTipoEnum } from '../enums/codigo-tipo.enum';
+import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class EncuestasService {
@@ -69,5 +70,30 @@ export class EncuestasService {
         return encuesta;
     }
 
+    async obtenerEncuestaPorCodigoRespuesta(codigo: string): Promise<Encuesta> {
+    const encuesta = await this.encuestasRepository.findOne({
+        where: { codigoRespuesta: codigo },
+        relations: ['preguntas', 'preguntas.opciones']
+    });
+    
+    if (!encuesta) {
+        throw new NotFoundException('Encuesta no encontrada');
+    }
+    
+    return encuesta;
+}
+
+    async obtenerEncuestaPorCodigoResultados(codigo: string): Promise<Encuesta> {
+        const encuesta = await this.encuestasRepository.findOne({
+            where: { codigoResultados: codigo },
+            relations: ['preguntas', 'preguntas.opciones']
+        });
+        
+        if (!encuesta) {
+            throw new NotFoundException('Encuesta no encontrada');
+        }
+        
+        return encuesta;
+    }
     
 }

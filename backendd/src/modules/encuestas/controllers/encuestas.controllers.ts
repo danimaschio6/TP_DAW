@@ -11,6 +11,7 @@ export class EncuestaController{
 
     }
 
+
     @Post()
     async crearEncuesta(@Body() dto: CreateEncuestaDTO):Promise<{
         id: number,
@@ -34,5 +35,19 @@ export class EncuestaController{
 
     }
 
+    @Get('respuesta/:codigo')
+    async obtenerEncuestaPorCodigoRespuesta(
+        @Param('codigo') codigo: string
+    ): Promise<Encuesta> {
+        return await this.encuestasService.obtenerEncuestaPorCodigoRespuesta(codigo);
+    }
+
+    @Get('resultados/:codigo')
+    async obtenerEncuestaPorCodigoResultados(
+        @Param('codigo') codigo: string
+    ): Promise<Encuesta> {
+        return await this.encuestasService.obtenerEncuestaPorCodigoResultados(codigo);
+    }
+    
 
 }

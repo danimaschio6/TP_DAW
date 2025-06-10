@@ -1,8 +1,5 @@
-
 export interface OpcionDTO {
-    id: number;
-
-    texto: string;
-
-    numero: number;
+  id: number;
+  numero: number;
+  texto: string;
 }

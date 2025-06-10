@@ -1,0 +1,262 @@
+/* lista-respuestas.component.css */
+.lista-respuestas-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Loading State */
+.loading-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.loading-section p {
+  margin-top: 20px;
+  font-size: 1.1em;
+  color: #666;
+}
+
+/* Error State */
+.error-section {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.error-section h3 {
+  color: #e74c3c;
+  margin-bottom: 15px;
+}
+
+.error-section p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.error-section p-button {
+  margin: 0 10px;
+}
+
+/* Header Section */
+.header-section {
+  text-align: center;
+  padding: 20px;
+}
+
+.header-section h2 {
+  margin: 0 0 10px 0;
+  color: #2c3e50;
+  font-size: 2em;
+}
+
+.header-section h3 {
+  margin: 0 0 20px 0;
+  color: #34495e;
+  font-size: 1.3em;
+  font-weight: 400;
+}
+
+.stats-info {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+/* Filter Section */
+.filter-section {
+  padding: 20px;
+  text-align: center;
+  background-color: #f0f8ff; /* Un fondo suave para el filtro */
+  border-radius: 8px;
+  border: 1px solid #cceeff;
+}
+
+.filter-section h4 {
+  margin-top: 0;
+  color: #34495e;
+  margin-bottom: 20px;
+  font-size: 1.2em;
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  align-items: flex-end; /* Alinea los elementos en la parte inferior */
+}
+
+.filter-controls .p-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.filter-controls label {
+  font-weight: 600;
+  color: #555;
+  white-space: nowrap; /* Evita que el texto de la etiqueta se rompa */
+}
+
+.filter-controls p-calendar {
+  width: 150px; /* Ancho fijo para los calendarios */
+}
+
+.filter-controls p-button {
+  height: 40px; /* Asegura que los botones tengan una altura similar */
+}
+
+/* Table Customization */
+.p-datatable {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.p-datatable .p-datatable-header {
+  background: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background: #e9ecef;
+  border-color: #dee2e6;
+  font-weight: 600;
+  color: #495057;
+  padding: 12px;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 12px;
+  border-color: #dee2e6;
+}
+
+.p-datatable .p-datatable-tbody > tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+  background: #e3f2fd !important;
+}
+
+/* Respuestas Count */
+.respuestas-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  background: #e3f2fd;
+  color: #1976d2;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+/* Empty Message */
+.empty-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #7f8c8d;
+}
+
+.empty-message i {
+  font-size: 3em;
+  margin-bottom: 15px;
+  color: #bdc3c7;
+}
+
+.empty-message p {
+  margin: 0;
+  font-size: 1.1em;
+}
+
+/* No Responses State */
+.no-responses {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+}
+
+.no-responses i {
+  font-size: 4em;
+  margin-bottom: 20px;
+  color: #bdc3c7;
+}
+
+.no-responses h3 {
+  margin-bottom: 10px;
+  color: #95a5a6;
+}
+
+/* Actions Section */
+.actions-section {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .lista-respuestas-container {
+    padding: 15px;
+  }
+
+  .header-section h2 {
+    font-size: 1.5em;
+  }
+
+  .header-section h3 {
+    font-size: 1.1em;
+  }
+
+  .actions-section {
+    flex-direction: column;
+  }
+
+  .actions-section p-button {
+    width: 100%;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .filter-controls p-calendar {
+    width: 100%; /* Ocupa todo el ancho disponible en móviles */
+  }
+
+  /* Table responsive */
+  .p-datatable .p-datatable-thead > tr > th,
+  .p-datatable .p-datatable-tbody > tr > td {
+    padding: 8px;
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-section {
+    padding: 15px;
+  }
+
+  .p-datatable .p-datatable-thead > tr > th,
+  .p-datatable .p-datatable-tbody > tr > td {
+    padding: 6px;
+    font-size: 0.8em;
+  }
+
+  .respuestas-count {
+    min-width: 25px;
+    height: 25px;
+    font-size: 0.8em;
+  }
+}
