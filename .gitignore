@@ -1,3 +1,14 @@
+# Ignorar dependencias y builds
+node_modules/
+dist/
+# Angular build artifacts
+frontend/dist/
+frontend/node_modules/
+
+# NestJS build artifacts
+backendd/node_modules/
+backendd/dist/
+
 backendd/dist/app.module.d.ts
 backendd/dist/app.module.js
 backendd/dist/config/configuration.d.ts
@@ -49,3 +60,4 @@ backendd/dist/modules/respuestas/services/respuestas.service.js
 backendd/dist/tsconfig.build.tsbuildinfo
 frontend/angular.json
 frontend/package-lock.json
+frontend/package.json
