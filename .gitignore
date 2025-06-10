@@ -8,6 +8,8 @@ frontend/node_modules/
 # NestJS build artifacts
 backendd/node_modules/
 backendd/dist/
+# En .gitignore:
+backendd/dist/
 
 backendd/dist/app.module.d.ts
 backendd/dist/app.module.js
