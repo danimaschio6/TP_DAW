@@ -98,7 +98,7 @@
         [paginator]="true"
         [rows]="10"
         [showCurrentPageReport]="true"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} respuestas"
+        currentPageReportTemplate="Mostrando {last} de {totalRecords} respuestas"
         [rowsPerPageOptions]="[5, 10, 20]"
         styleClass="p-datatable-striped"
       >
@@ -175,9 +175,9 @@
 
     <div class="actions-section">
       <p-button
-        label="Ver Estadísticas"
-        icon="pi pi-chart-bar"
-        severity="info"
+        label="Volver"
+        icon="pi pi-arrow-left"
+
         (click)="verEstadisticas()"
       >
       </p-button>
@@ -190,7 +190,7 @@
       <p-button
         label="Volver al inicio"
         icon="pi pi-home"
-        severity="secondary"
+
         (click)="volverInicio()"
       >
       </p-button>

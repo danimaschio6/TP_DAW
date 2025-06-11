@@ -1,48 +1,90 @@
 :root {
-  --color-background-main: #ede9fe;
-  --color-background: #ffffff;
+  --color-background-main: #f3e8ff;
+  --color-background: #fef7ff;
   --color-background-alt: #f8fafc;
-  --color-border: #e5e7eb;
-  --color-text: #1f2937;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --radius: 12px;
+  --color-border: #e9d5ff;
+  --color-text: #581c87;
+  --color-accent: #a855f7;
+  --color-focus: #7c3aed;
+  --shadow-sm: 0 2px 4px rgba(168, 85, 247, 0.1);
+  --shadow-md: 0 4px 8px rgba(168, 85, 247, 0.15);
+  --radius: 16px;
   --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+:host {
+  font-family: var(--font-family);
+}
+
 #contenedor-agregar-opcion {
-  margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-background);
-  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, var(--color-background) 0%, rgba(243, 232, 255, 0.8) 100%);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
+  border: 2px solid var(--color-border);
   font-family: var(--font-family);
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  backdrop-filter: blur(10px);
 }
 
 #contenedor-agregar-opcion:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
 }
-
 
 #input-texto {
   width: 100%;
-  /* padding: 0.85rem 1rem; */
+  padding: 1rem 1.25rem;
   margin-bottom: 1rem;
   border: 2px solid var(--color-border);
   border-radius: var(--radius);
   font-size: 1rem;
-  background-color: var(--color-background-alt);
+  background: linear-gradient(135deg, rgba(221, 214, 254, 0.6) 0%, rgba(196, 181, 253, 0.4) 100%);
   color: var(--color-text);
   font-weight: 500;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
   font-family: var(--font-family);
+  letter-spacing: 0.3px;
+}
+
+#input-texto::placeholder {
+  color: #9333ea;
+  opacity: 0.7;
 }
 
 #input-texto:focus {
   outline: none;
-  border-color: #8b5cf6; /* Morado pastel destacado */
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
-  background-color: #f3e8ff;
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
+  background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 100%);
+  transform: translateY(-1px);
+}
+
+#input-texto:hover {
+  border-color: var(--color-accent);
+  background: linear-gradient(135deg, rgba(254, 247, 255, 0.9) 0%, rgba(243, 232, 255, 0.7) 100%);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  #contenedor-agregar-opcion {
+    border-radius: 12px;
+    padding: 0.25rem;
+  }
+  
+  #input-texto {
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  #input-texto {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
 }

@@ -13,4 +13,7 @@ export declare class EncuestasService {
     obtenerEncuesta(id: number, codigo: string, codigoTipo: CodigoTipoEnum.RESPUESTA | CodigoTipoEnum.RESULTADOS): Promise<Encuesta>;
     obtenerEncuestaPorCodigoRespuesta(codigo: string): Promise<Encuesta>;
     obtenerEncuestaPorCodigoResultados(codigo: string): Promise<Encuesta>;
+    obtenerTodasLasEncuestas(): Promise<Encuesta[]>;
+    actualizarEstadoEncuesta(id: number, habilitada: boolean): Promise<Encuesta>;
+    validarEncuestaParaResponder(codigoRespuesta: string): Promise<boolean>;
 }

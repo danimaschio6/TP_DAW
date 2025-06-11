@@ -1,53 +1,450 @@
-/* Estilos generales para los contenedores de las preguntas */
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f3e8ff 0%, #e0e7ff 50%, #ecfdf5 100%);
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 1rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  gap: 1rem;
+}
+
+
+
 .question-container {
   margin-bottom: 2rem;
-  padding: 1.5rem;
-  background-color: #f9fafb; /* Un fondo gris muy claro */
-  border-radius: 12px;
-  border: 1px solid #e5e7eb; /* Un borde sutil */
+  padding: 2rem;
+  background: linear-gradient(145deg, #ffffff 0%, #faf5ff 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.08);
+  transition: all 0.3s ease;
+}
+
+.question-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.12);
+}
+
+
+.question-container h3 {
+  color: #6366f1;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 1px 2px rgba(99, 102, 241, 0.1);
 }
 
 /* Contenedor para cada opción (radio o checkbox) */
 .option-wrapper {
   display: flex;
   align-items: center;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  border-radius: 8px;
-  border: 2px solid transparent; /* Borde transparente por defecto */
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 12px;
+  border: 2px solid transparent;
   cursor: pointer;
-  transition: all 0.2s ease-in-out; /* Transición suave para los cambios */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #fefbff 0%, #f8fafc 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.option-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 /* Efecto al pasar el cursor sobre una opción */
 .option-wrapper:hover {
-  border-color: #d1d5db; /* El borde se hace visible */
+  border-color: rgba(139, 92, 246, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+}
+
+.option-wrapper:hover::before {
+  opacity: 1;
 }
 
 /* Estilo para la opción que ha sido seleccionada */
 .option-wrapper.selected {
-  background-color: #e0f2fe; /* Fondo azul claro */
-  border-color: #38bdf8;   /* Borde azul brillante */
+  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+  border-color: #8b5cf6;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.2);
+  transform: translateY(-1px);
+}
+
+.option-wrapper.selected::before {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+  opacity: 1;
 }
 
 /* Etiqueta de texto de cada opción */
 .option-label {
-  margin-left: 0.75rem;
-  font-weight: 500; /* Texto semi-negrita */
+  margin-left: 1rem;
+  font-weight: 500;
+  color: #374151;
+  font-size: 1rem;
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+
+.option-wrapper.selected .option-label {
+  color: #5b21b6;
+  font-weight: 600;
+}
+
+/* Radio buttons y checkboxes personalizados */
+.option-wrapper input[type="radio"],
+.option-wrapper input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.option-wrapper input[type="checkbox"] {
+  border-radius: 6px;
+}
+
+.option-wrapper input[type="radio"]:checked,
+.option-wrapper input[type="checkbox"]:checked {
+  border-color: #8b5cf6;
+  background-color: #8b5cf6;
+}
+
+.option-wrapper input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.option-wrapper input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 /* Contenedor del mensaje de éxito */
 .success-message {
   margin-top: 2rem;
-  padding: 2rem;
-  background-color: #dcfce7; /* Fondo verde muy claro */
-  color: #166534;           /* Texto verde oscuro */
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  color: #080808;
   text-align: center;
-  border-radius: 12px;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(34, 197, 94, 0.15);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.success-message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
 }
 
 /* Título del mensaje de éxito */
 .success-message h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 2rem;
+  color: #059669;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(5, 150, 105, 0.1);
+}
+
+.success-message p {
+  font-size: 1.1rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.success-message i {
+  font-size: 4rem;
+  color: #10b981;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 4px 8px rgba(16, 185, 129, 0.2));
+}
+
+/* Mensaje de encuesta deshabilitada - COLORES VERDES PASTEL */
+.disabled-message {
+  margin-top: 2rem;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  color: #080808;
+  text-align: center;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(34, 197, 94, 0.12);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.disabled-message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #22c55e 0%, #4ade80 100%);
+}
+
+.disabled-message i {
+  font-size: 3.5rem;
+  color: #16a34a;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 8px rgba(22, 163, 74, 0.2));
+}
+
+.disabled-message h2 {
+  font-size: 1.8rem;
+  color: #15803d;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(21, 128, 61, 0.1);
+}
+
+.disabled-message p {
+  font-size: 1.1rem;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+/* Mensaje de error general */
+.error-message {
+  margin-top: 2rem;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+  color: #080808;
+  text-align: center;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(239, 68, 68, 0.15);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.error-message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+}
+
+.error-message h2 {
+  font-size: 1.8rem;
+  color: #dc2626;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);
+}
+
+.error-message p {
+  font-size: 1.1rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.error-message i {
+  font-size: 3.5rem;
+  color: #dc2626;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 8px rgba(220, 38, 38, 0.2));
+}
+
+/* Botones personalizados */
+.btn-primary {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+  background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 2px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  color: #6366f1;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+  border-color: rgba(139, 92, 246, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.question-container {
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.question-container:nth-child(1) { animation-delay: 0.1s; }
+.question-container:nth-child(2) { animation-delay: 0.2s; }
+.question-container:nth-child(3) { animation-delay: 0.3s; }
+.question-container:nth-child(4) { animation-delay: 0.4s; }
+
+.success-message,
+.disabled-message,
+.error-message {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  :host {
+    padding: 0.5rem;
+  }
+  
+  .container {
+    gap: 0.5rem;
+  }
+  
+  .question-container {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+  }
+  
+  .option-wrapper {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+  }
+  
+  .option-label {
+    margin-left: 0.75rem;
+    font-size: 0.95rem;
+  }
+  
+  .success-message,
+  .disabled-message,
+  .error-message {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+  
+  .success-message h2,
+  .disabled-message h2,
+  .error-message h2 {
+    font-size: 1.5rem;
+  }
+  
+  .success-message p,
+  .disabled-message p,
+  .error-message p {
+    font-size: 1rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    max-width: 280px;
+  }
 }

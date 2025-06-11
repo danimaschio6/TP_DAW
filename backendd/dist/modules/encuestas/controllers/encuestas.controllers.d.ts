@@ -10,7 +10,15 @@ export declare class EncuestaController {
         codigoRespuesta: string;
         codigoResultados: string;
     }>;
+    obtenerTodasLasEncuestas(): Promise<Encuesta[]>;
     obtenerEncuesta(id: number, dto: ObtenerEncuestaDto): Promise<Encuesta>;
     obtenerEncuestaPorCodigoRespuesta(codigo: string): Promise<Encuesta>;
     obtenerEncuestaPorCodigoResultados(codigo: string): Promise<Encuesta>;
+    actualizarEstadoEncuesta(id: number, body: {
+        habilitada: boolean;
+    }): Promise<Encuesta>;
+    validarEncuestaParaResponder(codigo: string): Promise<{
+        valida: boolean;
+        mensaje?: string;
+    }>;
 }

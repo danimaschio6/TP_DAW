@@ -1,5 +1,14 @@
 /* src/app/components/gestor-encuestas/gestor-encuestas.component.css */
 
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ede9fe; 
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem 1rem;
+}
+
 .container {
   padding: 20px;
   max-width: 1200px;
@@ -42,6 +51,7 @@ h2 {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
   margin-top: 20px;
+
 }
 
 .encuesta-card {
@@ -53,12 +63,16 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  
 }
 
 .encuesta-card h3 {
-  color: #007bff;
+  color: #218838;
   margin-top: 0;
   font-size: 1.3em;
+
+
 }
 
 .encuesta-card p {
@@ -128,7 +142,7 @@ h2 {
 }
 
 input:checked + .slider {
-  background-color: #007bff; /* Color cuando está activado */
+  background-color: #22c55e; /* Ícono verde pastel */
 }
 
 input:focus + .slider {

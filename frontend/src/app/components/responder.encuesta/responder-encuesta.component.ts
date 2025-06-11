@@ -54,8 +54,9 @@ export class ResponderEncuestaComponent {
   encuesta = signal<EncuestaDTO | null>(null);
   cargando = signal(false);
   enviando = signal(false);
-  enviadoConExito = signal(false); // Renombrada para claridad y sincronización con el HTML
+  enviadoConExito = signal(false);
   mensajeError = signal<string | null>(null);
+  encuestaDeshabilitada = signal(false); // Signal agregado para manejar encuesta deshabilitada
 
   // Form
   form: FormGroup = this.fb.group({});
@@ -78,13 +79,26 @@ export class ResponderEncuestaComponent {
     this.encuestasService.obtenerEncuestaPorCodigoRespuesta(codigo).subscribe({
       next: (encuesta) => {
         this.encuesta.set(encuesta);
-        this.inicializarFormulario(encuesta);
+        
+        // Verificar si la encuesta está deshabilitada
+        if (!encuesta.habilitada) {
+          this.encuestaDeshabilitada.set(true);
+        } else {
+          this.inicializarFormulario(encuesta);
+        }
+        
         this.cargando.set(false);
       },
       error: (error) => {
         console.error('Error al cargar encuesta:', error);
         this.cargando.set(false);
-        this.mensajeError.set('No se pudo cargar la encuesta. Intenta más tarde.');
+        
+        // Verificar si el error es específicamente por encuesta deshabilitada
+        if (error.status === 403 || error.error?.message?.includes('deshabilitada') || error.error?.message?.includes('disabled')) {
+          this.encuestaDeshabilitada.set(true);
+        } else {
+          this.mensajeError.set('No se pudo cargar la encuesta. Intenta más tarde.');
+        }
       }
     });
   }
@@ -139,7 +153,7 @@ export class ResponderEncuestaComponent {
     const respuestas = this.construirRespuestas();
     this.respuestasService.crearRespuesta(respuestas).subscribe({
       next: () => {
-        this.enviadoConExito.set(true); // Muestra el mensaje de éxito y oculta el form
+        this.enviadoConExito.set(true);
         this.enviando.set(false);
       },
       error: (error) => {

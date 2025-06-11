@@ -25,4 +25,7 @@ export class Encuesta{
     @Exclude() 
     codigoResultados: string;
 
+    @Column({ name: 'habilitada', default: true })
+    habilitada: boolean;
+
 }
