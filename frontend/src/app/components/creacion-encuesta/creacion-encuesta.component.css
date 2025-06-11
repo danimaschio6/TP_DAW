@@ -92,3 +92,7 @@ ul {
     max-width: 25vw;
   }
 }
+.opciones-vf {
+  display: flex;
+  gap: 1rem;
+}

@@ -29,6 +29,22 @@
                 <p class="texto-opcion">{{ opcion.texto }}</p>
               </li>
             }
+            @if (!pregunta.opciones?.length && pregunta.tipo === 'VERDADERO_FALSO') {
+              <li>
+                <div class="opciones-vf">
+                  <p-button
+                    label="Verdadero"
+                    [disabled]="true"
+                    styleClass="p-button-secondary"
+                  ></p-button>
+                  <p-button
+                    label="Falso"
+                    [disabled]="true"
+                    styleClass="p-button-secondary"
+                  ></p-button>
+                </div>
+              </li>
+            }
           </ul>
           <div class="botonera-pregunta">
             <p-button
