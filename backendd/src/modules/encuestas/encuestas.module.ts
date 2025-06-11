@@ -8,10 +8,11 @@ import { EncuestaController } from './controllers/encuestas.controllers';
 
 
 @Module({
-    imports:[TypeOrmModule.forFeature([Encuesta,Pregunta,Opcion])],  //pasar entidades q vamos a utilizar en nuestro modulo
+    imports:[TypeOrmModule.forFeature([Encuesta, Pregunta, Opcion])],  //pasar entidades q vamos a utilizar en nuestro modulo
     // controllers: [EncuestasModule],
     controllers: [EncuestaController],
     providers: [EncuestasService],
+    exports: [TypeOrmModule]
 })
 
 export class EncuestasModule{

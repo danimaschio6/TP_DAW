@@ -9,6 +9,7 @@
       <p>Cargando encuesta...</p>
     </div>
 
+
     <!-- Mensaje de error general (encuesta no encontrada, error de red, etc.) -->
     <div *ngIf="!cargando() && mensajeError() && !encuestaDeshabilitada()" class="error-message">
       <h2>Error</h2>
@@ -24,7 +25,8 @@
     </div>
 
     <!-- El formulario se muestra solo si la encuesta está cargada, habilitada y no ha sido enviada -->
-    <div *ngIf="!cargando() && !mensajeError() && !encuestaDeshabilitada() && encuesta() && !enviadoConExito()" class="survey-form">
+    <div *ngIf="!cargando() && !mensajeError() && !encuestaDeshabilitada() && encuesta() && !enviadoConExito() && !encuestaVencida()" class="survey-form">
+
       <h2>{{ encuesta()?.nombre }}</h2>
       
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -107,5 +109,9 @@
         <p>Gracias por completar la encuesta.</p>
     </div>
 
+    <div *ngIf="encuestaVencida()" class="fail-message">
+        <h2>Lo sentimos.</h2>
+        <p>No pude contestar esta encuesta porque ya expiró.</p>
+    </div>
   </div>
 </app-seccion>

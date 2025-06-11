@@ -3,7 +3,9 @@ import {
   ArrayMinSize,
   ArrayNotEmpty,
   IsArray,
+  IsISO8601,
   IsNotEmpty,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -23,4 +25,11 @@ export class CreateEncuestaDTO {
   @ValidateNested({ each: true })
   @Type(() => CreatePreguntaDTO)
   preguntas: CreatePreguntaDTO[];
+
+  //DIONI fecha_vencimiento
+  @ApiProperty()
+  @IsISO8601()
+  @IsOptional()
+  fechaVencimiento?: string|null;
+  //
 }

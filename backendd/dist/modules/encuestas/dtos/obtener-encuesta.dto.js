@@ -16,6 +16,7 @@ const codigo_tipo_enum_1 = require("../enums/codigo-tipo.enum");
 class ObtenerEncuestaDto {
     codigo;
     tipo;
+    fechaVencimiento;
 }
 exports.ObtenerEncuestaDto = ObtenerEncuestaDto;
 __decorate([
@@ -30,4 +31,9 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], ObtenerEncuestaDto.prototype, "tipo", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsISO8601)(),
+    __metadata("design:type", String)
+], ObtenerEncuestaDto.prototype, "fechaVencimiento", void 0);
 //# sourceMappingURL=obtener-encuesta.dto.js.map

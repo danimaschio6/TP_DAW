@@ -58,6 +58,10 @@ export class ResponderEncuestaComponent {
   mensajeError = signal<string | null>(null);
   encuestaDeshabilitada = signal(false); // Signal agregado para manejar encuesta deshabilitada
 
+  //DIONI fecha_vencimiento
+    encuestaVencida = signal<Boolean>(false);
+  //
+
   // Form
   form: FormGroup = this.fb.group({});
 
@@ -78,6 +82,22 @@ export class ResponderEncuestaComponent {
     this.cargando.set(true);
     this.encuestasService.obtenerEncuestaPorCodigoRespuesta(codigo).subscribe({
       next: (encuesta) => {
+        //DIONI fecha_vencimiento Es necesario? El back no deberia ni darlo?
+        if (encuesta.fechaVencimiento && new Date() > new Date(encuesta.fechaVencimiento)) {
+          //debug
+          // const fechaAhora= new Date();
+          // const fechaEncuesta=new Date(encuesta.fechaVencimiento);
+          // console.log(fechaAhora);
+          // console.log(fechaEncuesta);
+          // console.log(fechaAhora>fechaEncuesta);//true
+          // console.log(fechaAhora<fechaEncuesta);//false
+          
+          this.encuestaVencida.set(true);
+          this.cargando.set(false);
+          return ;
+        }
+        //
+
         this.encuesta.set(encuesta);
         
         // Verificar si la encuesta está deshabilitada
@@ -101,6 +121,7 @@ export class ResponderEncuestaComponent {
         }
       }
     });
+    
   }
 
   private inicializarFormulario(encuesta: EncuestaDTO): void {

@@ -19,16 +19,26 @@ const typeorm_2 = require("typeorm");
 const respuesta_entity_1 = require("../entities/respuesta.entity");
 const respuesta_abierta_entity_1 = require("../entities/respuesta-abierta.entity");
 const respuesta_opcion_entity_1 = require("../entities/respuesta-opcion.entity");
+const encuestas_entity_1 = require("../../encuestas/entities/encuestas.entity");
 let RespuestasService = class RespuestasService {
     respuestaRepository;
     respuestaAbiertaRepository;
     respuestaOpcionRepository;
-    constructor(respuestaRepository, respuestaAbiertaRepository, respuestaOpcionRepository) {
+    encuestaRepository;
+    constructor(respuestaRepository, respuestaAbiertaRepository, respuestaOpcionRepository, encuestaRepository) {
         this.respuestaRepository = respuestaRepository;
         this.respuestaAbiertaRepository = respuestaAbiertaRepository;
         this.respuestaOpcionRepository = respuestaOpcionRepository;
+        this.encuestaRepository = encuestaRepository;
     }
     async crearRespuesta(encuestaId, respuestasData) {
+        const encuesta = await this.encuestaRepository.findOne({ where: { id: encuestaId } });
+        if (!encuesta) {
+            throw new common_1.NotFoundException('Encuesta no encontrada');
+        }
+        if (encuesta.fechaVencimiento && new Date() > encuesta.fechaVencimiento) {
+            throw new common_1.BadRequestException('La encuesta ya ha vencido y no se puede responder');
+        }
         const respuesta = this.respuestaRepository.create({
             encuesta: { id: encuestaId }
         });
@@ -143,7 +153,9 @@ exports.RespuestasService = RespuestasService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(respuesta_entity_1.Respuesta)),
     __param(1, (0, typeorm_1.InjectRepository)(respuesta_abierta_entity_1.RespuestaAbierta)),
     __param(2, (0, typeorm_1.InjectRepository)(respuesta_opcion_entity_1.RespuestaOpcion)),
+    __param(3, (0, typeorm_1.InjectRepository)(encuestas_entity_1.Encuesta)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository])
 ], RespuestasService);
