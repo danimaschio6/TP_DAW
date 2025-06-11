@@ -2,18 +2,19 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Exclude } from 'class-transformer';
 import { Pregunta } from './pregunta.entity'
 
-@Entity({name: "encuestas"}) // esto genera que se mape esta entidad a nuestra BDD
+@Entity({ name: "encuestas" })
+export class Encuesta {
+    @PrimaryGeneratedColumn()
+    id: number;
 
-export class Encuesta{
-    @PrimaryGeneratedColumn() // esto le indica al ORM que va a ser una clave primaria autogenerada
-    id: number; 
-
-    @Column({name: 'nombre'}) // se puede configurar nombre y otra opciones 
+    @Column({ name: 'nombre' })
     nombre: string;
 
-    @OneToMany(() => Pregunta, (pregunta) => pregunta.encuesta, {   //una encuesta esta relacionada con muchas preguntas
-        cascade: ['insert'], 
+    @Column({ name: 'descripcion', nullable: true, type: 'text' }) // ⬅️ nuevo campo opcional
+    descripcion?: string;
 
+    @OneToMany(() => Pregunta, (pregunta) => pregunta.encuesta, {
+        cascade: ['insert'],
     })
     preguntas: Pregunta[];
 
@@ -21,8 +22,6 @@ export class Encuesta{
     codigoRespuesta: string;
 
     @Column({ name: 'codigo_resultados' })
-
-    @Exclude() 
+    @Exclude()
     codigoResultados: string;
-
 }
