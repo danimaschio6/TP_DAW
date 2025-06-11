@@ -29,4 +29,8 @@ export class Encuesta{
     fechaVencimiento?: Date|null;
     //
 
+    @Column({ name: 'habilitada', default: true })
+    habilitada: boolean;
+
+
 }

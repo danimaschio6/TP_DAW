@@ -172,28 +172,18 @@ export class CreacionEncuestaComponent {
 
     this.encuestasService.crearEncuesta(encuesta).subscribe({
       next: (res) => {
-
         this.messageService.add({
           severity: 'success',
           summary: 'La encuesta se creó con éxito',
         });
 
-        this.router.navigateByUrl('/encuesta-creada-exitosamente',{
-          state:{
+        this.router.navigateByUrl('/encuesta-creada', {
+          state: {
             encuestaId: res.id,
             codigoRespuesta: res.codigoRespuesta,
             codigoResultados: res.codigoResultados
           }
-        })
-        // this.router.navigateByUrl(
-        //   '/presentacion-enlaces?id-encuesta=' +
-        //     res.id +
-        //     '&codigo-respuesta=' +
-        //     res.codigoRespuesta +
-        //     '&codigo-resultados=' +
-        //     res.codigoResultados
-        // );
-        
+        });
       },
       error: (err) => {
         console.log(err);

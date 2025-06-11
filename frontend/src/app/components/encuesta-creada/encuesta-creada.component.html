@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="container-exito">
   <p-card>
     <ng-template pTemplate="header">
@@ -9,16 +11,69 @@
     <div class="contenido-exito">
       <h2>¡Encuesta creada con éxito!</h2>
       <p>Tu encuesta ha sido creada correctamente y ya está lista para ser compartida.</p>
+      
+      <div *ngIf="cargandoUrls" class="cargando">
+        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+        <p>Generando enlaces y códigos QR...</p>
+      </div>
+
+      <div *ngIf="!cargandoUrls" class="urls-container">
+        <div class="url-item">
+          <h3>URL para responder la encuesta:</h3>
+          <div class="url-box">
+            <span class="url-text">{{ urlRespuestaCorta }}</span>
+            <div class="url-actions">
+              <p-button 
+                icon="pi pi-copy" 
+                (onClick)="copiarAlPortapapeles(urlRespuestaCorta)"
+                [outlined]="true"
+                severity="secondary"
+                tooltip="Copiar URL">
+              </p-button>
+            </div>
+          </div>
+          <div class="qr-container">
+            <img [src]="qrRespuesta" alt="QR para responder encuesta" class="qr-code">
+            <p-button 
+              icon="pi pi-download" 
+              (onClick)="descargarQR(qrRespuesta, 'respuesta')"
+              [outlined]="true"
+              severity="secondary"
+              tooltip="Descargar QR">
+            </p-button>
+          </div>
+        </div>
+
+        <div class="url-item">
+          <h3>URL para ver los resultados:</h3>
+          <div class="url-box">
+            <span class="url-text">{{ urlResultadosCorta }}</span>
+            <div class="url-actions">
+              <p-button 
+                icon="pi pi-copy" 
+                (onClick)="copiarAlPortapapeles(urlResultadosCorta)"
+                [outlined]="true"
+                severity="secondary"
+                tooltip="Copiar URL">
+              </p-button>
+            </div>
+          </div>
+          <div class="qr-container">
+            <img [src]="qrResultados" alt="QR para ver resultados" class="qr-code">
+            <p-button 
+              icon="pi pi-download" 
+              (onClick)="descargarQR(qrResultados, 'resultados')"
+              [outlined]="true"
+              severity="secondary"
+              tooltip="Descargar QR">
+            </p-button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <ng-template pTemplate="footer">
       <div class="botones-exito">
-        <p-button 
-          label="Ver Enlaces" 
-          icon="pi pi-external-link"
-          (onClick)="irAPresentacionEnlaces()"
-          styleClass="p-button-success">
-        </p-button>
         <p-button 
           label="Crear Nueva Encuesta" 
           icon="pi pi-plus"

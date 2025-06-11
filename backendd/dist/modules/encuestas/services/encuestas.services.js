@@ -69,6 +69,9 @@ let EncuestasService = class EncuestasService {
         if (!encuesta) {
             throw new common_2.NotFoundException('Encuesta no encontrada');
         }
+        if (!encuesta.habilitada) {
+            throw new common_1.ForbiddenException('Esta encuesta está deshabilitada y no puede ser respondida');
+        }
         return encuesta;
     }
     async obtenerEncuestaPorCodigoResultados(codigo) {
@@ -80,6 +83,35 @@ let EncuestasService = class EncuestasService {
             throw new common_2.NotFoundException('Encuesta no encontrada');
         }
         return encuesta;
+    }
+    async obtenerTodasLasEncuestas() {
+        return await this.encuestasRepository.find({
+            order: {
+                id: 'DESC'
+            }
+        });
+    }
+    async actualizarEstadoEncuesta(id, habilitada) {
+        const encuesta = await this.encuestasRepository.findOne({
+            where: { id }
+        });
+        if (!encuesta) {
+            throw new common_2.NotFoundException('Encuesta no encontrada');
+        }
+        encuesta.habilitada = habilitada;
+        return await this.encuestasRepository.save(encuesta);
+    }
+    async validarEncuestaParaResponder(codigoRespuesta) {
+        const encuesta = await this.encuestasRepository.findOne({
+            where: { codigoRespuesta: codigoRespuesta }
+        });
+        if (!encuesta) {
+            throw new common_2.NotFoundException('Encuesta no encontrada');
+        }
+        if (!encuesta.habilitada) {
+            throw new common_1.ForbiddenException('Esta encuesta está deshabilitada y no puede ser respondida');
+        }
+        return true;
     }
 };
 exports.EncuestasService = EncuestasService;

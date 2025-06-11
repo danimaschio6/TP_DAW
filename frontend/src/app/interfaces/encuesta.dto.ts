@@ -5,10 +5,10 @@ export interface EncuestaDTO {
   nombre: string;
   codigoRespuesta: string;
   codigoResultados: string;
-  //DIONI fecha_vencimiento
   fechaVencimiento?: string;
-  //
   preguntas: PreguntaDTO[];
+  habilitada: boolean;  
+
 }
 
 

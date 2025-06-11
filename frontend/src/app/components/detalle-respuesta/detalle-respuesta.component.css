@@ -1,3 +1,12 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  padding: 1rem 1rem;
+  background-color: #ede9fe; 
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .detalle-respuesta-container {
   max-width: 1000px;
   margin: 0 auto;
@@ -14,22 +23,30 @@
   align-items: center;
   padding: 40px 20px;
   text-align: center;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .loading-section p {
   margin-top: 20px;
   font-size: 1.1em;
-  color: #666;
+  color: #64748b;
+}
+
+.error-section {
+  background-color: #fef2f2;
+  border-left: 5px solid #f87171;
 }
 
 .error-section h3 {
-  color: #e74c3c;
+  color: #dc2626;
   margin-bottom: 15px;
 }
 
 .error-section p {
   margin-bottom: 20px;
-  color: #666;
+  color: #64748b;
 }
 
 .error-section p-button {
@@ -40,17 +57,20 @@
 .header-section {
   text-align: center;
   padding: 20px;
+  background-color: #f1f5f9;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
 }
 
 .header-section h2 {
   margin: 0 0 10px 0;
-  color: #2c3e50;
+  color: #1e293b;
   font-size: 2em;
 }
 
 .header-section h3 {
   margin: 0 0 25px 0;
-  color: #34495e;
+  color: #475569;
   font-size: 1.3em;
   font-weight: 400;
 }
@@ -68,12 +88,15 @@
   align-items: center;
   gap: 8px;
   font-size: 1em;
-  color: #7f8c8d;
+  color: #64748b;
   font-weight: 500;
+  background-color: #e0f2fe;
+  padding: 8px 12px;
+  border-radius: 8px;
 }
 
 .fecha-respuesta i {
-  color: #3498db;
+  color: #0ea5e9;
 }
 
 /* Preguntas */
@@ -85,6 +108,10 @@
 
 .pregunta-detalle {
   padding: 20px;
+  background-color: #faf5ff; 
+  border-radius: 12px;
+  border: 1px solid #e9d5ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .pregunta-header {
@@ -98,7 +125,7 @@
 
 .pregunta-header h4 {
   margin: 0;
-  color: #2c3e50;
+  color: #1e293b;
   font-size: 1.2em;
   flex: 1;
   min-width: 200px;
@@ -114,14 +141,15 @@
   align-items: flex-start;
   gap: 12px;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: #f0f9ff;
   border-radius: 8px;
-  border-left: 4px solid #3498db;
+  border-left: 4px solid #38bdf8;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .respuesta-texto i.pi-quote-left,
 .respuesta-texto i.pi-quote-right {
-  color: #3498db;
+  color: #0ea5e9;
   font-size: 1.2em;
   margin-top: 2px;
   flex-shrink: 0;
@@ -132,7 +160,7 @@
 }
 
 .respuesta-texto span {
-  color: #2c3e50;
+  color: #1e293b;
   line-height: 1.5;
   font-style: italic;
   flex: 1;
@@ -154,30 +182,33 @@
   align-items: center;
   gap: 10px;
   padding: 12px;
-  background-color: #e8f5e8;
-  border-radius: 6px;
-  border-left: 3px solid #27ae60;
+  background-color: #f0fdf4;
+  border-radius: 8px;
+  border-left: 3px solid #4ade80;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .opcion-seleccionada i {
-  color: #27ae60;
+  color: #22c55e;
   font-weight: bold;
 }
 
 .opcion-seleccionada span {
-  color: #2c3e50;
+  color: #1e293b;
   font-weight: 500;
 }
 
 .todas-opciones {
   margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid #e0e0e0;
+  padding: 15px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border-top: 1px solid #e2e8f0;
 }
 
 .todas-opciones h5 {
   margin: 0 0 15px 0;
-  color: #34495e;
+  color: #475569;
   font-size: 1em;
   font-weight: 600;
 }
@@ -193,31 +224,35 @@
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: all 0.2s ease;
+  background-color: #ffffff;
+  border: 1px solid #f1f5f9;
 }
 
 .opcion-item:hover {
-  background-color: #f8f9fa;
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
 }
 
 .opcion-item.seleccionada {
-  background-color: #e8f5e8;
-  border-left: 2px solid #27ae60;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-left: 3px solid #22c55e;
   font-weight: 500;
 }
 
 .opcion-item i {
-  color: #bdc3c7;
+  color: #cbd5e1;
   transition: color 0.2s ease;
 }
 
 .opcion-item.seleccionada i {
-  color: #27ae60;
+  color: #22c55e;
 }
 
 .opcion-item span {
-  color: #2c3e50;
+  color: #1e293b;
 }
 
 /* Sin Respuesta */
@@ -226,15 +261,16 @@
   align-items: center;
   gap: 10px;
   padding: 15px;
-  background-color: #fef9e7;
-  border-radius: 6px;
-  border-left: 3px solid #f39c12;
-  color: #8b6914;
+  background-color: #fffbeb;
+  border-radius: 8px;
+  border-left: 3px solid #fbbf24;
+  color: #92400e;
   font-style: italic;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .sin-respuesta i {
-  color: #f39c12;
+  color: #f59e0b;
 }
 
 /* Actions */
@@ -245,6 +281,59 @@
   margin-top: 30px;
   padding: 20px;
   flex-wrap: wrap;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Mejoras adicionales para cards de PrimeNG */
+::ng-deep .p-card {
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  border-radius: 12px !important;
+  background-color: #ffffff !important;
+}
+
+::ng-deep .p-card .p-card-body {
+  padding: 0 !important;
+}
+
+::ng-deep .p-panel .p-panel-header {
+  background-color: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px 8px 0 0 !important;
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+::ng-deep .p-panel .p-panel-content {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-top: none !important;
+  border-radius: 0 0 8px 8px !important;
+}
+
+::ng-deep .p-tag {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+}
+
+::ng-deep .p-tag.p-tag-success {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+}
+
+::ng-deep .p-tag.p-tag-info {
+  background-color: #dbeafe !important;
+  color: #1e40af !important;
+}
+
+::ng-deep .p-divider {
+  margin: 1.5rem 0 !important;
+}
+
+::ng-deep .p-divider .p-divider-content {
+  background-color: #ede9fe !important;
 }
 
 /* Responsive */
@@ -270,5 +359,13 @@
   
   .actions-section p-button {
     width: 100%;
+  }
+
+  .header-section h2 {
+    font-size: 1.6em;
+  }
+
+  .header-section h3 {
+    font-size: 1.1em;
   }
 }

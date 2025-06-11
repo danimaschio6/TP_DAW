@@ -6,4 +6,5 @@ export declare class Encuesta {
     codigoRespuesta: string;
     codigoResultados: string;
     fechaVencimiento?: Date | null;
+    habilitada: boolean;
 }
