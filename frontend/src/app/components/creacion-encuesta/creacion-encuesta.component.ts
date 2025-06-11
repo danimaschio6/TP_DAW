@@ -42,21 +42,17 @@ export class CreacionEncuestaComponent {
   form: FormGroup;
 
   private messageService: MessageService = inject(MessageService);
-
   private router: Router = inject(Router);
-
-  private confirmationService: ConfirmationService =
-    inject(ConfirmationService);
-
+  private confirmationService: ConfirmationService = inject(ConfirmationService);
   private encuestasService: EncuestasService = inject(EncuestasService);
 
   dialogGestionPreguntaVisible = signal<boolean>(false);
-
   preguntaSeleccionada = signal<PreguntaDTO | null>(null);
 
   constructor() {
     this.form = new FormGroup({
       nombre: new FormControl<string>('', Validators.required),
+      descripcion: new FormControl<string>(''), // <-- campo opcional
       preguntas: new FormArray<FormControl<PreguntaDTO>>(
         [],
         [Validators.required, Validators.minLength(1)]
@@ -159,30 +155,20 @@ export class CreacionEncuestaComponent {
 
     this.encuestasService.crearEncuesta(encuesta).subscribe({
       next: (res) => {
-
         this.messageService.add({
           severity: 'success',
           summary: 'La encuesta se creó con éxito',
         });
 
-        this.router.navigateByUrl('/encuesta-creada-exitosamente',{
-          state:{
+        this.router.navigateByUrl('/encuesta-creada-exitosamente', {
+          state: {
             encuestaId: res.id,
             codigoRespuesta: res.codigoRespuesta,
-            codigoResultados: res.codigoResultados
-          }
-        })
-        // this.router.navigateByUrl(
-        //   '/presentacion-enlaces?id-encuesta=' +
-        //     res.id +
-        //     '&codigo-respuesta=' +
-        //     res.codigoRespuesta +
-        //     '&codigo-resultados=' +
-        //     res.codigoResultados
-        // );
-        
+            codigoResultados: res.codigoResultados,
+          },
+        });
       },
-      error: (err) => {
+      error: () => {
         this.messageService.add({
           severity: 'error',
           summary: 'Ha ocurrido un error al crear la encuesta',

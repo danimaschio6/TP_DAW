@@ -12,6 +12,18 @@
     </p-floatlabel>
   </div>
 
+  <div class="campo">
+    <p-floatlabel variant="on">
+      <textarea
+        pInputTextarea
+        formControlName="descripcion"
+        rows="3"
+        style="width: 100%;"
+      ></textarea>
+      <label for="descripcion">Descripción (opcional)</label>
+    </p-floatlabel>
+  </div>
+
   @if (nombre.invalid && nombre.touched) {
     <app-texto-error>Requerido</app-texto-error>
   }

@@ -103,3 +103,18 @@ app-texto-error {
 .boton-finalizar {
   align-self: center;
 }
+/* Estilo para el textarea (descripción de la encuesta) */
+.campo textarea {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+/* Mejora la altura de los campos con floatlabel para evitar saltos */
+.campo p-floatlabel:has(textarea) {
+  min-height: 6.5rem;
+}
