@@ -1,4 +1,9 @@
-:host{
-    color: red;
-    margin: 0.2rem;
+:host {
+  display: block;
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

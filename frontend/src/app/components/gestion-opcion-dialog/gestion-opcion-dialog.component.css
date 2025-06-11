@@ -1,21 +1,48 @@
+:root {
+  --color-background-main: #ede9fe;
+  --color-background: #ffffff;
+  --color-background-alt: #f8fafc;
+  --color-border: #e5e7eb;
+  --color-text: #1f2937;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --radius: 12px;
+  --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
 #contenedor-agregar-opcion {
-  margin-top: 0.3rem;
+  margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
   background-color: var(--color-background);
-  padding: 1rem;
+  padding: 1.25rem 1.5rem;
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
+  font-family: var(--font-family);
+  transition: box-shadow 0.3s ease;
 }
+
+#contenedor-agregar-opcion:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 
 #input-texto {
   width: 100%;
-  padding: 0.75rem;
+  /* padding: 0.85rem 1rem; */
   margin-bottom: 1rem;
   border: 2px solid var(--color-border);
   border-radius: var(--radius);
   font-size: 1rem;
   background-color: var(--color-background-alt);
   color: var(--color-text);
+  font-weight: 500;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: var(--font-family);
+}
+
+#input-texto:focus {
+  outline: none;
+  border-color: #8b5cf6; /* Morado pastel destacado */
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+  background-color: #f3e8ff;
 }
