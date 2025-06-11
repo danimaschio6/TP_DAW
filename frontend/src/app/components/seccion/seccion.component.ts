@@ -8,10 +8,6 @@ import { Component, input, signal, computed } from '@angular/core';
 })
 export class SeccionComponent {
 
-  // texto = input<string>("hola");
-  // nombre: string = "Dani";
-  // saludo = signal<string>("adios")
-
   minWidth = input<string>("40vw");
   maxWidth = input<string>("70vw");
   leftMargin = input<string>("15vw");
@@ -21,8 +17,8 @@ export class SeccionComponent {
     return{
       "min-width": this.minWidth(),
       "max-width": this.maxWidth(),
-      "margin-left": this.leftMargin(),
-      "margin.right": this.rightMargin(),
+      "margin-left": "auto",
+      "margin-right": "auto",
     }
   })
 

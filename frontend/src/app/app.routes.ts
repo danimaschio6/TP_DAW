@@ -21,7 +21,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'encuesta-creada-exitosamente',
+    path: 'encuesta-creada',
     component: EncuestaCreadaComponent
   },
  

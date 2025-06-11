@@ -1,10 +1,21 @@
-#contenedor-agregar-opcion{
-    margin-top: 0.3rem;
-    display: flex;
-    flex-direction: column;
+
+#contenedor-agregar-opcion {
+  margin-top: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+  padding: 1rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 }
 
-#input-texto{
-    margin-bottom: 1rem;
+#input-texto {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  background-color: var(--color-background-alt);
+  color: var(--color-text);
 }
-

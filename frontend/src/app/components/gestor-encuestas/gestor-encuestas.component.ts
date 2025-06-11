@@ -3,7 +3,7 @@
 import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EncuestasService } from '../../services/encuestas.service'; // Asegúrate que la ruta sea correcta
-import { Encuesta } from '../../interfaces/encuesta'; // Asegúrate que la ruta sea correcta
+import { EncuestaDTO } from '../../interfaces/encuesta.dto'; // Asegúrate que la ruta sea correcta
 import { finalize } from 'rxjs/operators';
 import { Router, RouterModule } from '@angular/router';
 
@@ -20,7 +20,7 @@ import { PanelModule } from 'primeng/panel';
 
 
 // Interfaz extendida para manejar estados de UI específicos de cada tarjeta de encuesta
-interface EncuestaConEstadoUI extends Encuesta {
+interface EncuestaConEstadoUI extends EncuestaDTO {
   isUpdating?: boolean; // Indica si la encuesta está en proceso de actualización (ej. toggle)
   updateError?: boolean; // Indica si hubo un error al actualizar el estado de la encuesta
 }
