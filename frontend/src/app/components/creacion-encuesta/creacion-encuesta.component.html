@@ -42,6 +42,22 @@
         </div>
       </app-seccion>
     }
+
+
+    <app-seccion>
+      <div class="contenedor-pregunta">
+        <p class="texto-pregunta">
+          ¿Desea que la encuesta tenga vencimiento?
+        </p>
+        <label for="input-fecha-vencimiento">Elija una fecha si lo desea:</label>
+        <input type="datetime-local"
+         id="input-fecha-vencimiento"
+         formControlName="fechaVencimiento"
+         />
+      </div>
+    </app-seccion>
+
+
     <app-seccion>
       <p-button
         label="Agregar Pregunta"
@@ -49,7 +65,7 @@
         icon="pi pi-plus"
       />
       @if (preguntas.invalid && form.touched) {
-        <app-texto-error>Debe agregar al menos una pregunra</app-texto-error>
+        <app-texto-error>Debe agregar al menos una pregunta</app-texto-error>
       }
     </app-seccion>
     <button

@@ -30,6 +30,7 @@ let EncuestasService = class EncuestasService {
             ...dto,
             codigoRespuesta: (0, uuid_1.v4)(),
             codigoResultados: (0, uuid_1.v4)(),
+            fechaVencimiento: dto.fechaVencimiento ? new Date(dto.fechaVencimiento) : null,
         });
         const encuestaGuardada = await this.encuestasRepository.save(encuesta);
         return {

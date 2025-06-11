@@ -21,8 +21,12 @@ export class Encuesta{
     codigoRespuesta: string;
 
     @Column({ name: 'codigo_resultados' })
-
     @Exclude() 
     codigoResultados: string;
+
+    //DIONI
+    @Column({ name: 'fecha_vencimiento', type: 'timestamp', nullable: true }) // puede ser opcional
+    fechaVencimiento?: Date|null;
+    //
 
 }

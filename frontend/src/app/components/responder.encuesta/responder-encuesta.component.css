@@ -51,3 +51,19 @@
   font-size: 1.5rem;
   font-weight: bold;
 }
+
+/* Contenedor del mensaje de error */
+.fail-message {
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: #dcfce7;
+  color: #ff0000;           
+  text-align: center;
+  border-radius: 12px;
+}
+
+/* Título del mensaje de éxito */
+.fail-message h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}

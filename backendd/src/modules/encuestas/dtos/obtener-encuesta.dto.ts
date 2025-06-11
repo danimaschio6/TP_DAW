@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsNotEmpty, IsUUID } from "class-validator";
+import { IsEnum, IsISO8601, IsNotEmpty, IsUUID } from "class-validator";
 import { CodigoTipoEnum } from '../enums/codigo-tipo.enum'
 
 
@@ -14,4 +14,10 @@ export class ObtenerEncuestaDto {
     @IsEnum(CodigoTipoEnum)
     @IsNotEmpty()
     tipo: CodigoTipoEnum;
+
+    //DIONI fecha_vencimiento
+    @ApiProperty()
+    @IsISO8601()
+    fechaVencimiento?: string;
+    //
 }

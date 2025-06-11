@@ -6,6 +6,7 @@ import { RespuestaAbierta } from './entities/respuesta-abierta.entity';
 import { RespuestaOpcion } from './entities/respuesta-opcion.entity';
 import { RespuestasService } from './services/respuestas.service';
 import { RespuestasController } from './controllers/respuesta.controller';
+import { EncuestasModule } from '../encuestas/encuestas.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { RespuestasController } from './controllers/respuesta.controller';
       Respuesta,
       RespuestaAbierta,
       RespuestaOpcion
-    ])
+    ]),
+    EncuestasModule
   ],
   controllers: [RespuestasController],
   providers: [RespuestasService],

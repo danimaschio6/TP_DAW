@@ -57,6 +57,10 @@ export class ResponderEncuestaComponent {
   enviadoConExito = signal(false); // Renombrada para claridad y sincronización con el HTML
   mensajeError = signal<string | null>(null);
 
+  //DIONI fecha_vencimiento
+    encuestaVencida = signal<Boolean>(false);
+  //
+
   // Form
   form: FormGroup = this.fb.group({});
 
@@ -77,6 +81,22 @@ export class ResponderEncuestaComponent {
     this.cargando.set(true);
     this.encuestasService.obtenerEncuestaPorCodigoRespuesta(codigo).subscribe({
       next: (encuesta) => {
+        //DIONI fecha_vencimiento Es necesario? El back no deberia ni darlo?
+        if (encuesta.fechaVencimiento && new Date() > new Date(encuesta.fechaVencimiento)) {
+          //debug
+          // const fechaAhora= new Date();
+          // const fechaEncuesta=new Date(encuesta.fechaVencimiento);
+          // console.log(fechaAhora);
+          // console.log(fechaEncuesta);
+          // console.log(fechaAhora>fechaEncuesta);//true
+          // console.log(fechaAhora<fechaEncuesta);//false
+          
+          this.encuestaVencida.set(true);
+          this.cargando.set(false);
+          return ;
+        }
+        //
+
         this.encuesta.set(encuesta);
         this.inicializarFormulario(encuesta);
         this.cargando.set(false);
@@ -87,6 +107,7 @@ export class ResponderEncuestaComponent {
         this.mensajeError.set('No se pudo cargar la encuesta. Intenta más tarde.');
       }
     });
+    
   }
 
   private inicializarFormulario(encuesta: EncuestaDTO): void {

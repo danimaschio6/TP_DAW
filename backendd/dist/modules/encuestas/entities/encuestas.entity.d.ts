@@ -5,4 +5,5 @@ export declare class Encuesta {
     preguntas: Pregunta[];
     codigoRespuesta: string;
     codigoResultados: string;
+    fechaVencimiento?: Date | null;
 }

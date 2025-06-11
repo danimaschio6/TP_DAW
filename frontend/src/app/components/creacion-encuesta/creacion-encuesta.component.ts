@@ -61,6 +61,7 @@ export class CreacionEncuestaComponent {
         [],
         [Validators.required, Validators.minLength(1)]
       ),
+      fechaVencimiento: new FormControl<string| null>(null),
     });
   }
 
@@ -70,6 +71,10 @@ export class CreacionEncuestaComponent {
 
   get nombre(): FormControl<string> {
     return this.form.get('nombre') as FormControl<string>;
+  }
+
+  get fechaVencimiento(): FormControl<string> {
+    return this.form.get('fechaVencimiento') as FormControl<string>;
   }
 
   abrirDialog() {
@@ -144,7 +149,15 @@ export class CreacionEncuestaComponent {
       return;
     }
 
-    const encuesta: CreateEncuestaDTO = this.form.value;
+    //const encuesta: CreateEncuestaDTO = this.form.value;//esto se reemplazo por lo de abajo para funcionalidad vencimiento
+
+    //DIONI fecha_vencimiento
+    const valorFormulario= this.form.value;
+    const encuesta: CreateEncuestaDTO ={
+      ...valorFormulario,
+      fechaVencimiento: this.form.value.fechaVencimiento ? new Date(valorFormulario.fechaVencimiento).toISOString() : null
+    };
+    //
 
     for (let i = 0; i < encuesta.preguntas.length; i++) {
       const pregunta = encuesta.preguntas[i];
@@ -183,6 +196,7 @@ export class CreacionEncuestaComponent {
         
       },
       error: (err) => {
+        console.log(err);
         this.messageService.add({
           severity: 'error',
           summary: 'Ha ocurrido un error al crear la encuesta',

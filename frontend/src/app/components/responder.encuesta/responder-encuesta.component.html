@@ -10,7 +10,7 @@
     </div>
 
     <!-- El formulario se muestra solo si la encuesta está cargada y no ha sido enviada -->
-    <div *ngIf="!cargando() && encuesta() && !enviadoConExito()" class="survey-form">
+    <div *ngIf="!cargando() && encuesta() && !enviadoConExito() && !encuestaVencida()" class="survey-form">
       <h2>{{ encuesta()?.nombre }}</h2>
       
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -92,5 +92,9 @@
         <p>Gracias por completar la encuesta.</p>
     </div>
 
+    <div *ngIf="encuestaVencida()" class="fail-message">
+        <h2>Lo sentimos.</h2>
+        <p>No pude contestar esta encuesta porque ya expiró.</p>
+    </div>
   </div>
 </app-seccion>
