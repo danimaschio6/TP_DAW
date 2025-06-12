@@ -6,10 +6,11 @@
   background: linear-gradient(to right, #97b9df, #c2d3e6);
   min-height: 100vh;
   box-sizing: border-box;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .titulo {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: bold;
   color: #2c3e50;
   margin-bottom: 1.5rem;
@@ -21,7 +22,7 @@ form {
   padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+  max-width: 900px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -38,11 +39,13 @@ form {
 
 .campo p-floatlabel {
   width: 100%;
-  max-width: 400px;
+  max-width: 700px;
+ 
 }
 
 .campo input {
   padding-top: 1.2rem; /* espacio adicional para evitar que salte el label */
+  width: 100%;
 }
 
 /* ✅ Evita que el mensaje de error modifique el alto del contenedor */
@@ -132,4 +135,3 @@ app-texto-error {
 .campo p-floatlabel:has(textarea) {
   min-height: 6.5rem;
 }
-

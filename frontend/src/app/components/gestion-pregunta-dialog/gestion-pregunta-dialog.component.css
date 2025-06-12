@@ -1,134 +1,197 @@
+/* ===== VARIABLES CSS ===== */
 :root {
   --color-background-main: #f3e8ff;
   --color-background: #fef7ff;
   --color-background-alt: #f8fafc;
+  --color-background-card: rgba(254, 247, 255, 0.95);
   --color-border: #e9d5ff;
+  --color-border-hover: #d8b4fe;
   --color-text: #581c87;
+  --color-text-secondary: #6b21a8;
   --color-success: #059669;
   --color-accent: #a855f7;
   --color-focus: #7c3aed;
+  --color-danger: #dc2626;
   --shadow-sm: 0 2px 4px rgba(168, 85, 247, 0.1);
   --shadow-md: 0 4px 8px rgba(168, 85, 247, 0.15);
+  --shadow-lg: 0 8px 16px rgba(168, 85, 247, 0.2);
+  --shadow-xl: 0 12px 24px rgba(168, 85, 247, 0.25);
   --radius: 16px;
+  --radius-sm: 12px;
+  --radius-lg: 20px;
   --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --backdrop-blur: blur(10px);
 }
 
+/* ===== CONFIGURACIÓN BASE ===== */
 :host {
   font-family: var(--font-family);
+  font-weight: 400;
+  line-height: 1.6;
 }
 
+/* ===== CONTENEDOR PRINCIPAL ===== */
 #contenedor-creacion-pregunta {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 1rem 0;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  max-width: 100%;
 }
 
+/* ===== CONTENEDOR DE GESTIÓN ===== */
 #contenedor-gestion {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(135deg, rgba(254, 247, 255, 0.9) 0%, rgba(243, 232, 255, 0.6) 100%);
-  border-radius: var(--radius);
-  padding: 1.5rem;
+  background: linear-gradient(
+    135deg, 
+    var(--color-background-card) 0%, 
+    rgba(243, 232, 255, 0.7) 50%,
+    rgba(221, 214, 254, 0.6) 100%
+  );
+  border-radius: var(--radius-lg);
+  padding: 2rem;
   border: 2px solid var(--color-border);
-  backdrop-filter: blur(5px);
-  transition: all 0.3s ease;
+  backdrop-filter: var(--backdrop-blur);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+#contenedor-gestion::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-focus));
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 #contenedor-gestion:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
   border-color: var(--color-accent);
 }
 
+#contenedor-gestion:hover::before {
+  opacity: 1;
+}
+
+/* ===== CAMPOS DE ENTRADA ===== */
 #input-texto,
 #dropdown-tipos-pregunta {
   width: 100%;
-  padding: 1rem;
+  padding: 1.25rem 1.5rem;
   border: 2px solid var(--color-border);
   border-radius: var(--radius);
   font-size: 1rem;
-  background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 50%);
+  background: linear-gradient(
+    135deg, 
+    rgba(221, 214, 254, 0.8) 0%, 
+    rgba(196, 181, 253, 0.6) 50%,
+    rgba(254, 247, 255, 0.7) 100%
+  );
   color: var(--color-text);
   font-family: var(--font-family);
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: var(--transition);
   letter-spacing: 0.3px;
+  box-sizing: border-box;
 }
 
-#input-texto::placeholder,
-#dropdown-tipos-pregunta option {
-  color: #6b21a8;
+#input-texto::placeholder {
+  color: var(--color-text-secondary);
   opacity: 0.8;
+  font-weight: 400;
 }
 
+#dropdown-tipos-pregunta option {
+  color: var(--color-text-secondary);
+  background: var(--color-background);
+  padding: 0.5rem;
+}
+
+/* Estados focus y hover */
 #input-texto:focus,
 #dropdown-tipos-pregunta:focus {
   outline: none;
   border-color: var(--color-focus);
-  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
-  background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 100%);
+  box-shadow: 
+    0 0 0 4px rgba(124, 58, 237, 0.2),
+    var(--shadow-md);
+  background: linear-gradient(
+    135deg, 
+    #fef7ff 0%, 
+    #f3e8ff 50%,
+    rgba(254, 247, 255, 0.95) 100%
+  );
   transform: translateY(-1px);
 }
 
-#input-texto:hover,
-#dropdown-tipos-pregunta:hover {
-  border-color: var(--color-accent);
-  background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 50%);
+#input-texto:hover:not(:focus),
+#dropdown-tipos-pregunta:hover:not(:focus) {
+  border-color: var(--color-border-hover);
+  background: linear-gradient(
+    135deg, 
+    rgba(196, 181, 253, 0.7) 0%, 
+    rgba(167, 139, 250, 0.6) 50%,
+    rgba(221, 214, 254, 0.8) 100%
+  );
+  box-shadow: var(--shadow-sm);
 }
 
-#contenedor-boton-finalizar-gestion {
-  margin-top: 2rem;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-/* Botón con el mismo estilo del diseño principal */
-::ng-deep #contenedor-boton-finalizar-gestion .p-button {
-  background: linear-gradient(135deg, #a855f7, #7c3aed);
-  border: none;
-  color: white;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(168, 85, 247, 0.3);
-  min-width: 140px;
-  letter-spacing: 0.5px;
-}
-
-::ng-deep #contenedor-boton-finalizar-gestion .p-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(168, 85, 247, 0.4);
-  background: linear-gradient(135deg, #9333ea, #6b21a8);
-}
-
-::ng-deep #contenedor-boton-finalizar-gestion .p-button:active {
-  transform: translateY(0);
-}
-
+/* ===== SECCIÓN DE OPCIONES ===== */
 .contenedor-opcion {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0.75rem 0;
-  padding: 1rem 1.25rem;
-  background: linear-gradient(135deg, rgba(254, 247, 255, 0.8) 0%, rgba(243, 232, 255, 0.6) 100%);
+  margin: 1rem 0;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(
+    135deg, 
+    rgba(254, 247, 255, 0.9) 0%, 
+    rgba(243, 232, 255, 0.7) 50%,
+    rgba(221, 214, 254, 0.6) 100%
+  );
   border-radius: var(--radius);
   border: 2px solid var(--color-border);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
+  transition: var(--transition);
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+
+.contenedor-opcion::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--color-accent), var(--color-focus));
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .contenedor-opcion:hover {
-  background: linear-gradient(135deg, var(--color-background) 0%, rgba(221, 214, 254, 0.8) 100%);
+  background: linear-gradient(
+    135deg, 
+    var(--color-background) 0%, 
+    rgba(221, 214, 254, 0.9) 50%,
+    rgba(196, 181, 253, 0.8) 100%
+  );
   border-color: var(--color-accent);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.contenedor-opcion:hover::before {
+  opacity: 1;
 }
 
 .texto-opcion {
@@ -137,61 +200,100 @@
   color: var(--color-text);
   font-weight: 600;
   font-size: 1rem;
-  margin-right: 1rem;
-  line-height: 1.3;
+  margin-right: 1.5rem;
+  line-height: 1.4;
+  hyphens: auto;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  #contenedor-creacion-pregunta {
-    gap: 1.25rem;
-    padding: 0.75rem 0;
-  }
-  
-  #contenedor-gestion {
-    padding: 1.25rem;
-    border-radius: 12px;
-  }
-  
-  #input-texto,
-  #dropdown-tipos-pregunta {
-    padding: 0.875rem;
-    font-size: 0.95rem;
-    border-radius: 12px;
-  }
-  
-  .contenedor-opcion {
-    padding: 0.875rem 1rem;
-    border-radius: 12px;
-  }
-  
-  .texto-opcion {
-    font-size: 0.95rem;
-  }
-  
-  ::ng-deep #contenedor-boton-finalizar-gestion .p-button {
-    padding: 0.875rem 1.5rem;
-    font-size: 0.95rem;
-    border-radius: 12px;
-  }
+/* ===== HEADING OPCIONES ===== */
+#heading-opciones {
+  color: var(--color-text);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+  position: relative;
 }
 
-@media (max-width: 480px) {
-  #contenedor-gestion {
-    padding: 1rem;
-  }
-  
-  #input-texto,
-  #dropdown-tipos-pregunta {
-    padding: 0.75rem;
-    font-size: 0.9rem;
-  }
-  
-  .contenedor-opcion {
-    padding: 0.75rem;
-  }
-  
-  .texto-opcion {
-    font-size: 0.9rem;
-  }
+#heading-opciones::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-focus));
+  border-radius: 2px;
+}
+
+/* ===== OPCIONES VACÍO ===== */
+#opciones-vacio {
+  color: var(--color-text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+  background: rgba(243, 232, 255, 0.5);
+  border-radius: var(--radius);
+  border: 2px dashed var(--color-border);
+  margin: 1rem 0;
+}
+
+/* ===== BOTONERA ===== */
+#contenedor-boton-finalizar-gestion {
+  margin-top: 2.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#botonera-opciones {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* ===== ESTILOS PARA BOTONES PRIMENG ===== */
+::ng-deep #contenedor-boton-finalizar-gestion .p-button {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-focus));
+  border: none;
+  color: white;
+  padding: 1.25rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+  min-width: 160px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+::ng-deep #contenedor-boton-finalizar-gestion .p-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+::ng-deep #contenedor-boton-finalizar-gestion .p-button:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-xl);
+  background: linear-gradient(135deg, #9333ea, #6b21a8);
+}
+
+::ng-deep #contenedor-boton-finalizar-gestion .p-button:hover::before {
+  left: 100%;
+}
+
+::ng-deep #contenedor-boton-finalizar-gestion .p-button:active {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
