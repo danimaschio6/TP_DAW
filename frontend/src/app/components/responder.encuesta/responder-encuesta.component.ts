@@ -22,6 +22,9 @@ import { EncuestaDTO } from '../../interfaces/encuesta.dto'
 import { TiposRespuestaEnum } from '../../enums/tipos-pregunta.enum';
 import { CrearRespuestaPayloadDTO,RespuestaAbiertaPayloadDTO, RespuestaOpcionPayloadDTO } from '../../interfaces/crear-respuesta-payload.dto';
 
+//DIONI VF
+import { RespuestaVFPayloadDTO } from '../../interfaces/crear-respuesta-payload.dto';
+//
 
 @Component({
   selector: 'app-responder-encuesta',
@@ -192,10 +195,14 @@ export class ResponderEncuestaComponent {
     const encuesta = this.encuesta()!;
     const respuestasAbiertas: RespuestaAbiertaPayloadDTO[] = [];
     const respuestasOpciones: RespuestaOpcionPayloadDTO[] = [];
+    //DIONI VF
+    const respuestasVF: RespuestaVFPayloadDTO[] = [];
+    //
 
     encuesta.preguntas.forEach(pregunta => {
       const nombreControl = `pregunta_${pregunta.id}`;
       const valor = this.form.get(nombreControl)?.value;
+
       switch (pregunta.tipo) {
         case TiposRespuestaEnum.ABIERTA:
           if (valor && valor.trim()) {
@@ -205,11 +212,13 @@ export class ResponderEncuestaComponent {
             });
           }
           break;
+
         case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE:
           if (valor !== null && valor !== undefined) {
             respuestasOpciones.push({ opcionId: valor });
           }
           break;
+
         case TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE:
           if (valor && typeof valor === 'object') {
             Object.keys(valor).forEach(key => {
@@ -220,9 +229,10 @@ export class ResponderEncuestaComponent {
             });
           }
           break;
+
         case TiposRespuestaEnum.VERDADERO_FALSO:
-          if (valor !== null && valor !== undefined) {
-            respuestasOpciones.push({ opcionId: valor });
+          if (valor !== null && valor !== undefined) {//OJO CON FALSY?
+            respuestasVF.push({ valor: valor });
           }
           break;
       }
@@ -231,7 +241,10 @@ export class ResponderEncuestaComponent {
     return {
       encuestaId: encuesta.id,
       respuestasAbiertas: respuestasAbiertas.length > 0 ? respuestasAbiertas : [],
-      respuestasOpciones: respuestasOpciones.length > 0 ? respuestasOpciones : []
+      respuestasOpciones: respuestasOpciones.length > 0 ? respuestasOpciones : [],
+      //DIONI VF
+      respuestasVF: respuestasVF.length > 0 ? respuestasVF : []
+      //
     };
   }
   

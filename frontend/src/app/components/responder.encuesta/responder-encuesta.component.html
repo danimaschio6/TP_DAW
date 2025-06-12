@@ -28,6 +28,7 @@
     <div *ngIf="!cargando() && !mensajeError() && !encuestaDeshabilitada() && encuesta() && !enviadoConExito() && !encuestaVencida()" class="survey-form">
 
       <h2>{{ encuesta()?.nombre }}</h2>
+      <h3>{{ encuesta()?.descripcion }}</h3>
       
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div *ngFor="let pregunta of encuesta()?.preguntas" class="question-container">
@@ -50,11 +51,29 @@
             </app-texto-error>
           </div>
 
+          <!-- Selección Múltiple -->
+          <div *ngIf="pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE" 
+            class="question-options"
+            [formGroup]="getPreguntaFormGroup(pregunta.id)">
+            <div *ngFor="let opcion of pregunta.opciones" 
+              class="option-wrapper"
+              [ngClass]="{'selected': getPreguntaFormGroup(pregunta.id).get('opcion_' + opcion.id)?.value}">
+              <p-checkbox 
+                [formControlName]="'opcion_' + opcion.id"
+                [inputId]="'check_' + pregunta.id + '_' + opcion.id"
+                [binary]="true">
+              </p-checkbox>
+              <label [for]="'check_' + pregunta.id + '_' + opcion.id" class="option-label">
+                {{ opcion.texto }}
+              </label>
+            </div>
+          </div>
+
           <!-- Selección Simple -->
           <div *ngIf="pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE" class="question-options">
             <div *ngFor="let opcion of pregunta.opciones" 
-                 class="option-wrapper" 
-                 [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === opcion.id}">
+              class="option-wrapper" 
+              [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === opcion.id}">
               <p-radioButton 
                 [formControlName]="'pregunta_' + pregunta.id"
                 [value]="opcion.id"
@@ -71,31 +90,13 @@
             </app-texto-error>
           </div>
 
-          <!-- Selección Múltiple -->
-          <div *ngIf="pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE" 
-               class="question-options"
-               [formGroup]="getPreguntaFormGroup(pregunta.id)">
-            <div *ngFor="let opcion of pregunta.opciones" 
-                 class="option-wrapper"
-                 [ngClass]="{'selected': getPreguntaFormGroup(pregunta.id).get('opcion_' + opcion.id)?.value}">
-              <p-checkbox 
-                [formControlName]="'opcion_' + opcion.id"
-                [inputId]="'check_' + pregunta.id + '_' + opcion.id"
-                [binary]="true">
-              </p-checkbox>
-              <label [for]="'check_' + pregunta.id + '_' + opcion.id" class="option-label">
-                {{ opcion.texto }}
-              </label>
-            </div>
-          </div>
-
           <!-- Verdadero/Falso -->
           <div *ngIf="pregunta.tipo === TiposRespuestaEnum.VERDADERO_FALSO" class="question-options">
             <div class="opciones-vf">
               <div class="option-wrapper" [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === 1}">
                 <p-radioButton 
                   [formControlName]="'pregunta_' + pregunta.id"
-                  [value]="1"
+                  [value]="true"
                   [inputId]="'radio_' + pregunta.id + '_verdadero'">
                 </p-radioButton>
                 <label [for]="'radio_' + pregunta.id + '_verdadero'" class="option-label">
@@ -105,7 +106,7 @@
               <div class="option-wrapper" [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === 2}">
                 <p-radioButton 
                   [formControlName]="'pregunta_' + pregunta.id"
-                  [value]="2"
+                  [value]="false"
                   [inputId]="'radio_' + pregunta.id + '_falso'">
                 </p-radioButton>
                 <label [for]="'radio_' + pregunta.id + '_falso'" class="option-label">
@@ -113,6 +114,7 @@
                 </label>
               </div>
             </div>
+
             <app-texto-error 
               [control]="form.get('pregunta_' + pregunta.id)!"
               mensaje="Debes seleccionar una opción">
@@ -141,7 +143,7 @@
 
     <div *ngIf="encuestaVencida()" class="fail-message">
         <h2>Lo sentimos.</h2>
-        <p>No pude contestar esta encuesta porque ya expiró.</p>
+        <p>No puede contestar esta encuesta porque ya expiró.</p>
     </div>
   </div>
 </app-seccion>

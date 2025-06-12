@@ -117,17 +117,18 @@ export class GestionPreguntaDialogComponent {
 
 
         const pregunta: PreguntaDTO = {
-    id: 0, // viene del back
-    numero: 0, // Se ajusta en componente padre
-    texto: this.form.value.texto,
-    tipo: this.form.value.tipo,
-    opciones: this.form.value.tipo === TiposRespuestaEnum.VERDADERO_FALSO 
-      ? [] 
-      : this.form.value.opciones.map((opt: FormControl<Pick<CreateOpcionDTO, 'texto'>>) => ({
-          texto: opt.value.texto,
-          numero: 0,
-        })),
-  };
+            id: 0, // viene del back
+            numero: 0, // Se ajusta en componente padre
+            texto: this.form.value.texto,
+            tipo: this.form.value.tipo,
+            opciones: this.form.value.tipo === TiposRespuestaEnum.VERDADERO_FALSO 
+            ? [] 
+            : this.form.value.opciones.map((opt: FormControl<Pick<CreateOpcionDTO, 'texto'>>) => ({
+                texto: opt.value.texto,
+                numero: 0,
+            })),
+        };
+
         this.agregarPregunta.emit(pregunta);
         this.cerrar();
     } 

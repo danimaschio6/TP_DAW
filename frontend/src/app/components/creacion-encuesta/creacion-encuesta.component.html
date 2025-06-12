@@ -28,6 +28,26 @@
     <app-texto-error>Requerido</app-texto-error>
   }
 
+  <app-seccion>
+    <div class="contenedor-pregunta">
+      <p class="texto-pregunta">
+        ¿Desea que la encuesta tenga vencimiento?
+      </p>
+      <label for="input-fecha-vencimiento">Elija una fecha si lo desea:</label>
+      <!--
+      <input type="datetime-local"
+        id="input-fecha-vencimiento"
+        formControlName="fechaVencimiento"
+        />
+      -->
+      <input type="date"
+        id="input-fecha-vencimiento"
+        formControlName="fechaVencimiento"
+        [min]="fechaMinimaVencimiento"
+        />
+    </div>
+  </app-seccion>
+
   <div class="preguntas">
     @for (pregunta of preguntas.value; track idx; let idx = $index) {
       <app-seccion>

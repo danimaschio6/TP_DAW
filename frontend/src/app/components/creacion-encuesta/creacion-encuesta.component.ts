@@ -48,6 +48,9 @@ export class CreacionEncuestaComponent {
 
   dialogGestionPreguntaVisible = signal<boolean>(false);
   preguntaSeleccionada = signal<PreguntaDTO | null>(null);
+  
+  //fechaMinima = signal<string>(new Date().toISOString().split('T')[0]);//se puede todo en una linea?
+  fechaMinimaVencimiento = signal<string | null>(null);
 
   constructor() {
     this.form = new FormGroup({
@@ -57,7 +60,14 @@ export class CreacionEncuestaComponent {
         [],
         [Validators.required, Validators.minLength(1)]
       ),
+      fechaVencimiento: new FormControl<string| null>(null),
     });
+
+    //fecha minima para vencimiento - si da error quitar y chau - tambien la propiedad min en input date html
+    const hoy= new Date();
+    // Formatear la fecha en YYYY-MM-DD
+    const hoyProcesado= hoy.toISOString().split('T')[0]
+    this.fechaMinimaVencimiento.set(hoyProcesado);
   }
 
   get preguntas(): FormArray<FormControl<PreguntaDTO>> {
@@ -68,15 +78,21 @@ export class CreacionEncuestaComponent {
     return this.form.get('nombre') as FormControl<string>;
   }
 
+  get fechaVencimiento(): FormControl<string> {
+    return this.form.get('fechaVencimiento') as FormControl<string>;
+  }
+
   abrirDialog() {
     this.dialogGestionPreguntaVisible.set(true);
   }
 
   agregarPregunta(pregunta: PreguntaDTO) {
     // Si es VERDADERO_FALSO, aseguramos que no haya opciones (el backend las genera)
+    // sirve para algo? preguntas abiertas tampoco tienen opciones y no se les hace este tratamiento y no da problema
     if (pregunta.tipo === TiposRespuestaEnum.VERDADERO_FALSO) {
       pregunta.opciones = [];
     }
+
     this.preguntas.push(
       new FormControl<PreguntaDTO>(pregunta) as FormControl<PreguntaDTO>
     );
@@ -135,6 +151,7 @@ export class CreacionEncuestaComponent {
   }
 
   crearEncuesta() {
+    //verificacion de validez del form
     if (!this.form.valid) {
       this.form.markAllAsTouched();
       this.messageService.add({
@@ -144,15 +161,21 @@ export class CreacionEncuestaComponent {
       return;
     }
 
+    //esto es pq da problemas enviar un objeto date al back desde el front
+    const fechaFormulario= this.form.value.fechaVencimiento;
+    const fechaString= fechaFormulario ? new Date(fechaFormulario).toISOString() : null;
+
     const encuesta: CreateEncuestaDTO = {
       nombre: this.form.value.nombre,
       preguntas: this.form.value.preguntas.map((pregunta: PreguntaDTO) => {
         const { id, ...rest } = pregunta; // Excluir id
         return rest;
       }),
+      fechaVencimiento: fechaString,
+    
     };
 
-    console.log('Datos enviados al backend:', encuesta); // Depuración
+    //console.log('Datos enviados al backend:', encuesta); // Depuración debug
 
     for (let i = 0; i < encuesta.preguntas.length; i++) {
       const pregunta = encuesta.preguntas[i];
