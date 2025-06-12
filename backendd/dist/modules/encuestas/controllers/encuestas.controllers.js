@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const encuestas_services_1 = require("../services/encuestas.services");
 const create_encuesta_dto_1 = require("../dtos/create-encuesta.dto");
 const obtener_encuesta_dto_1 = require("../dtos/obtener-encuesta.dto");
+const update_encuesta_estado_dto_1 = require("../dtos/update-encuesta-estado.dto");
 let EncuestaController = class EncuestaController {
     encuestasService;
     constructor(encuestasService) {
@@ -33,6 +34,12 @@ let EncuestaController = class EncuestaController {
     }
     async obtenerEncuestaPorCodigoResultados(codigo) {
         return await this.encuestasService.obtenerEncuestaPorCodigoResultados(codigo);
+    }
+    async getAllEncuestas() {
+        return await this.encuestasService.getAllEncuestas();
+    }
+    async updateEncuestaEstado(id, dto) {
+        return await this.encuestasService.updateEncuestaEstado(id, dto);
     }
 };
 exports.EncuestaController = EncuestaController;
@@ -65,6 +72,21 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], EncuestaController.prototype, "obtenerEncuestaPorCodigoResultados", null);
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], EncuestaController.prototype, "getAllEncuestas", null);
+__decorate([
+    (0, common_1.Put)(':id/estado'),
+    (0, common_1.Patch)(':id/estado'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, update_encuesta_estado_dto_1.UpdateEncuestaEstadoDTO]),
+    __metadata("design:returntype", Promise)
+], EncuestaController.prototype, "updateEncuestaEstado", null);
 exports.EncuestaController = EncuestaController = __decorate([
     (0, common_1.Controller)("/encuestas"),
     __metadata("design:paramtypes", [encuestas_services_1.EncuestasService])

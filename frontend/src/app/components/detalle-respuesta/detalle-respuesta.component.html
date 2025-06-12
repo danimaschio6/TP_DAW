@@ -80,7 +80,26 @@
                     </div>
                   }
                 </div>
-              } @else {
+              } 
+              @else if (pregunta.tipo === TiposRespuestaEnum.VERDADERO_FALSO) {
+                <!-- Respuesta Verdadero/Falso -->
+                <div class="respuesta-vf-container">
+                  @if (tieneRespuesta(pregunta.id, pregunta.tipo)) {
+                    <div class="box-vf" [ngClass]="obtenerRespuestaVerdaderoFalso(pregunta.id) ? 'box-vf-verdadero' : 'box-vf-falso'">
+                      <i class="pi" [ngClass]="obtenerRespuestaVerdaderoFalso(pregunta.id) ? 'pi-check-circle' : 'pi-times-circle'"></i>
+                      <span class="texto-vf">
+                        {{ obtenerRespuestaVerdaderoFalso(pregunta.id) ? 'Verdadero' : 'Falso' }}
+                      </span>
+                    </div>
+                  } @else {
+                    <div class="sin-respuesta">
+                      <i class="pi pi-minus-circle"></i>
+                      <span>Sin respuesta</span>
+                    </div>
+                  }
+                </div>
+              }
+              @else {
                 <!-- Respuesta de Opciones -->
                 <div class="respuesta-opciones-container">
                   @if (tieneRespuesta(pregunta.id, pregunta.tipo)) {

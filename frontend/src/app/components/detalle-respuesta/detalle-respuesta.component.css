@@ -369,3 +369,36 @@
     font-size: 1.1em;
   }
 }
+
+/* Box para respuesta Verdadero/Falso */
+.box-vf {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 2rem;
+  border-radius: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 1.2rem auto;
+  max-width: 300px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  gap: 1rem;
+}
+.box-vf-verdadero {
+  background: #e6f9ec;
+  color: #219150;
+  border: 2px solid #219150;
+}
+.box-vf-falso {
+  background: #ffeaea;
+  color: #c0392b;
+  border: 2px solid #c0392b;
+}
+.box-vf .pi {
+  font-size: 2.2rem;
+}
+.texto-vf {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}

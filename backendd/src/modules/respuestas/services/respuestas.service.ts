@@ -135,7 +135,9 @@ export class RespuestasService {
         'respuestasAbiertas.pregunta',
         'respuestasOpciones',
         'respuestasOpciones.opcion',
-        'respuestasOpciones.opcion.pregunta'
+        'respuestasOpciones.opcion.pregunta',
+        'respuestasVerdaderoFalso',
+        'respuestasVerdaderoFalso.pregunta'
       ]
     });
 

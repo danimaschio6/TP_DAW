@@ -161,9 +161,19 @@ export class DetalleRespuestaComponent implements OnInit {
     return respuestasConTexto;
   }
 
+  obtenerRespuestaVerdaderoFalso(preguntaId: number): boolean | null {
+    const respuesta = this.respuesta();
+    if (!respuesta?.respuestasVerdaderoFalso) return null;
+    const vf = respuesta.respuestasVerdaderoFalso.find(rvf => rvf.pregunta?.id === preguntaId);
+    return vf !== undefined ? vf.valorRespuesta : null;
+    console.log(vf);
+  }
+
   tieneRespuesta(preguntaId: number, tipo: TiposRespuestaEnum): boolean {
     if (tipo === TiposRespuestaEnum.ABIERTA) {
       return this.obtenerRespuestaAbierta(preguntaId) !== null;
+    } else if (tipo === TiposRespuestaEnum.VERDADERO_FALSO) {
+      return this.obtenerRespuestaVerdaderoFalso(preguntaId) !== null;
     } else {
       return this.obtenerRespuestasOpciones(preguntaId).length > 0;
     }

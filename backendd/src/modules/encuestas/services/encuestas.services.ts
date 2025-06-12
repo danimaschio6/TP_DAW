@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { v4 } from 'uuid'
 import { CodigoTipoEnum } from '../enums/codigo-tipo.enum';
 import { NotFoundException } from '@nestjs/common';
+import { UpdateEncuestaEstadoDTO } from '../dtos/update-encuesta-estado.dto';
 //import { TiposRespuestaEnum } from '../enums/tipos-respuesta.enum'; // Importar el enum
 //import { CreateOpcionDTO } from '../dtos/create.opcion.dto'; // Importar CreateOpcionDTO
 
@@ -119,6 +120,17 @@ export class EncuestasService {
         return encuesta;
     }
 
+
+
+    // >>> NUEVO MÉTODO PARA OBTENER TODAS LAS ENCUESTAS <<<
+    async getAllEncuestas(): Promise<Encuesta[]> {
+        return await this.encuestasRepository.find({
+        relations: ['preguntas', 'preguntas.opciones'], // Cargar también preguntas y opciones
+        });
+    }
+    // >>> FIN NUEVO MÉTODO <<<
+
+    
     async obtenerTodasLasEncuestas(): Promise<Encuesta[]> {
         return await this.encuestasRepository.find({
             order: {
@@ -156,5 +168,19 @@ export class EncuestasService {
 
         return true;
     }
+    
+
+    async updateEncuestaEstado(
+        id: number,
+        dto: UpdateEncuestaEstadoDTO,
+      ): Promise<Encuesta> {
+        const encuesta = await this.encuestasRepository.findOne({ where: { id } });
+        if (!encuesta) {
+          throw new NotFoundException('Encuesta no encontrada');
+        }
+        encuesta.habilitada = dto.habilitada; // Actualiza el campo 'habilitada'
+        return this.encuestasRepository.save(encuesta); // Guarda los cambios
+      }
+
     
 }
