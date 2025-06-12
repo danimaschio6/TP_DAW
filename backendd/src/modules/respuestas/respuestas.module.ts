@@ -7,13 +7,15 @@ import { RespuestaOpcion } from './entities/respuesta-opcion.entity';
 import { RespuestasService } from './services/respuestas.service';
 import { RespuestasController } from './controllers/respuesta.controller';
 import { EncuestasModule } from '../encuestas/encuestas.module';
+import { RespuestaVerdaderoFalso } from './entities/respuesta-verdadero-falso.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Respuesta,
       RespuestaAbierta,
-      RespuestaOpcion
+      RespuestaOpcion,
+      RespuestaVerdaderoFalso
     ]),
     EncuestasModule
   ],

@@ -19,16 +19,19 @@ const typeorm_2 = require("typeorm");
 const respuesta_entity_1 = require("../entities/respuesta.entity");
 const respuesta_abierta_entity_1 = require("../entities/respuesta-abierta.entity");
 const respuesta_opcion_entity_1 = require("../entities/respuesta-opcion.entity");
+const respuesta_verdadero_falso_entity_1 = require("../entities/respuesta-verdadero-falso.entity");
 const encuestas_entity_1 = require("../../encuestas/entities/encuestas.entity");
 let RespuestasService = class RespuestasService {
     respuestaRepository;
     respuestaAbiertaRepository;
     respuestaOpcionRepository;
+    respuestaVerdaderoFalsoRepository;
     encuestaRepository;
-    constructor(respuestaRepository, respuestaAbiertaRepository, respuestaOpcionRepository, encuestaRepository) {
+    constructor(respuestaRepository, respuestaAbiertaRepository, respuestaOpcionRepository, respuestaVerdaderoFalsoRepository, encuestaRepository) {
         this.respuestaRepository = respuestaRepository;
         this.respuestaAbiertaRepository = respuestaAbiertaRepository;
         this.respuestaOpcionRepository = respuestaOpcionRepository;
+        this.respuestaVerdaderoFalsoRepository = respuestaVerdaderoFalsoRepository;
         this.encuestaRepository = encuestaRepository;
     }
     async crearRespuesta(encuestaId, respuestasData) {
@@ -59,6 +62,19 @@ let RespuestasService = class RespuestasService {
             await this.respuestaOpcionRepository.save(respuestasOpciones);
         }
         return this.obtenerRespuestaCompleta(respuestaGuardada.id);
+    }
+    async crearRespuestaVerdaderoFalso(respuestaId, dto) {
+        const respuesta = await this.respuestaRepository.findOne({
+            where: { id: respuestaId }
+        });
+        if (!respuesta) {
+            throw new common_1.NotFoundException(`Respuesta con ID ${respuestaId} no encontrada`);
+        }
+        const respuestaVerdaderoFalso = this.respuestaVerdaderoFalsoRepository.create({
+            respuesta: { id: respuestaId },
+            opcion: { id: dto.opcionId }
+        });
+        return await this.respuestaVerdaderoFalsoRepository.save(respuestaVerdaderoFalso);
     }
     async obtenerTodasLasRespuestas() {
         return await this.respuestaRepository.find({
@@ -136,6 +152,12 @@ let RespuestasService = class RespuestasService {
             respuestasOpciones
         };
     }
+    async obtenerRespuestasVerdaderoFalso(respuestaId) {
+        return await this.respuestaVerdaderoFalsoRepository.find({
+            where: { respuesta: { id: respuestaId } },
+            relations: ['opcion', 'opcion.pregunta']
+        });
+    }
     async eliminarRespuesta(respuestaId) {
         const respuesta = await this.respuestaRepository.findOne({
             where: { id: respuestaId }
@@ -146,6 +168,16 @@ let RespuestasService = class RespuestasService {
         await this.respuestaRepository.remove(respuesta);
         return { message: 'Respuesta eliminada correctamente' };
     }
+    async eliminarRespuestaVerdaderoFalso(id) {
+        const respuesta = await this.respuestaVerdaderoFalsoRepository.findOne({
+            where: { id }
+        });
+        if (!respuesta) {
+            throw new common_1.NotFoundException(`Respuesta verdadero/falso con ID ${id} no encontrada`);
+        }
+        await this.respuestaVerdaderoFalsoRepository.remove(respuesta);
+        return { message: 'Respuesta verdadero/falso eliminada correctamente' };
+    }
 };
 exports.RespuestasService = RespuestasService;
 exports.RespuestasService = RespuestasService = __decorate([
@@ -153,8 +185,10 @@ exports.RespuestasService = RespuestasService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(respuesta_entity_1.Respuesta)),
     __param(1, (0, typeorm_1.InjectRepository)(respuesta_abierta_entity_1.RespuestaAbierta)),
     __param(2, (0, typeorm_1.InjectRepository)(respuesta_opcion_entity_1.RespuestaOpcion)),
-    __param(3, (0, typeorm_1.InjectRepository)(encuestas_entity_1.Encuesta)),
+    __param(3, (0, typeorm_1.InjectRepository)(respuesta_verdadero_falso_entity_1.RespuestaVerdaderoFalso)),
+    __param(4, (0, typeorm_1.InjectRepository)(encuestas_entity_1.Encuesta)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository])

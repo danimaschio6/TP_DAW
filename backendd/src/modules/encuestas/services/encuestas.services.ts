@@ -21,8 +21,7 @@ export class EncuestasService {
         codigoRespuesta: string;
         codigoResultados: string;
     }> {
-        /*
-        //esto se cambio por lo deabajo
+        
         const encuesta: Encuesta = this.encuestasRepository.create({
             ...dto,
             preguntas: dto.preguntas.map(pregunta => {
@@ -39,17 +38,8 @@ export class EncuestasService {
       }),
             codigoRespuesta: v4(),
             codigoResultados: v4(),
-
-        });
-        */ 
-        //DIONI fecha_vencimiento
-        const encuesta: Encuesta = this.encuestasRepository.create({
-            ...dto,
-            codigoRespuesta: v4(),
-            codigoResultados: v4(),
             fechaVencimiento: dto.fechaVencimiento ? new Date(dto.fechaVencimiento) : null,
         });
-        //
 
         const encuestaGuardada = await this.encuestasRepository.save(encuesta)
 

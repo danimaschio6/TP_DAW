@@ -14,12 +14,14 @@ const typeorm_1 = require("typeorm");
 const encuestas_entity_1 = require("../../encuestas/entities/encuestas.entity");
 const respuesta_abierta_entity_1 = require("./respuesta-abierta.entity");
 const respuesta_opcion_entity_1 = require("./respuesta-opcion.entity");
+const respuesta_verdadero_falso_entity_1 = require("./respuesta-verdadero-falso.entity");
 let Respuesta = class Respuesta {
     id;
     encuesta;
     fechaCreacion;
     respuestasAbiertas;
     respuestasOpciones;
+    respuestasVerdaderoFalso;
 };
 exports.Respuesta = Respuesta;
 __decorate([
@@ -43,6 +45,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => respuesta_opcion_entity_1.RespuestaOpcion, respuestaOpcion => respuestaOpcion.respuesta, { cascade: true }),
     __metadata("design:type", Array)
 ], Respuesta.prototype, "respuestasOpciones", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => respuesta_verdadero_falso_entity_1.RespuestaVerdaderoFalso, respuestaVerdaderoFalso => respuestaVerdaderoFalso.respuesta, { cascade: true }),
+    __metadata("design:type", Array)
+], Respuesta.prototype, "respuestasVerdaderoFalso", void 0);
 exports.Respuesta = Respuesta = __decorate([
     (0, typeorm_1.Entity)('respuestas')
 ], Respuesta);

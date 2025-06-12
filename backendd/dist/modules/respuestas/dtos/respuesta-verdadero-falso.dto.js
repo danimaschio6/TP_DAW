@@ -9,25 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ObtenerEncuestaDto = void 0;
-const swagger_1 = require("@nestjs/swagger");
+exports.RespuestaVerdaderoFalsoResponseDto = exports.CreateRespuestaVerdaderoFalsoDto = void 0;
 const class_validator_1 = require("class-validator");
-const codigo_tipo_enum_1 = require("../enums/codigo-tipo.enum");
-class ObtenerEncuestaDto {
-    codigo;
-    tipo;
+class CreateRespuestaVerdaderoFalsoDto {
+    opcionId;
 }
-exports.ObtenerEncuestaDto = ObtenerEncuestaDto;
+exports.CreateRespuestaVerdaderoFalsoDto = CreateRespuestaVerdaderoFalsoDto;
 __decorate([
-    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], ObtenerEncuestaDto.prototype, "codigo", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ enum: codigo_tipo_enum_1.CodigoTipoEnum }),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsEnum)(codigo_tipo_enum_1.CodigoTipoEnum, { message: 'tipo debe ser RESPUESTA o RESULTADOS' }),
-    __metadata("design:type", String)
-], ObtenerEncuestaDto.prototype, "tipo", void 0);
-//# sourceMappingURL=obtener-encuesta.dto.js.map
+    __metadata("design:type", Number)
+], CreateRespuestaVerdaderoFalsoDto.prototype, "opcionId", void 0);
+class RespuestaVerdaderoFalsoResponseDto {
+    id;
+    respuestaId;
+    opcionId;
+}
+exports.RespuestaVerdaderoFalsoResponseDto = RespuestaVerdaderoFalsoResponseDto;
+//# sourceMappingURL=respuesta-verdadero-falso.dto.js.map

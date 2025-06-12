@@ -3,6 +3,7 @@ import {
   ArrayMinSize,
   ArrayNotEmpty,
   IsArray,
+  IsISO8601,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -29,4 +30,9 @@ export class CreateEncuestaDTO {
   @ValidateNested({ each: true })
   @Type(() => CreatePreguntaDTO)
   preguntas: CreatePreguntaDTO[];
+
+  @ApiProperty()
+  @IsISO8601()
+  @IsOptional()
+  fechaVencimiento?: string|null;
 }
