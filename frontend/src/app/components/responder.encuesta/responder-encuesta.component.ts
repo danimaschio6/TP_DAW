@@ -177,7 +177,8 @@ export class ResponderEncuestaComponent {
     this.mensajeError.set(null);
     
     const respuestas = this.construirRespuestas();
-    console.log(respuestas);
+    console.log('Enviando respuestas:', respuestas);
+    
     this.respuestasService.crearRespuesta(respuestas).subscribe({
       next: () => {
         this.enviadoConExito.set(true);
@@ -185,7 +186,21 @@ export class ResponderEncuestaComponent {
       },
       error: (error) => {
         console.error('Error al enviar respuesta:', error);
-        this.mensajeError.set('Error al enviar la respuesta. Intenta de nuevo.');
+        let mensajeError = 'Error al enviar la respuesta. ';
+        
+        if (error.error?.message) {
+          mensajeError += error.error.message;
+        } else if (error.status === 400) {
+          mensajeError += 'Los datos enviados no son válidos.';
+        } else if (error.status === 403) {
+          mensajeError += 'No tienes permiso para enviar esta respuesta.';
+        } else if (error.status === 404) {
+          mensajeError += 'La encuesta no existe o ya no está disponible.';
+        } else {
+          mensajeError += 'Intenta de nuevo más tarde.';
+        }
+        
+        this.mensajeError.set(mensajeError);
         this.enviando.set(false);
       }
     });
@@ -195,9 +210,7 @@ export class ResponderEncuestaComponent {
     const encuesta = this.encuesta()!;
     const respuestasAbiertas: RespuestaAbiertaPayloadDTO[] = [];
     const respuestasOpciones: RespuestaOpcionPayloadDTO[] = [];
-    //DIONI VF
     const respuestasVerdaderoFalso: RespuestaVerdaderoFalsoPayloadDTO[] = [];
-    //
 
     encuesta.preguntas.forEach(pregunta => {
       const nombreControl = `pregunta_${pregunta.id}`;
@@ -231,8 +244,11 @@ export class ResponderEncuestaComponent {
           break;
 
         case TiposRespuestaEnum.VERDADERO_FALSO:
-          if (valor !== null && valor !== undefined) {//OJO CON FALSY?
-            respuestasVerdaderoFalso.push({ valor: valor });
+          if (valor !== null && valor !== undefined) {
+            respuestasVerdaderoFalso.push({ 
+              preguntaId: pregunta.id,
+              valorRespuesta: valor 
+            });
           }
           break;
       }
@@ -242,9 +258,7 @@ export class ResponderEncuestaComponent {
       encuestaId: encuesta.id,
       respuestasAbiertas: respuestasAbiertas.length > 0 ? respuestasAbiertas : [],
       respuestasOpciones: respuestasOpciones.length > 0 ? respuestasOpciones : [],
-      //DIONI VF
       respuestasVerdaderoFalso: respuestasVerdaderoFalso.length > 0 ? respuestasVerdaderoFalso : []
-      //
     };
   }
   

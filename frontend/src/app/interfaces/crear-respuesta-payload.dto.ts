@@ -7,18 +7,14 @@ export interface RespuestaOpcionPayloadDTO {
   opcionId: number;
 }
 
+export interface RespuestaVerdaderoFalsoPayloadDTO {
+  preguntaId: number;
+  valorRespuesta: boolean;
+}
+
 export interface CrearRespuestaPayloadDTO {
   encuestaId: number;
   respuestasAbiertas?: RespuestaAbiertaPayloadDTO[];
   respuestasOpciones?: RespuestaOpcionPayloadDTO[];
-
-  //DIONI VF
   respuestasVerdaderoFalso?: RespuestaVerdaderoFalsoPayloadDTO[];
-  //
 }
-
-//DIONI VF
-export interface RespuestaVerdaderoFalsoPayloadDTO {
-  valor: boolean;
-}
-//

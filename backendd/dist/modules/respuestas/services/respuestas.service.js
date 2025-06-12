@@ -47,35 +47,26 @@ let RespuestasService = class RespuestasService {
         });
         const respuestaGuardada = await this.respuestaRepository.save(respuesta);
         if (respuestasData.respuestasAbiertas && respuestasData.respuestasAbiertas.length > 0) {
-            const respuestasAbiertas = respuestasData.respuestasAbiertas.map(ra => {
-                console.log(ra);
-                this.respuestaAbiertaRepository.create({
-                    respuesta: respuestaGuardada,
-                    pregunta: { id: ra.preguntaId },
-                    texto: ra.texto
-                });
-            });
+            const respuestasAbiertas = respuestasData.respuestasAbiertas.map(ra => this.respuestaAbiertaRepository.create({
+                respuesta: respuestaGuardada,
+                pregunta: { id: ra.preguntaId },
+                texto: ra.texto
+            }));
             await this.respuestaAbiertaRepository.save(respuestasAbiertas);
         }
         if (respuestasData.respuestasOpciones && respuestasData.respuestasOpciones.length > 0) {
-            const respuestasOpciones = respuestasData.respuestasOpciones.map(ro => {
-                console.log(ro);
-                this.respuestaOpcionRepository.create({
-                    respuesta: respuestaGuardada,
-                    opcion: { id: ro.opcionId }
-                });
-            });
+            const respuestasOpciones = respuestasData.respuestasOpciones.map(ro => this.respuestaOpcionRepository.create({
+                respuesta: respuestaGuardada,
+                opcion: { id: ro.opcionId }
+            }));
             await this.respuestaOpcionRepository.save(respuestasOpciones);
         }
         if (respuestasData.respuestasVerdaderoFalso && respuestasData.respuestasVerdaderoFalso.length > 0) {
-            const respuestasVerdaderoFalso = respuestasData.respuestasVerdaderoFalso.map(rVF => {
-                console.log(rVF);
-                this.respuestaVerdaderoFalsoRepository.create({
-                    respuesta: respuestaGuardada,
-                    pregunta: { id: rVF.preguntaId },
-                    valorRespuesta: rVF.valorRespuesta
-                });
-            });
+            const respuestasVerdaderoFalso = respuestasData.respuestasVerdaderoFalso.map(rVF => this.respuestaVerdaderoFalsoRepository.create({
+                respuesta: respuestaGuardada,
+                pregunta: { id: rVF.preguntaId },
+                valorRespuesta: rVF.valorRespuesta
+            }));
             await this.respuestaVerdaderoFalsoRepository.save(respuestasVerdaderoFalso);
         }
         return this.obtenerRespuestaCompleta(respuestaGuardada.id);
