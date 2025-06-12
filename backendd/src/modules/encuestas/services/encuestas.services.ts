@@ -6,6 +6,8 @@ import { Repository } from 'typeorm';
 import { v4 } from 'uuid'
 import { CodigoTipoEnum } from '../enums/codigo-tipo.enum';
 import { NotFoundException } from '@nestjs/common';
+import { TiposRespuestaEnum } from '../enums/tipos-respuesta.enum'; // Importar el enum
+import { CreateOpcionDTO } from '../dtos/create.opcion.dto'; // Importar CreateOpcionDTO
 
 @Injectable()
 export class EncuestasService {
@@ -23,6 +25,18 @@ export class EncuestasService {
         //esto se cambio por lo deabajo
         const encuesta: Encuesta = this.encuestasRepository.create({
             ...dto,
+            preguntas: dto.preguntas.map(pregunta => {
+        if (pregunta.tipo === TiposRespuestaEnum.VERDADERO_FALSO) {
+          return {
+            ...pregunta,
+            opciones: [
+              { texto: 'verdadero', numero: 1 } as CreateOpcionDTO,
+              { texto: 'falso', numero: 2 } as CreateOpcionDTO,
+            ],
+          };
+        }
+        return pregunta;
+      }),
             codigoRespuesta: v4(),
             codigoResultados: v4(),
 

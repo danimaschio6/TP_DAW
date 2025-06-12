@@ -114,7 +114,22 @@ app-texto-error {
   box-sizing: border-box;
 }
 
+
+@media (min-width: 500px) {
+  .texto-opcion{
+    max-width: 25vw;
+  }
+  .texto-pregunta{
+    max-width: 25vw;
+  }
+}
+.opciones-vf {
+  display: flex;
+  gap: 1rem;
+}
+
 /* Mejora la altura de los campos con floatlabel para evitar saltos */
 .campo p-floatlabel:has(textarea) {
   min-height: 6.5rem;
 }
+

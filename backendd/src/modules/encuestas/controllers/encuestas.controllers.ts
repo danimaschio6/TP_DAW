@@ -4,6 +4,7 @@ import { CreateEncuestaDTO } from "../dtos/create-encuesta.dto";
 import { Encuesta } from "../entities/encuestas.entity";
 import { ObtenerEncuestaDto } from '../dtos/obtener-encuesta.dto';
 
+
 @Controller("/encuestas")
 export class EncuestaController{
 
@@ -51,3 +52,4 @@ export class EncuestaController{
     
 
 }
+

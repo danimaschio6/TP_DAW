@@ -73,6 +73,10 @@ export class CreacionEncuestaComponent {
   }
 
   agregarPregunta(pregunta: PreguntaDTO) {
+    // Si es VERDADERO_FALSO, aseguramos que no haya opciones (el backend las genera)
+    if (pregunta.tipo === TiposRespuestaEnum.VERDADERO_FALSO) {
+      pregunta.opciones = [];
+    }
     this.preguntas.push(
       new FormControl<PreguntaDTO>(pregunta) as FormControl<PreguntaDTO>
     );
@@ -140,7 +144,15 @@ export class CreacionEncuestaComponent {
       return;
     }
 
-    const encuesta: CreateEncuestaDTO = this.form.value;
+    const encuesta: CreateEncuestaDTO = {
+      nombre: this.form.value.nombre,
+      preguntas: this.form.value.preguntas.map((pregunta: PreguntaDTO) => {
+        const { id, ...rest } = pregunta; // Excluir id
+        return rest;
+      }),
+    };
+
+    console.log('Datos enviados al backend:', encuesta); // Depuración
 
     for (let i = 0; i < encuesta.preguntas.length; i++) {
       const pregunta = encuesta.preguntas[i];
@@ -168,6 +180,8 @@ export class CreacionEncuestaComponent {
           },
         });
       },
+      error: (err) => {
+        console.log('Error del backend:', err); // Depuración
       error: () => {
         this.messageService.add({
           severity: 'error',

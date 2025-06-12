@@ -30,6 +30,47 @@
 
   <div class="preguntas">
     @for (pregunta of preguntas.value; track idx; let idx = $index) {
+
+      <app-seccion>
+        <div class="contenedor-pregunta">
+          <p class="texto-pregunta">
+            {{ pregunta.texto }} ({{
+              getTipoPreguntaPresentacion(pregunta.tipo)
+            }})
+          </p>
+          <ul>
+            @for (opcion of pregunta.opciones; track i; let i = $index) {
+              <li>
+                <p class="texto-opcion">{{ opcion.texto }}</p>
+              </li>
+            }
+            @if (!pregunta.opciones?.length && pregunta.tipo === 'VERDADERO_FALSO') {
+              <li>
+                <div class="opciones-vf">
+                  <p-button
+                    label="Verdadero"
+                    [disabled]="true"
+                    styleClass="p-button-secondary"
+                  ></p-button>
+                  <p-button
+                    label="Falso"
+                    [disabled]="true"
+                    styleClass="p-button-secondary"
+                  ></p-button>
+                </div>
+              </li>
+            }
+          </ul>
+          <div class="botonera-pregunta">
+            <p-button
+              (onClick)="confirmarEliminarPregunta(idx)"
+              id="boton-eliminar-pregunta"
+              icon="pi pi-times"
+              label="Eliminar"
+              severity="danger"
+            ></p-button>
+          </div>
+
       <div class="pregunta">
         <p class="texto-pregunta">
           {{ pregunta.texto }} ({{ getTipoPreguntaPresentacion(pregunta.tipo) }})
@@ -46,6 +87,7 @@
             label="Eliminar"
             severity="danger"
           ></p-button>
+
         </div>
       </div>
     }

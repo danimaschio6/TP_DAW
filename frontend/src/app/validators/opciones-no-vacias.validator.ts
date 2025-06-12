@@ -19,7 +19,12 @@ import { OpcionDTO } from "../interfaces/opcion.dto";
         return { opcionesRequeridas: true };
     }
 
-    return null;
+    // Validación para VERDADERO_FALSO: aceptar opciones vacías
+  if (controlTipo.value === TiposRespuestaEnum.VERDADERO_FALSO && controlOpciones.value.length > 0) {
+    return { opcionesNoPermitidas: true };
+  }
+
+  return null;
  };
 
 

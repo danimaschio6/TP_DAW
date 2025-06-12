@@ -6,5 +6,6 @@ var TiposRespuestaEnum;
     TiposRespuestaEnum["ABIERTA"] = "ABIERTA";
     TiposRespuestaEnum["OPCION_MULTIPLE_SELECCION_SIMPLE"] = "OPCION_MULTIPLE_SELECCION_SIMPLE";
     TiposRespuestaEnum["OPCION_MULTIPLE_SELECCION_MULTIPLE"] = "OPCION_MULTIPLE_SELECCION_MULTIPLE";
+    TiposRespuestaEnum["VERDADERO_FALSO"] = "VERDADERO_FALSO";
 })(TiposRespuestaEnum || (exports.TiposRespuestaEnum = TiposRespuestaEnum = {}));
 //# sourceMappingURL=tipos-respuesta.enum.js.map
