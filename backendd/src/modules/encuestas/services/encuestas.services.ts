@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable,  ForbiddenException } from '@nestjs/common';
 import { CreateEncuestaDTO } from '../dtos/create-encuesta.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Encuesta } from '../entities/encuestas.entity';
@@ -21,6 +21,8 @@ export class EncuestasService {
         codigoRespuesta: string;
         codigoResultados: string;
     }> {
+        /*
+        //esto se cambio por lo deabajo
         const encuesta: Encuesta = this.encuestasRepository.create({
             ...dto,
             preguntas: dto.preguntas.map(pregunta => {
@@ -39,6 +41,15 @@ export class EncuestasService {
             codigoResultados: v4(),
 
         });
+        */ 
+        //DIONI fecha_vencimiento
+        const encuesta: Encuesta = this.encuestasRepository.create({
+            ...dto,
+            codigoRespuesta: v4(),
+            codigoResultados: v4(),
+            fechaVencimiento: dto.fechaVencimiento ? new Date(dto.fechaVencimiento) : null,
+        });
+        //
 
         const encuestaGuardada = await this.encuestasRepository.save(encuesta)
 
@@ -93,6 +104,10 @@ export class EncuestasService {
     if (!encuesta) {
         throw new NotFoundException('Encuesta no encontrada');
     }
+
+    if (!encuesta.habilitada) {
+        throw new ForbiddenException('Esta encuesta está deshabilitada y no puede ser respondida');
+    }
     
     return encuesta;
 }
@@ -106,8 +121,47 @@ export class EncuestasService {
         if (!encuesta) {
             throw new NotFoundException('Encuesta no encontrada');
         }
-        
+
+       
         return encuesta;
+    }
+
+    async obtenerTodasLasEncuestas(): Promise<Encuesta[]> {
+    return await this.encuestasRepository.find({
+        order: {
+            id: 'DESC' 
+        }
+    });
+    }
+
+    async actualizarEstadoEncuesta(id: number, habilitada: boolean): Promise<Encuesta> {
+    const encuesta = await this.encuestasRepository.findOne({
+        where: { id }
+    });
+
+    if (!encuesta) {
+        throw new NotFoundException('Encuesta no encontrada');
+    }
+
+    encuesta.habilitada = habilitada;
+    return await this.encuestasRepository.save(encuesta);
+}
+
+
+    async validarEncuestaParaResponder(codigoRespuesta: string): Promise<boolean> {
+        const encuesta = await this.encuestasRepository.findOne({
+            where: { codigoRespuesta: codigoRespuesta }
+        });
+
+        if (!encuesta) {
+            throw new NotFoundException('Encuesta no encontrada');
+        }
+
+        if (!encuesta.habilitada) {
+            throw new ForbiddenException('Esta encuesta está deshabilitada y no puede ser respondida');
+        }
+
+        return true;
     }
     
 }

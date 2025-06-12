@@ -1,10 +1,16 @@
-<h1>Crea una encuesta</h1>
-<ul>
-    <li>Simple</li>
-    <li>Rapido</li>
-    <li>Anonimo</li>
-</ul>
+<div class="main-container">
+  <h1>Creá tu encuesta en segundos</h1>
+  
+  <ul>
+    <li style="--index: 0">✔️ Simple</li>
+    <li style="--index: 1">⚡ Rápido</li>
+    <li style="--index: 2">🔍 Anónimo</li>
+  </ul>
 
-<p-button label="Comenzar" [routerLink]="['creacion']"></p-button>
+  <div>
+    <p-button label="Comenzar" [routerLink]="['creacion']"></p-button>
+    <p-button label="Gestionar Encuestas" [routerLink]="['gestionar-encuesta']"></p-button>
+  </div>
 
-
+  <p class="description">Solo comenzá. Nosotros nos encargamos del resto</p>
+</div>

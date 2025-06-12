@@ -1,10 +1,11 @@
 // src/modules/respuestas/respuestas.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Respuesta } from '../entities/respuesta.entity';
 import { RespuestaAbierta } from '../entities/respuesta-abierta.entity';
 import { RespuestaOpcion } from '../entities/respuesta-opcion.entity';
+import { Encuesta } from '../../encuestas/entities/encuestas.entity';
 
 @Injectable()
 export class RespuestasService {
@@ -17,10 +18,23 @@ export class RespuestasService {
     
     @InjectRepository(RespuestaOpcion)
     private respuestaOpcionRepository: Repository<RespuestaOpcion>,
+
+    //DIONI fecha_vencimiento
+    @InjectRepository(Encuesta)
+    private encuestaRepository: Repository<Encuesta>,
   ) {}
 
   // Crear una nueva respuesta completa a una encuesta
   async crearRespuesta(encuestaId: number, respuestasData: any) {
+    //DIONI fecha_vencimiento
+    const encuesta = await this.encuestaRepository.findOne({ where: { id: encuestaId } });
+    if (!encuesta) {
+      throw new NotFoundException('Encuesta no encontrada');
+    }
+    if (encuesta.fechaVencimiento && new Date() > encuesta.fechaVencimiento) {//MANEJAR ERROR en front?
+      throw new BadRequestException('La encuesta ya ha vencido y no se puede responder');
+    }
+
     // Crear la respuesta principal
     const respuesta = this.respuestaRepository.create({
       encuesta: { id: encuestaId }

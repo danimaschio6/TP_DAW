@@ -1,21 +1,36 @@
-<h1>Creá una encuesta</h1>
+<h1 class="titulo">Creá una encuesta</h1>
+
 <form [formGroup]="form" (ngSubmit)="confirmarCrearEncuesta()">
-  <div id="contenedor-encuesta">
-    <app-seccion>
-      <p-floatlabel variant="on" id="float-label-nombre-encuesta">
-        <input
-          pInputText
-          id="input-nombre"
-          formControlName="nombre"
-          autocomplete="off"
-        />
-        <label for="input-nombre">Nombre de la encuesta</label>
-      </p-floatlabel>
-      @if (nombre.invalid && nombre.touched) {
-        <app-texto-error>Requerido</app-texto-error>
-      }
-    </app-seccion>
+  <div class="campo">
+    <p-floatlabel variant="on">
+      <input
+        pInputText
+        formControlName="nombre"
+        autocomplete="off"
+      />
+      <label for="input-nombre">Nombre de la encuesta</label>
+    </p-floatlabel>
+  </div>
+
+  <div class="campo">
+    <p-floatlabel variant="on">
+      <textarea
+        pInputTextarea
+        formControlName="descripcion"
+        rows="3"
+        style="width: 100%;"
+      ></textarea>
+      <label for="descripcion">Descripción (opcional)</label>
+    </p-floatlabel>
+  </div>
+
+  @if (nombre.invalid && nombre.touched) {
+    <app-texto-error>Requerido</app-texto-error>
+  }
+
+  <div class="preguntas">
     @for (pregunta of preguntas.value; track idx; let idx = $index) {
+
       <app-seccion>
         <div class="contenedor-pregunta">
           <p class="texto-pregunta">
@@ -55,32 +70,50 @@
               severity="danger"
             ></p-button>
           </div>
+
+      <div class="pregunta">
+        <p class="texto-pregunta">
+          {{ pregunta.texto }} ({{ getTipoPreguntaPresentacion(pregunta.tipo) }})
+        </p>
+        <ul>
+          @for (opcion of pregunta.opciones; track i; let i = $index) {
+            <li><p class="texto-opcion">{{ opcion.texto }}</p></li>
+          }
+        </ul>
+        <div class="botonera">
+          <p-button
+            (onClick)="confirmarEliminarPregunta(idx)"
+            icon="pi pi-times"
+            label="Eliminar"
+            severity="danger"
+          ></p-button>
+
         </div>
-      </app-seccion>
+      </div>
     }
-    <app-seccion>
-      <p-button
-        label="Agregar Pregunta"
-        (onClick)="abrirDialog()"
-        icon="pi pi-plus"
-      />
-      @if (preguntas.invalid && form.touched) {
-        <app-texto-error>Debe agregar al menos una pregunra</app-texto-error>
-      }
-    </app-seccion>
-    <button
-      id="boton-finalizar"
-      pButton
-      pRipple
-      type="submit"
-      icon="pi pi-check"
-      severity="contrast"
-    >
-      Finalizar
-    </button>
   </div>
+
+  <p-button
+    label="Agregar Pregunta"
+    (onClick)="abrirDialog()"
+    icon="pi pi-plus"
+    class="boton-agregar"
+  ></p-button>
+
+  @if (preguntas.invalid && form.touched) {
+    <app-texto-error>Debe agregar al menos una pregunta</app-texto-error>
+  }
+
+  <button
+    pButton
+    type="submit"
+    icon="pi pi-check"
+    label="Finalizar"
+    class="boton-finalizar"
+  ></button>
 </form>
+
 <app-gestion-pregunta-dialog
   [(visible)]="dialogGestionPreguntaVisible"
   (agregarPregunta)="agregarPregunta($event)"
-/>
+></app-gestion-pregunta-dialog>

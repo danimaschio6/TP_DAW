@@ -42,21 +42,17 @@ export class CreacionEncuestaComponent {
   form: FormGroup;
 
   private messageService: MessageService = inject(MessageService);
-
   private router: Router = inject(Router);
-
-  private confirmationService: ConfirmationService =
-    inject(ConfirmationService);
-
+  private confirmationService: ConfirmationService = inject(ConfirmationService);
   private encuestasService: EncuestasService = inject(EncuestasService);
 
   dialogGestionPreguntaVisible = signal<boolean>(false);
-
   preguntaSeleccionada = signal<PreguntaDTO | null>(null);
 
   constructor() {
     this.form = new FormGroup({
       nombre: new FormControl<string>('', Validators.required),
+      descripcion: new FormControl<string>(''), // <-- campo opcional
       preguntas: new FormArray<FormControl<PreguntaDTO>>(
         [],
         [Validators.required, Validators.minLength(1)]
@@ -175,6 +171,7 @@ export class CreacionEncuestaComponent {
           severity: 'success',
           summary: 'La encuesta se creó con éxito',
         });
+
         this.router.navigateByUrl('/encuesta-creada-exitosamente', {
           state: {
             encuestaId: res.id,
@@ -185,6 +182,7 @@ export class CreacionEncuestaComponent {
       },
       error: (err) => {
         console.log('Error del backend:', err); // Depuración
+      error: () => {
         this.messageService.add({
           severity: 'error',
           summary: 'Ha ocurrido un error al crear la encuesta',

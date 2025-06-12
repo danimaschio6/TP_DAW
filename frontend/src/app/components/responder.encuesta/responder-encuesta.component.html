@@ -9,8 +9,24 @@
       <p>Cargando encuesta...</p>
     </div>
 
-    <!-- El formulario se muestra solo si la encuesta está cargada y no ha sido enviada -->
-    <div *ngIf="!cargando() && encuesta() && !enviadoConExito()" class="survey-form">
+
+    <!-- Mensaje de error general (encuesta no encontrada, error de red, etc.) -->
+    <div *ngIf="!cargando() && mensajeError() && !encuestaDeshabilitada()" class="error-message">
+      <h2>Error</h2>
+      <p>{{ mensajeError() }}</p>
+    </div>
+
+    <!-- Mensaje para encuesta deshabilitada -->
+    <div *ngIf="!cargando() && encuestaDeshabilitada()" class="disabled-message">
+      <i class="fas fa-lock"></i>
+      <h2>Encuesta Deshabilitada</h2>
+      <p>Esta encuesta se encuentra deshabilitada y no puede ser respondida en este momento.</p>
+      <p>Por favor, contacta al administrador para más información.</p>
+    </div>
+
+    <!-- El formulario se muestra solo si la encuesta está cargada, habilitada y no ha sido enviada -->
+    <div *ngIf="!cargando() && !mensajeError() && !encuestaDeshabilitada() && encuesta() && !enviadoConExito() && !encuestaVencida()" class="survey-form">
+
       <h2>{{ encuesta()?.nombre }}</h2>
       
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -49,6 +65,7 @@
               </label>
             </div>
             <app-texto-error 
+              class="subtle"
               [control]="form.get('pregunta_' + pregunta.id)!"
               mensaje="Debes seleccionar una opción">
             </app-texto-error>
@@ -92,5 +109,9 @@
         <p>Gracias por completar la encuesta.</p>
     </div>
 
+    <div *ngIf="encuestaVencida()" class="fail-message">
+        <h2>Lo sentimos.</h2>
+        <p>No pude contestar esta encuesta porque ya expiró.</p>
+    </div>
   </div>
 </app-seccion>

@@ -22,6 +22,7 @@ exports.EncuestasModule = EncuestasModule = __decorate([
         imports: [typeorm_1.TypeOrmModule.forFeature([encuestas_entity_1.Encuesta, pregunta_entity_1.Pregunta, opcion_entity_1.Opcion])],
         controllers: [encuestas_controllers_1.EncuestaController],
         providers: [encuestas_services_1.EncuestasService],
+        exports: [typeorm_1.TypeOrmModule]
     })
 ], EncuestasModule);
 //# sourceMappingURL=encuestas.module.js.map

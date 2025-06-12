@@ -14,6 +14,7 @@ const respuesta_abierta_entity_1 = require("./entities/respuesta-abierta.entity"
 const respuesta_opcion_entity_1 = require("./entities/respuesta-opcion.entity");
 const respuestas_service_1 = require("./services/respuestas.service");
 const respuesta_controller_1 = require("./controllers/respuesta.controller");
+const encuestas_module_1 = require("../encuestas/encuestas.module");
 let RespuestasModule = class RespuestasModule {
 };
 exports.RespuestasModule = RespuestasModule;
@@ -24,7 +25,8 @@ exports.RespuestasModule = RespuestasModule = __decorate([
                 respuesta_entity_1.Respuesta,
                 respuesta_abierta_entity_1.RespuestaAbierta,
                 respuesta_opcion_entity_1.RespuestaOpcion
-            ])
+            ]),
+            encuestas_module_1.EncuestasModule
         ],
         controllers: [respuesta_controller_1.RespuestasController],
         providers: [respuestas_service_1.RespuestasService],

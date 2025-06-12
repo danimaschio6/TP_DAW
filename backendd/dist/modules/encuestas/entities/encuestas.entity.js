@@ -19,6 +19,8 @@ let Encuesta = class Encuesta {
     preguntas;
     codigoRespuesta;
     codigoResultados;
+    fechaVencimiento;
+    habilitada;
 };
 exports.Encuesta = Encuesta;
 __decorate([
@@ -44,6 +46,16 @@ __decorate([
     (0, class_transformer_1.Exclude)(),
     __metadata("design:type", String)
 ], Encuesta.prototype, "codigoResultados", void 0);
+__decorate([
+
+    (0, typeorm_1.Column)({ name: 'fecha_vencimiento', type: 'timestamp', nullable: true }),
+    __metadata("design:type", Object)
+], Encuesta.prototype, "fechaVencimiento", void 0);
+
+    (0, typeorm_1.Column)({ name: 'habilitada', default: true }),
+    __metadata("design:type", Boolean)
+], Encuesta.prototype, "habilitada", void 0);
+
 exports.Encuesta = Encuesta = __decorate([
     (0, typeorm_1.Entity)({ name: "encuestas" })
 ], Encuesta);

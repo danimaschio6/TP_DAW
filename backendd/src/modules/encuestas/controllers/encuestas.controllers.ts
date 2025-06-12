@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { EncuestasService } from "../services/encuestas.services";
 import { CreateEncuestaDTO } from "../dtos/create-encuesta.dto";
 import { Encuesta } from "../entities/encuestas.entity";
-import { ObtenerEncuestaDto } from '../dtos/obtener-encuesta.dto'
+import { ObtenerEncuestaDto } from '../dtos/obtener-encuesta.dto';
 
 
 @Controller("/encuestas")

@@ -1,0 +1,57 @@
+<!-- src/app/components/gestor-encuestas/gestor-encuestas.component.html -->
+
+<div class="container">
+  <h2>Gestión de Encuestas</h2>
+
+  <!-- Spinner y mensaje de carga: Usar cargando() -->
+  <div *ngIf="cargando()" class="loading-message">
+    <p>Cargando encuestas... <i class="fas fa-spinner fa-spin"></i></p>
+  </div>
+
+  <!-- Mensaje de error: Usar error() -->
+  <div *ngIf="error()" class="error-message">
+    <p>{{ error() }} <i class="fas fa-exclamation-triangle"></i></p>
+    <!-- Botón para reintentar carga, si lo deseas -->
+    <p-button label="Reintentar" icon="pi pi-refresh" (click)="cargarEncuestas()"></p-button>
+  </div>
+
+  <!-- Mensaje si no hay encuestas y no está cargando ni hay error: Usar cargando(), error() y encuestas().length -->
+  <div *ngIf="!cargando() && !error() && encuestas().length === 0" class="no-encuestas">
+    <p>No hay encuestas disponibles para gestionar.</p>
+    <p-button label="Crear Nueva Encuesta" icon="pi pi-plus" routerLink="/crear-encuesta"></p-button>
+  </div>
+
+  <!-- Lista de encuestas: Usar cargando(), error() y encuestas().length -->
+  <div *ngIf="!cargando() && !error() && encuestas().length > 0" class="encuestas-grid">
+    <div *ngFor="let encuesta of encuestas()" class="encuesta-card">
+      <h3>{{ encuesta.nombre }} <!--(ID: {{ encuesta.id }}) --> </h3>
+      <p>Código Respuesta: <code>{{ encuesta.codigoRespuesta }}</code></p>
+      <p>Código Resultados: <code>{{ encuesta.codigoResultados }}</code></p>
+
+      <div class="estado-toggle">
+        <label class="toggle-switch">
+          <input
+            type="checkbox"
+            [checked]="encuesta.habilitada"
+            [disabled]="encuesta.isUpdating"
+            (change)="onToggleEncuestaEstado(encuesta.id, $event)"
+          />
+          <span class="slider round"></span>
+        </label>
+        <span class="estado-texto">
+          {{ encuesta.habilitada ? 'Habilitada' : 'Deshabilitada' }}
+        </span>
+        <span *ngIf="encuesta.isUpdating" class="loading-indicator">
+          <i class="fas fa-spinner fa-spin"></i>
+        </span>
+        <span *ngIf="encuesta.updateError" class="error-indicator">
+          <i class="fas fa-exclamation-triangle"></i>
+        </span>
+      </div>
+
+      <!-- <button class="btn-detalles" (click)="verResultadosDetallados(encuesta.codigoResultados)">
+        Ver Resultados
+      </button> -->
+    </div>
+  </div>
+</div>
