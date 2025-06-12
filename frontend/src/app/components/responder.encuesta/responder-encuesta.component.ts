@@ -145,6 +145,9 @@ export class ResponderEncuestaComponent {
             validators: [this.alMenosUnoSeleccionadoValidator()] 
           });
           break;
+        case TiposRespuestaEnum.VERDADERO_FALSO:
+          controles[nombreControl] = new FormControl(null, Validators.required);
+          break;
       }
     });
 
@@ -215,6 +218,11 @@ export class ResponderEncuestaComponent {
                 respuestasOpciones.push({ opcionId: opcionId });
               }
             });
+          }
+          break;
+        case TiposRespuestaEnum.VERDADERO_FALSO:
+          if (valor !== null && valor !== undefined) {
+            respuestasOpciones.push({ opcionId: valor });
           }
           break;
       }

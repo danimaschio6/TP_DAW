@@ -88,6 +88,36 @@
               </label>
             </div>
           </div>
+
+          <!-- Verdadero/Falso -->
+          <div *ngIf="pregunta.tipo === TiposRespuestaEnum.VERDADERO_FALSO" class="question-options">
+            <div class="opciones-vf">
+              <div class="option-wrapper" [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === 1}">
+                <p-radioButton 
+                  [formControlName]="'pregunta_' + pregunta.id"
+                  [value]="1"
+                  [inputId]="'radio_' + pregunta.id + '_verdadero'">
+                </p-radioButton>
+                <label [for]="'radio_' + pregunta.id + '_verdadero'" class="option-label">
+                  Verdadero
+                </label>
+              </div>
+              <div class="option-wrapper" [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === 2}">
+                <p-radioButton 
+                  [formControlName]="'pregunta_' + pregunta.id"
+                  [value]="2"
+                  [inputId]="'radio_' + pregunta.id + '_falso'">
+                </p-radioButton>
+                <label [for]="'radio_' + pregunta.id + '_falso'" class="option-label">
+                  Falso
+                </label>
+              </div>
+            </div>
+            <app-texto-error 
+              [control]="form.get('pregunta_' + pregunta.id)!"
+              mensaje="Debes seleccionar una opción">
+            </app-texto-error>
+          </div>
         </div>
 
         <div class="form-actions">
