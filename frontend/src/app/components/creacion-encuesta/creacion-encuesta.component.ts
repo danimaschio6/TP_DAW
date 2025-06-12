@@ -42,26 +42,21 @@ export class CreacionEncuestaComponent {
   form: FormGroup;
 
   private messageService: MessageService = inject(MessageService);
-
   private router: Router = inject(Router);
-
-  private confirmationService: ConfirmationService =
-    inject(ConfirmationService);
-
+  private confirmationService: ConfirmationService = inject(ConfirmationService);
   private encuestasService: EncuestasService = inject(EncuestasService);
 
   dialogGestionPreguntaVisible = signal<boolean>(false);
-
   preguntaSeleccionada = signal<PreguntaDTO | null>(null);
 
   constructor() {
     this.form = new FormGroup({
       nombre: new FormControl<string>('', Validators.required),
+      descripcion: new FormControl<string>(''), // <-- campo opcional
       preguntas: new FormArray<FormControl<PreguntaDTO>>(
         [],
         [Validators.required, Validators.minLength(1)]
       ),
-      fechaVencimiento: new FormControl<string| null>(null),
     });
   }
 
@@ -71,10 +66,6 @@ export class CreacionEncuestaComponent {
 
   get nombre(): FormControl<string> {
     return this.form.get('nombre') as FormControl<string>;
-  }
-
-  get fechaVencimiento(): FormControl<string> {
-    return this.form.get('fechaVencimiento') as FormControl<string>;
   }
 
   abrirDialog() {
@@ -149,15 +140,7 @@ export class CreacionEncuestaComponent {
       return;
     }
 
-    //const encuesta: CreateEncuestaDTO = this.form.value;//esto se reemplazo por lo de abajo para funcionalidad vencimiento
-
-    //DIONI fecha_vencimiento
-    const valorFormulario= this.form.value;
-    const encuesta: CreateEncuestaDTO ={
-      ...valorFormulario,
-      fechaVencimiento: this.form.value.fechaVencimiento ? new Date(valorFormulario.fechaVencimiento).toISOString() : null
-    };
-    //
+    const encuesta: CreateEncuestaDTO = this.form.value;
 
     for (let i = 0; i < encuesta.preguntas.length; i++) {
       const pregunta = encuesta.preguntas[i];
@@ -177,16 +160,15 @@ export class CreacionEncuestaComponent {
           summary: 'La encuesta se creó con éxito',
         });
 
-        this.router.navigateByUrl('/encuesta-creada', {
+        this.router.navigateByUrl('/encuesta-creada-exitosamente', {
           state: {
             encuestaId: res.id,
             codigoRespuesta: res.codigoRespuesta,
-            codigoResultados: res.codigoResultados
-          }
+            codigoResultados: res.codigoResultados,
+          },
         });
       },
-      error: (err) => {
-        console.log(err);
+      error: () => {
         this.messageService.add({
           severity: 'error',
           summary: 'Ha ocurrido un error al crear la encuesta',
