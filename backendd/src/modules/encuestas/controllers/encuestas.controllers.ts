@@ -56,13 +56,13 @@ export class EncuestaController {
         return await this.encuestasService.getAllEncuestas();
     }
 
+    // Endpoint para actualizar estado (si lo tienes)
     @Put(':id/estado')
-    @Patch(':id/estado')
     async updateEncuestaEstado(
-        @Param('id') id: number,
-        @Body() dto: UpdateEncuestaEstadoDTO,
+    @Param('id') id: number,
+    @Body() dto: UpdateEncuestaEstadoDTO,
     ): Promise<Encuesta> {
-        return await this.encuestasService.updateEncuestaEstado(id, dto);
+    return await this.encuestasService.updateEncuestaEstado(id, dto);
     }
 }
 

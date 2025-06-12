@@ -37,7 +37,7 @@ export class EncuestasService {
     
     // Método para actualizar el estado de una encuesta
     updateEncuestaEstado(encuestaId: number, habilitada: boolean): Observable<EncuestaDTO> {
-        return this.httpClient.patch<EncuestaDTO>(`/api/v1/encuestas/${encuestaId}/estado`, { habilitada });
+        return this.httpClient.put<EncuestaDTO>(`/api/v1/encuestas/${encuestaId}/estado`, { habilitada });
     }
 
     obtenerEncuestaPorCodigoRespuesta(codigo: string): Observable<EncuestaDTO> {

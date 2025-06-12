@@ -80,7 +80,6 @@ __decorate([
 ], EncuestaController.prototype, "getAllEncuestas", null);
 __decorate([
     (0, common_1.Put)(':id/estado'),
-    (0, common_1.Patch)(':id/estado'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
