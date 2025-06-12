@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CrearRespuestaDto = exports.RespuestaOpcionDto = exports.RespuestaAbiertaDto = void 0;
+exports.CrearRespuestaDto = exports.RespuestaVerdaderoFalsoDto = exports.RespuestaOpcionDto = exports.RespuestaAbiertaDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class RespuestaAbiertaDto {
@@ -36,10 +36,26 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], RespuestaOpcionDto.prototype, "opcionId", void 0);
+class RespuestaVerdaderoFalsoDto {
+    preguntaId;
+    valorRespuesta;
+}
+exports.RespuestaVerdaderoFalsoDto = RespuestaVerdaderoFalsoDto;
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], RespuestaVerdaderoFalsoDto.prototype, "preguntaId", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Boolean)
+], RespuestaVerdaderoFalsoDto.prototype, "valorRespuesta", void 0);
 class CrearRespuestaDto {
     encuestaId;
     respuestasAbiertas;
     respuestasOpciones;
+    respuestasVerdaderoFalso;
 }
 exports.CrearRespuestaDto = CrearRespuestaDto;
 __decorate([
@@ -61,4 +77,11 @@ __decorate([
     (0, class_transformer_1.Type)(() => RespuestaOpcionDto),
     __metadata("design:type", Array)
 ], CrearRespuestaDto.prototype, "respuestasOpciones", void 0);
+__decorate([
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.ValidateNested)({ each: true }),
+    (0, class_transformer_1.Type)(() => RespuestaVerdaderoFalsoDto),
+    __metadata("design:type", Array)
+], CrearRespuestaDto.prototype, "respuestasVerdaderoFalso", void 0);
 //# sourceMappingURL=crear-respuesta.dto.js.map

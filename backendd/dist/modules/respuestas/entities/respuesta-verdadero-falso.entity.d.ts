@@ -1,7 +1,8 @@
 import { Respuesta } from './respuesta.entity';
-import { Opcion } from '../../encuestas/entities/opcion.entity';
+import { Pregunta } from 'src/modules/encuestas/entities/pregunta.entity';
 export declare class RespuestaVerdaderoFalso {
     id: number;
     respuesta: Respuesta;
-    opcion: Opcion;
+    pregunta: Pregunta;
+    valorRespuesta: boolean;
 }

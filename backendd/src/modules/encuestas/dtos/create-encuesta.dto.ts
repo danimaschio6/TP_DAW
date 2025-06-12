@@ -34,5 +34,5 @@ export class CreateEncuestaDTO {
   @ApiProperty()
   @IsISO8601()
   @IsOptional()
-  fechaVencimiento?: string|null;
+  fechaVencimiento?: string | null;
 }

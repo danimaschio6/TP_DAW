@@ -23,7 +23,7 @@ import { TiposRespuestaEnum } from '../../enums/tipos-pregunta.enum';
 import { CrearRespuestaPayloadDTO,RespuestaAbiertaPayloadDTO, RespuestaOpcionPayloadDTO } from '../../interfaces/crear-respuesta-payload.dto';
 
 //DIONI VF
-import { RespuestaVFPayloadDTO } from '../../interfaces/crear-respuesta-payload.dto';
+import { RespuestaVerdaderoFalsoPayloadDTO } from '../../interfaces/crear-respuesta-payload.dto';
 //
 
 @Component({
@@ -99,7 +99,6 @@ export class ResponderEncuestaComponent {
           this.cargando.set(false);
           return ;
         }
-        //
 
         this.encuesta.set(encuesta);
         
@@ -178,6 +177,7 @@ export class ResponderEncuestaComponent {
     this.mensajeError.set(null);
     
     const respuestas = this.construirRespuestas();
+    console.log(respuestas);
     this.respuestasService.crearRespuesta(respuestas).subscribe({
       next: () => {
         this.enviadoConExito.set(true);
@@ -196,7 +196,7 @@ export class ResponderEncuestaComponent {
     const respuestasAbiertas: RespuestaAbiertaPayloadDTO[] = [];
     const respuestasOpciones: RespuestaOpcionPayloadDTO[] = [];
     //DIONI VF
-    const respuestasVF: RespuestaVFPayloadDTO[] = [];
+    const respuestasVerdaderoFalso: RespuestaVerdaderoFalsoPayloadDTO[] = [];
     //
 
     encuesta.preguntas.forEach(pregunta => {
@@ -232,7 +232,7 @@ export class ResponderEncuestaComponent {
 
         case TiposRespuestaEnum.VERDADERO_FALSO:
           if (valor !== null && valor !== undefined) {//OJO CON FALSY?
-            respuestasVF.push({ valor: valor });
+            respuestasVerdaderoFalso.push({ valor: valor });
           }
           break;
       }
@@ -243,7 +243,7 @@ export class ResponderEncuestaComponent {
       respuestasAbiertas: respuestasAbiertas.length > 0 ? respuestasAbiertas : [],
       respuestasOpciones: respuestasOpciones.length > 0 ? respuestasOpciones : [],
       //DIONI VF
-      respuestasVF: respuestasVF.length > 0 ? respuestasVF : []
+      respuestasVerdaderoFalso: respuestasVerdaderoFalso.length > 0 ? respuestasVerdaderoFalso : []
       //
     };
   }

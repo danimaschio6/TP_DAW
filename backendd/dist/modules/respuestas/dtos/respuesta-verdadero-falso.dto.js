@@ -12,18 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RespuestaVerdaderoFalsoResponseDto = exports.CreateRespuestaVerdaderoFalsoDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateRespuestaVerdaderoFalsoDto {
-    opcionId;
+    valorRespuesta;
 }
 exports.CreateRespuestaVerdaderoFalsoDto = CreateRespuestaVerdaderoFalsoDto;
 __decorate([
-    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsBoolean)(),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
-], CreateRespuestaVerdaderoFalsoDto.prototype, "opcionId", void 0);
+    __metadata("design:type", Boolean)
+], CreateRespuestaVerdaderoFalsoDto.prototype, "valorRespuesta", void 0);
 class RespuestaVerdaderoFalsoResponseDto {
     id;
     respuestaId;
-    opcionId;
+    valorRespuesta;
 }
 exports.RespuestaVerdaderoFalsoResponseDto = RespuestaVerdaderoFalsoResponseDto;
 //# sourceMappingURL=respuesta-verdadero-falso.dto.js.map

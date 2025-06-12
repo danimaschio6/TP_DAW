@@ -13,12 +13,12 @@ export interface CrearRespuestaPayloadDTO {
   respuestasOpciones?: RespuestaOpcionPayloadDTO[];
 
   //DIONI VF
-  respuestasVF?: RespuestaVFPayloadDTO[];
+  respuestasVerdaderoFalso?: RespuestaVerdaderoFalsoPayloadDTO[];
   //
 }
 
 //DIONI VF
-export interface RespuestaVFPayloadDTO {
+export interface RespuestaVerdaderoFalsoPayloadDTO {
   valor: boolean;
 }
 //

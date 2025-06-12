@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RespuestaResponseDto = exports.RespuestaOpcionResponseDto = exports.RespuestaAbiertaResponseDto = void 0;
+exports.RespuestaResponseDto = exports.RespuestaVerdaderoFalsoDto = exports.RespuestaOpcionResponseDto = exports.RespuestaAbiertaResponseDto = void 0;
 class RespuestaAbiertaResponseDto {
     id;
     preguntaId;
@@ -16,12 +16,20 @@ class RespuestaOpcionResponseDto {
     preguntaTexto;
 }
 exports.RespuestaOpcionResponseDto = RespuestaOpcionResponseDto;
+class RespuestaVerdaderoFalsoDto {
+    id;
+    preguntaId;
+    preguntaTexto;
+    valorRespuesta;
+}
+exports.RespuestaVerdaderoFalsoDto = RespuestaVerdaderoFalsoDto;
 class RespuestaResponseDto {
     id;
     encuestaId;
     fechaCreacion;
     respuestasAbiertas;
     respuestasOpciones;
+    respuestasVerdaderoFalso;
 }
 exports.RespuestaResponseDto = RespuestaResponseDto;
 //# sourceMappingURL=respuesta-response.dto.js.map

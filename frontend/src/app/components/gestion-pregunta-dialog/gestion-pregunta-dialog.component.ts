@@ -115,7 +115,9 @@ export class GestionPreguntaDialogComponent {
             return;
         }
 
-
+        const pregunta: PreguntaDTO = this.form.value;
+        /*
+        //DIONI VF siento que hace un manejo innecesario
         const pregunta: PreguntaDTO = {
             id: 0, // viene del back
             numero: 0, // Se ajusta en componente padre
@@ -128,7 +130,8 @@ export class GestionPreguntaDialogComponent {
                 numero: 0,
             })),
         };
-
+        //
+        */
         this.agregarPregunta.emit(pregunta);
         this.cerrar();
     } 

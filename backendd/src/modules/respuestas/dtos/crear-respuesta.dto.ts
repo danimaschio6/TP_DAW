@@ -1,5 +1,5 @@
 
-import { IsArray, IsNumber, IsString, IsNotEmpty, ValidateNested, IsOptional } from 'class-validator';
+import { IsArray, IsNumber, IsString, IsNotEmpty, ValidateNested, IsOptional, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class RespuestaAbiertaDto {
@@ -18,6 +18,18 @@ export class RespuestaOpcionDto {
   opcionId: number;
 }
 
+//DIONI VF
+export class RespuestaVerdaderoFalsoDto {
+  @IsNumber()
+  @IsNotEmpty()
+  preguntaId: number;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  valorRespuesta: boolean;
+}
+//
+
 export class CrearRespuestaDto {
   @IsNumber()
   @IsNotEmpty()
@@ -34,4 +46,12 @@ export class CrearRespuestaDto {
   @ValidateNested({ each: true })
   @Type(() => RespuestaOpcionDto)
   respuestasOpciones?: RespuestaOpcionDto[];
+
+  //DIONI VF
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => RespuestaVerdaderoFalsoDto)
+  respuestasVerdaderoFalso?: RespuestaVerdaderoFalsoDto[];
+  //
 }

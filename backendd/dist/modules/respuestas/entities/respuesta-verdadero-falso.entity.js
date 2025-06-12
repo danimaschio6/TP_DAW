@@ -12,11 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RespuestaVerdaderoFalso = void 0;
 const typeorm_1 = require("typeorm");
 const respuesta_entity_1 = require("./respuesta.entity");
-const opcion_entity_1 = require("../../encuestas/entities/opcion.entity");
+const pregunta_entity_1 = require("../../encuestas/entities/pregunta.entity");
 let RespuestaVerdaderoFalso = class RespuestaVerdaderoFalso {
     id;
     respuesta;
-    opcion;
+    pregunta;
+    valorRespuesta;
 };
 exports.RespuestaVerdaderoFalso = RespuestaVerdaderoFalso;
 __decorate([
@@ -24,7 +25,7 @@ __decorate([
     __metadata("design:type", Number)
 ], RespuestaVerdaderoFalso.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => respuesta_entity_1.Respuesta, {
+    (0, typeorm_1.ManyToOne)(() => respuesta_entity_1.Respuesta, respuesta => respuesta.respuestasVerdaderoFalso, {
         nullable: false,
         onDelete: 'CASCADE'
     }),
@@ -32,10 +33,14 @@ __decorate([
     __metadata("design:type", respuesta_entity_1.Respuesta)
 ], RespuestaVerdaderoFalso.prototype, "respuesta", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => opcion_entity_1.Opcion, { nullable: false }),
-    (0, typeorm_1.JoinColumn)({ name: 'id_opcion' }),
-    __metadata("design:type", opcion_entity_1.Opcion)
-], RespuestaVerdaderoFalso.prototype, "opcion", void 0);
+    (0, typeorm_1.ManyToOne)(() => pregunta_entity_1.Pregunta, { nullable: false }),
+    (0, typeorm_1.JoinColumn)({ name: 'id_pregunta' }),
+    __metadata("design:type", pregunta_entity_1.Pregunta)
+], RespuestaVerdaderoFalso.prototype, "pregunta", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'valor_respuesta', type: 'boolean', nullable: false }),
+    __metadata("design:type", Boolean)
+], RespuestaVerdaderoFalso.prototype, "valorRespuesta", void 0);
 exports.RespuestaVerdaderoFalso = RespuestaVerdaderoFalso = __decorate([
     (0, typeorm_1.Entity)('respuestas_verdadero_falso')
 ], RespuestaVerdaderoFalso);

@@ -10,6 +10,7 @@ export declare class RespuestasController {
         totalRespuestas: number;
         respuestasAbiertas: any[];
         respuestasOpciones: any[];
+        respuestasVerdaderoFalso: any[];
     }>;
     eliminarRespuesta(id: number): Promise<void>;
 }

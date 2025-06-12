@@ -16,18 +16,24 @@ const codigo_tipo_enum_1 = require("../enums/codigo-tipo.enum");
 class ObtenerEncuestaDto {
     codigo;
     tipo;
+    fechaVencimiento;
 }
 exports.ObtenerEncuestaDto = ObtenerEncuestaDto;
 __decorate([
     (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsUUID)('4'),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], ObtenerEncuestaDto.prototype, "codigo", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ enum: codigo_tipo_enum_1.CodigoTipoEnum }),
+    (0, class_validator_1.IsEnum)(codigo_tipo_enum_1.CodigoTipoEnum),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsEnum)(codigo_tipo_enum_1.CodigoTipoEnum, { message: 'tipo debe ser RESPUESTA o RESULTADOS' }),
     __metadata("design:type", String)
 ], ObtenerEncuestaDto.prototype, "tipo", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsISO8601)(),
+    __metadata("design:type", String)
+], ObtenerEncuestaDto.prototype, "fechaVencimiento", void 0);
 //# sourceMappingURL=obtener-encuesta.dto.js.map

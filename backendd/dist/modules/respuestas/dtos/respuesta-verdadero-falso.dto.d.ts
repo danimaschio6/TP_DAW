@@ -1,8 +1,8 @@
 export declare class CreateRespuestaVerdaderoFalsoDto {
-    opcionId: number;
+    valorRespuesta: boolean;
 }
 export declare class RespuestaVerdaderoFalsoResponseDto {
     id: number;
     respuestaId: number;
-    opcionId: number;
+    valorRespuesta: boolean;
 }

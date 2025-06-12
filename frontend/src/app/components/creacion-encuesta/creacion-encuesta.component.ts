@@ -78,6 +78,10 @@ export class CreacionEncuestaComponent {
     return this.form.get('nombre') as FormControl<string>;
   }
 
+   get descripcion(): FormControl<string> {
+    return this.form.get('descripcion') as FormControl<string>;
+  }
+
   get fechaVencimiento(): FormControl<string> {
     return this.form.get('fechaVencimiento') as FormControl<string>;
   }
@@ -172,6 +176,7 @@ export class CreacionEncuestaComponent {
         return rest;
       }),
       fechaVencimiento: fechaString,
+      descripcion: this.form.value.descripcion,
     
     };
 

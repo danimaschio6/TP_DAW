@@ -47,34 +47,38 @@ let RespuestasService = class RespuestasService {
         });
         const respuestaGuardada = await this.respuestaRepository.save(respuesta);
         if (respuestasData.respuestasAbiertas && respuestasData.respuestasAbiertas.length > 0) {
-            const respuestasAbiertas = respuestasData.respuestasAbiertas.map(ra => this.respuestaAbiertaRepository.create({
-                respuesta: respuestaGuardada,
-                pregunta: { id: ra.preguntaId },
-                texto: ra.texto
-            }));
+            const respuestasAbiertas = respuestasData.respuestasAbiertas.map(ra => {
+                console.log(ra);
+                this.respuestaAbiertaRepository.create({
+                    respuesta: respuestaGuardada,
+                    pregunta: { id: ra.preguntaId },
+                    texto: ra.texto
+                });
+            });
             await this.respuestaAbiertaRepository.save(respuestasAbiertas);
         }
         if (respuestasData.respuestasOpciones && respuestasData.respuestasOpciones.length > 0) {
-            const respuestasOpciones = respuestasData.respuestasOpciones.map(ro => this.respuestaOpcionRepository.create({
-                respuesta: respuestaGuardada,
-                opcion: { id: ro.opcionId }
-            }));
+            const respuestasOpciones = respuestasData.respuestasOpciones.map(ro => {
+                console.log(ro);
+                this.respuestaOpcionRepository.create({
+                    respuesta: respuestaGuardada,
+                    opcion: { id: ro.opcionId }
+                });
+            });
             await this.respuestaOpcionRepository.save(respuestasOpciones);
         }
-        return this.obtenerRespuestaCompleta(respuestaGuardada.id);
-    }
-    async crearRespuestaVerdaderoFalso(respuestaId, dto) {
-        const respuesta = await this.respuestaRepository.findOne({
-            where: { id: respuestaId }
-        });
-        if (!respuesta) {
-            throw new common_1.NotFoundException(`Respuesta con ID ${respuestaId} no encontrada`);
+        if (respuestasData.respuestasVerdaderoFalso && respuestasData.respuestasVerdaderoFalso.length > 0) {
+            const respuestasVerdaderoFalso = respuestasData.respuestasVerdaderoFalso.map(rVF => {
+                console.log(rVF);
+                this.respuestaVerdaderoFalsoRepository.create({
+                    respuesta: respuestaGuardada,
+                    pregunta: { id: rVF.preguntaId },
+                    valorRespuesta: rVF.valorRespuesta
+                });
+            });
+            await this.respuestaVerdaderoFalsoRepository.save(respuestasVerdaderoFalso);
         }
-        const respuestaVerdaderoFalso = this.respuestaVerdaderoFalsoRepository.create({
-            respuesta: { id: respuestaId },
-            opcion: { id: dto.opcionId }
-        });
-        return await this.respuestaVerdaderoFalsoRepository.save(respuestaVerdaderoFalso);
+        return this.obtenerRespuestaCompleta(respuestaGuardada.id);
     }
     async obtenerTodasLasRespuestas() {
         return await this.respuestaRepository.find({
@@ -114,7 +118,9 @@ let RespuestasService = class RespuestasService {
                 'respuestasAbiertas.pregunta',
                 'respuestasOpciones',
                 'respuestasOpciones.opcion',
-                'respuestasOpciones.opcion.pregunta'
+                'respuestasOpciones.opcion.pregunta',
+                'respuestasVerdaderoFalso',
+                'respuestasVerdaderoFalso.pregunta',
             ],
             order: { fechaCreacion: 'DESC' }
         });
@@ -146,10 +152,19 @@ let RespuestasService = class RespuestasService {
         ])
             .groupBy('p.id, p.texto, o.id, o.texto')
             .getRawMany();
+        const respuestasVerdaderoFalso = await this.respuestaAbiertaRepository
+            .createQueryBuilder('rVF')
+            .innerJoin('rVF.respuesta', 'r')
+            .innerJoin('rVF.pregunta', 'p')
+            .where('r.id_encuesta = :encuestaId', { encuestaId })
+            .select(['p.id as pregunta_id', 'p.texto as pregunta', 'COUNT(*) as total_respuestas'])
+            .groupBy('p.id, p.texto')
+            .getRawMany();
         return {
             totalRespuestas,
             respuestasAbiertas,
-            respuestasOpciones
+            respuestasOpciones,
+            respuestasVerdaderoFalso,
         };
     }
     async obtenerRespuestasVerdaderoFalso(respuestaId) {

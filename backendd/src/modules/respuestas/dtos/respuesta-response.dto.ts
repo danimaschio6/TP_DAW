@@ -13,10 +13,22 @@ export class RespuestaOpcionResponseDto {
   preguntaTexto: string;
 }
 
+//DIONI VF
+export class RespuestaVerdaderoFalsoDto {
+  id: number;
+  preguntaId: number;
+  preguntaTexto: string;
+  valorRespuesta: boolean;
+}
+//
+
 export class RespuestaResponseDto {
   id: number;
   encuestaId: number;
   fechaCreacion: Date;
   respuestasAbiertas: RespuestaAbiertaResponseDto[];
   respuestasOpciones: RespuestaOpcionResponseDto[];
+  //DIONI VF
+  respuestasVerdaderoFalso: RespuestaVerdaderoFalsoDto[];
+  //
 }

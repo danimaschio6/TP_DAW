@@ -12,8 +12,19 @@ export class EstadisticaRespuestaOpcionDto {
   votos: number;
 }
 
+//DIONI VF
+export class EstadisticaRespuestaVerdaderoFalsoDto {
+  preguntaId: number;
+  pregunta: string;
+  totalRespuestas: number;
+}
+//
+
 export class EstadisticasEncuestaDto {
   totalRespuestas: number;
   respuestasAbiertas: EstadisticaRespuestaAbiertaDto[];
   respuestasOpciones: EstadisticaRespuestaOpcionDto[];
+  //DIONI VF
+  respuestasVerdaderoFalso: EstadisticaRespuestaVerdaderoFalsoDto[];
+  //
 }

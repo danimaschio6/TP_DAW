@@ -11,10 +11,17 @@ export declare class RespuestaOpcionResponseDto {
     preguntaId: number;
     preguntaTexto: string;
 }
+export declare class RespuestaVerdaderoFalsoDto {
+    id: number;
+    preguntaId: number;
+    preguntaTexto: string;
+    valorRespuesta: boolean;
+}
 export declare class RespuestaResponseDto {
     id: number;
     encuestaId: number;
     fechaCreacion: Date;
     respuestasAbiertas: RespuestaAbiertaResponseDto[];
     respuestasOpciones: RespuestaOpcionResponseDto[];
+    respuestasVerdaderoFalso: RespuestaVerdaderoFalsoDto[];
 }

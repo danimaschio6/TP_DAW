@@ -27,6 +27,7 @@ export class RespuestasService {
     //DIONI fecha_vencimiento
     @InjectRepository(Encuesta)
     private encuestaRepository: Repository<Encuesta>,
+    //
   ) {}
 
   // Crear una nueva respuesta completa a una encuesta
@@ -70,9 +71,26 @@ export class RespuestasService {
       await this.respuestaOpcionRepository.save(respuestasOpciones);
     }
 
+    //DIONI VF
+    // Procesar respuestas VF
+    if (respuestasData.respuestasVerdaderoFalso && respuestasData.respuestasVerdaderoFalso.length > 0) {
+      const respuestasVerdaderoFalso = respuestasData.respuestasVerdaderoFalso.map(rVF => 
+        this.respuestaVerdaderoFalsoRepository.create({
+          respuesta: respuestaGuardada,
+          pregunta: { id: rVF.preguntaId },
+          valorRespuesta: rVF.valorRespuesta
+        })
+      );
+      await this.respuestaVerdaderoFalsoRepository.save(respuestasVerdaderoFalso);
+    }
+    //
+
     return this.obtenerRespuestaCompleta(respuestaGuardada.id);
   }
 
+  //DIONI VF
+  //lo saque porque no se llamaba en ningun lado
+  /*
   // Crear una respuesta verdadero/falso
   async crearRespuestaVerdaderoFalso(respuestaId: number, dto: CreateRespuestaVerdaderoFalsoDto) {
     const respuesta = await this.respuestaRepository.findOne({
@@ -90,6 +108,7 @@ export class RespuestasService {
 
     return await this.respuestaVerdaderoFalsoRepository.save(respuestaVerdaderoFalso);
   }
+  */
 
   // Obtener TODAS las respuestas de todas las encuestas
   async obtenerTodasLasRespuestas() {
@@ -136,7 +155,11 @@ export class RespuestasService {
         'respuestasAbiertas.pregunta',
         'respuestasOpciones',
         'respuestasOpciones.opcion',
-        'respuestasOpciones.opcion.pregunta'
+        'respuestasOpciones.opcion.pregunta',
+        //DIONI VF
+        'respuestasVerdaderoFalso',
+        'respuestasVerdaderoFalso.pregunta',
+        //
       ],
       order: { fechaCreacion: 'DESC' }
     });
@@ -173,14 +196,29 @@ export class RespuestasService {
       .groupBy('p.id, p.texto, o.id, o.texto')
       .getRawMany();
 
+      //DIONI VF
+      const respuestasVerdaderoFalso = await this.respuestaAbiertaRepository
+      .createQueryBuilder('rVF')
+      .innerJoin('rVF.respuesta', 'r')
+      .innerJoin('rVF.pregunta', 'p')
+      .where('r.id_encuesta = :encuestaId', { encuestaId })
+      .select(['p.id as pregunta_id', 'p.texto as pregunta', 'COUNT(*) as total_respuestas'])
+      .groupBy('p.id, p.texto')
+      .getRawMany();
+      //
+
     return {
       totalRespuestas,
       respuestasAbiertas,
-      respuestasOpciones
+      respuestasOpciones,
+      //DIONI VF correcto el nombre?
+      respuestasVerdaderoFalso,
+      //
     };
   }
 
   // Obtener todas las respuestas verdadero/falso de una respuesta
+  //obsoleto? este tipo de respuesta ya no tiene opciones
   async obtenerRespuestasVerdaderoFalso(respuestaId: number) {
     return await this.respuestaVerdaderoFalsoRepository.find({
       where: { respuesta: { id: respuestaId } },

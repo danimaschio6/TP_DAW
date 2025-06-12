@@ -10,7 +10,7 @@ export class Encuesta {
     @Column({ name: 'nombre' })
     nombre: string;
 
-    @Column({ name: 'descripcion', nullable: true, type: 'text' }) // ⬅️ nuevo campo opcional
+    @Column({ name: 'descripcion', nullable: true, type: 'text' }) //nuevo campo opcional
     descripcion?: string;
 
     @OneToMany(() => Pregunta, (pregunta) => pregunta.encuesta, {
@@ -29,7 +29,6 @@ export class Encuesta {
     habilitada: boolean;
     
     @Column({ name: 'fecha_vencimiento', type: 'timestamp', nullable: true }) 
-    fechaVencimiento?: Date|null;
+    fechaVencimiento?: Date | null;
 
-    
 }

@@ -20,7 +20,6 @@ const typeorm_2 = require("typeorm");
 const uuid_1 = require("uuid");
 const codigo_tipo_enum_1 = require("../enums/codigo-tipo.enum");
 const common_2 = require("@nestjs/common");
-const tipos_respuesta_enum_1 = require("../enums/tipos-respuesta.enum");
 let EncuestasService = class EncuestasService {
     encuestasRepository;
     constructor(encuestasRepository) {
@@ -29,18 +28,6 @@ let EncuestasService = class EncuestasService {
     async crearEncuesta(dto) {
         const encuesta = this.encuestasRepository.create({
             ...dto,
-            preguntas: dto.preguntas.map(pregunta => {
-                if (pregunta.tipo === tipos_respuesta_enum_1.TiposRespuestaEnum.VERDADERO_FALSO) {
-                    return {
-                        ...pregunta,
-                        opciones: [
-                            { texto: 'verdadero', numero: 1 },
-                            { texto: 'falso', numero: 2 },
-                        ],
-                    };
-                }
-                return pregunta;
-            }),
             codigoRespuesta: (0, uuid_1.v4)(),
             codigoResultados: (0, uuid_1.v4)(),
             fechaVencimiento: dto.fechaVencimiento ? new Date(dto.fechaVencimiento) : null,
