@@ -15,7 +15,6 @@ const respuesta_opcion_entity_1 = require("./entities/respuesta-opcion.entity");
 const respuestas_service_1 = require("./services/respuestas.service");
 const respuesta_controller_1 = require("./controllers/respuesta.controller");
 const encuestas_module_1 = require("../encuestas/encuestas.module");
-const respuesta_verdadero_falso_entity_1 = require("./entities/respuesta-verdadero-falso.entity");
 let RespuestasModule = class RespuestasModule {
 };
 exports.RespuestasModule = RespuestasModule;
@@ -25,8 +24,7 @@ exports.RespuestasModule = RespuestasModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([
                 respuesta_entity_1.Respuesta,
                 respuesta_abierta_entity_1.RespuestaAbierta,
-                respuesta_opcion_entity_1.RespuestaOpcion,
-                respuesta_verdadero_falso_entity_1.RespuestaVerdaderoFalso
+                respuesta_opcion_entity_1.RespuestaOpcion
             ]),
             encuestas_module_1.EncuestasModule
         ],

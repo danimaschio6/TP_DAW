@@ -16,12 +16,11 @@ const pregunta_entity_1 = require("./pregunta.entity");
 let Encuesta = class Encuesta {
     id;
     nombre;
-    descripcion;
     preguntas;
     codigoRespuesta;
     codigoResultados;
-    habilitada;
     fechaVencimiento;
+    habilitada;
 };
 exports.Encuesta = Encuesta;
 __decorate([
@@ -32,10 +31,6 @@ __decorate([
     (0, typeorm_1.Column)({ name: 'nombre' }),
     __metadata("design:type", String)
 ], Encuesta.prototype, "nombre", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ name: 'descripcion', nullable: true, type: 'text' }),
-    __metadata("design:type", String)
-], Encuesta.prototype, "descripcion", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => pregunta_entity_1.Pregunta, (pregunta) => pregunta.encuesta, {
         cascade: ['insert'],
@@ -52,13 +47,15 @@ __decorate([
     __metadata("design:type", String)
 ], Encuesta.prototype, "codigoResultados", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'habilitada', default: true }),
-    __metadata("design:type", Boolean)
-], Encuesta.prototype, "habilitada", void 0);
-__decorate([
+
     (0, typeorm_1.Column)({ name: 'fecha_vencimiento', type: 'timestamp', nullable: true }),
     __metadata("design:type", Object)
 ], Encuesta.prototype, "fechaVencimiento", void 0);
+
+    (0, typeorm_1.Column)({ name: 'habilitada', default: true }),
+    __metadata("design:type", Boolean)
+], Encuesta.prototype, "habilitada", void 0);
+
 exports.Encuesta = Encuesta = __decorate([
     (0, typeorm_1.Entity)({ name: "encuestas" })
 ], Encuesta);
