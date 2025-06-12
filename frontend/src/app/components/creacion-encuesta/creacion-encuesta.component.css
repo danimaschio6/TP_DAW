@@ -1,221 +1,120 @@
-:root {
-  --color-background: #fef7ff;
-  --color-background-main: #f3e8ff; 
-  --color-border: #e9d5ff;
-  --color-text: #581c87;
-  --color-success: #059669;
-  --color-accent: #a855f7;
-  --shadow-md: 0 4px 6px rgba(168, 85, 247, 0.1);
-  --shadow-light: 0 2px 4px rgba(168, 85, 247, 0.05);
-  --radius: 16px;
-}
-
-/* Host component styles - Angular specific */
 :host {
-  display: block;
-  width: 100%;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 50%, #e9d5ff 100%);
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 2rem 1rem;
-}
-
-/* Main heading */
-h1 {
-  text-align: center;
-  color: var(--color-text);
-  margin-bottom: 2.5rem;
-  font-size: 2.25rem;
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(168, 85, 247, 0.1);
-}
-
-/* Form container */
-form {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-/* Survey container */
-#contenedor-encuesta {
-  width: 100%;
-  max-width: 750px;
-  background-color: var(--color-background);
-  border-radius: var(--radius);
-  padding: 2.5rem;
-  box-shadow: var(--shadow-md);
-  border: 2px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  backdrop-filter: blur(10px);
-}
-
-/* Input styles */
-.input,
-#input-nombre {
-  width: 100%;
-  padding: 1rem;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius);
-  font-size: 1rem;
-  color: var(--color-text);
-  background-color: rgba(254, 247, 255, 0.8);
-  transition: all 0.3s ease;
-  font-weight: 500;
-}
-
-.input:focus,
-#input-nombre:focus {
-  outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
-  background-color: var(--color-background);
-  transform: translateY(-1px);
-}
-
-/* Float label container */
-#float-label-nombre-encuesta {
-  width: 100%;
-}
-
-/* Question container */
-.contenedor-pregunta {
-  background: linear-gradient(135deg, rgba(254, 247, 255, 0.9) 0%, rgba(243, 232, 255, 0.6) 100%);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius);
+  align-items: center;
   padding: 2rem;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
+  background: linear-gradient(to right, #97b9df, #c2d3e6);
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-.contenedor-pregunta:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-accent);
-}
-
-/* Question text */
-.texto-pregunta {
-  font-weight: 700;
-  color: var(--color-text);
+.titulo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
   margin-bottom: 1.5rem;
-  font-size: 1.15rem;
-  word-wrap: break-word;
-  line-height: 1.4;
+  text-align: center;
 }
 
-/* Options list */
-.contenedor-pregunta ul {
-  margin: 0;
-  padding-left: 2rem;
-  margin-bottom: 1.5rem;
+form {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
-.contenedor-pregunta li {
-  margin-bottom: 0.75rem;
-  position: relative;
-}
-
-.contenedor-pregunta li::marker {
-  color: var(--color-accent);
-}
-
-/* Option text */
-.texto-opcion {
-  font-weight: 500;
-  color: #6b21a8;
-  word-wrap: break-word;
-  margin: 0;
-  line-height: 1.3;
-}
-
-/* Button container for questions */
-.botonera-pregunta {
+.campo {
+  width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  min-height: 4.5rem; /* FIX: reserva espacio para el label flotante */
 }
 
-/* Final button */
-#boton-finalizar {
-  background: linear-gradient(135deg, #a855f7, #7c3aed);
-  border: none;
-  color: white;
-  padding: 1rem 2.5rem;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  border-radius: var(--radius);
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(168, 85, 247, 0.3);
-  align-self: center;
-  min-width: 160px;
-  max-width: 220px;
-  letter-spacing: 0.5px;
+.campo p-floatlabel {
+  width: 100%;
+  max-width: 400px;
 }
 
-#boton-finalizar:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(168, 85, 247, 0.4);
-  background: linear-gradient(135deg, #9333ea, #6b21a8);
+.campo input {
+  padding-top: 1.2rem; /* espacio adicional para evitar que salte el label */
 }
 
-#boton-finalizar:active {
-  transform: translateY(0);
-}
-
+/* ✅ Evita que el mensaje de error modifique el alto del contenedor */
 app-texto-error {
-  margin-top: 0.75rem;
+  min-height: 1.25rem;
   display: block;
-  color: black !important
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  text-align: center;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  :host {
-    padding: 1.5rem 0.75rem;
-  }
-  
-  h1 {
-    font-size: 1.75rem;
-    margin-bottom: 2rem;
-  }
-  
-  #contenedor-encuesta {
-    padding: 2rem;
-    gap: 1.5rem;
-    border-radius: 12px;
-  }
-  
-  .contenedor-pregunta {
-    padding: 1.5rem;
-  }
-  
-  .texto-pregunta,
-  .texto-opcion {
-    max-width: 100%;
-    font-size: 1rem;
-  }
-  
-  #boton-finalizar {
-    padding: 0.875rem 2rem;
-    font-size: 1rem;
-  }
+.preguntas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
 }
 
-@media (max-width: 480px) {
-  :host {
-    padding: 1rem 0.5rem;
-  }
-  
-  #contenedor-encuesta {
-    padding: 1.5rem;
-    border-radius: 12px;
-  }
-  
-  h1 {
-    font-size: 1.5rem;
-  }
+.pregunta {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  background-color: #5ce5b3;
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.texto-pregunta {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.texto-opcion {
+  margin: 0.25rem 0;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.botonera {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.boton-agregar {
+  align-self: center;
+}
+
+.boton-finalizar {
+  align-self: center;
+}
+/* Estilo para el textarea (descripción de la encuesta) */
+.campo textarea {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+/* Mejora la altura de los campos con floatlabel para evitar saltos */
+.campo p-floatlabel:has(textarea) {
+  min-height: 6.5rem;
 }
