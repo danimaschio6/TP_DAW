@@ -24,4 +24,12 @@ export class Encuesta {
     @Column({ name: 'codigo_resultados' })
     @Exclude()
     codigoResultados: string;
+
+    @Column({ name: 'habilitada', default: true })
+    habilitada: boolean;
+    
+    @Column({ name: 'fecha_vencimiento', type: 'timestamp', nullable: true }) 
+    fechaVencimiento?: Date|null;
+
+    
 }

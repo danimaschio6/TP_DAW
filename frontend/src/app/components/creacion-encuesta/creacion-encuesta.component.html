@@ -30,7 +30,6 @@
 
   <div class="preguntas">
     @for (pregunta of preguntas.value; track idx; let idx = $index) {
-
       <app-seccion>
         <div class="contenedor-pregunta">
           <p class="texto-pregunta">
@@ -70,26 +69,8 @@
               severity="danger"
             ></p-button>
           </div>
-
-      <div class="pregunta">
-        <p class="texto-pregunta">
-          {{ pregunta.texto }} ({{ getTipoPreguntaPresentacion(pregunta.tipo) }})
-        </p>
-        <ul>
-          @for (opcion of pregunta.opciones; track i; let i = $index) {
-            <li><p class="texto-opcion">{{ opcion.texto }}</p></li>
-          }
-        </ul>
-        <div class="botonera">
-          <p-button
-            (onClick)="confirmarEliminarPregunta(idx)"
-            icon="pi pi-times"
-            label="Eliminar"
-            severity="danger"
-          ></p-button>
-
         </div>
-      </div>
+      </app-seccion>
     }
   </div>
 

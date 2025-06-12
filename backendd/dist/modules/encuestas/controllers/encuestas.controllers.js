@@ -17,7 +17,6 @@ const common_1 = require("@nestjs/common");
 const encuestas_services_1 = require("../services/encuestas.services");
 const create_encuesta_dto_1 = require("../dtos/create-encuesta.dto");
 const obtener_encuesta_dto_1 = require("../dtos/obtener-encuesta.dto");
-const common_2 = require("@nestjs/common");
 let EncuestaController = class EncuestaController {
     encuestasService;
     constructor(encuestasService) {
@@ -25,9 +24,6 @@ let EncuestaController = class EncuestaController {
     }
     async crearEncuesta(dto) {
         return await this.encuestasService.crearEncuesta(dto);
-    }
-    async obtenerTodasLasEncuestas() {
-        return await this.encuestasService.obtenerTodasLasEncuestas();
     }
     async obtenerEncuesta(id, dto) {
         return await this.encuestasService.obtenerEncuesta(id, dto.codigo, dto.tipo);
@@ -38,21 +34,6 @@ let EncuestaController = class EncuestaController {
     async obtenerEncuestaPorCodigoResultados(codigo) {
         return await this.encuestasService.obtenerEncuestaPorCodigoResultados(codigo);
     }
-    async actualizarEstadoEncuesta(id, body) {
-        return await this.encuestasService.actualizarEstadoEncuesta(id, body.habilitada);
-    }
-    async validarEncuestaParaResponder(codigo) {
-        try {
-            await this.encuestasService.validarEncuestaParaResponder(codigo);
-            return { valida: true };
-        }
-        catch (error) {
-            return {
-                valida: false,
-                mensaje: error.message || 'La encuesta no está disponible'
-            };
-        }
-    }
 };
 exports.EncuestaController = EncuestaController;
 __decorate([
@@ -62,12 +43,6 @@ __decorate([
     __metadata("design:paramtypes", [create_encuesta_dto_1.CreateEncuestaDTO]),
     __metadata("design:returntype", Promise)
 ], EncuestaController.prototype, "crearEncuesta", null);
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], EncuestaController.prototype, "obtenerTodasLasEncuestas", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
@@ -90,21 +65,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], EncuestaController.prototype, "obtenerEncuestaPorCodigoResultados", null);
-__decorate([
-    (0, common_2.Patch)(':id/estado'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Object]),
-    __metadata("design:returntype", Promise)
-], EncuestaController.prototype, "actualizarEstadoEncuesta", null);
-__decorate([
-    (0, common_1.Get)('validar/:codigo'),
-    __param(0, (0, common_1.Param)('codigo')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], EncuestaController.prototype, "validarEncuestaParaResponder", null);
 exports.EncuestaController = EncuestaController = __decorate([
     (0, common_1.Controller)("/encuestas"),
     __metadata("design:paramtypes", [encuestas_services_1.EncuestasService])
