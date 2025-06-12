@@ -172,7 +172,7 @@ export class CreacionEncuestaComponent {
           summary: 'La encuesta se creó con éxito',
         });
 
-        this.router.navigateByUrl('/encuesta-creada', {
+        this.router.navigateByUrl('/encuesta-creada-exitosamente', {
           state: {
             encuestaId: res.id,
             codigoRespuesta: res.codigoRespuesta,
@@ -182,11 +182,12 @@ export class CreacionEncuestaComponent {
       },
       error: (err) => {
         console.log('Error del backend:', err); // Depuración
+      error: () => {
         this.messageService.add({
           severity: 'error',
           summary: 'Ha ocurrido un error al crear la encuesta',
         });
-      }
+      },
     });
   }
 }

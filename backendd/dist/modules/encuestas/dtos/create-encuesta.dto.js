@@ -16,7 +16,6 @@ const create_pregunta_dto_1 = require("./create.pregunta.dto");
 const swagger_1 = require("@nestjs/swagger");
 class CreateEncuestaDTO {
     nombre;
-    descripcion;
     preguntas;
     fechaVencimiento;
 }
@@ -27,12 +26,6 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateEncuestaDTO.prototype, "nombre", void 0);
-__decorate([
-    (0, swagger_1.ApiPropertyOptional)(),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateEncuestaDTO.prototype, "descripcion", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ type: [create_pregunta_dto_1.CreatePreguntaDTO] }),
     (0, class_validator_1.IsArray)(),

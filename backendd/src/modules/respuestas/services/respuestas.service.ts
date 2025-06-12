@@ -5,9 +5,7 @@ import { Repository } from 'typeorm';
 import { Respuesta } from '../entities/respuesta.entity';
 import { RespuestaAbierta } from '../entities/respuesta-abierta.entity';
 import { RespuestaOpcion } from '../entities/respuesta-opcion.entity';
-import { RespuestaVerdaderoFalso } from '../entities/respuesta-verdadero-falso.entity';
 import { Encuesta } from '../../encuestas/entities/encuestas.entity';
-import { CreateRespuestaVerdaderoFalsoDto } from '../dtos/respuesta-verdadero-falso.dto';
 
 @Injectable()
 export class RespuestasService {
@@ -20,9 +18,6 @@ export class RespuestasService {
     
     @InjectRepository(RespuestaOpcion)
     private respuestaOpcionRepository: Repository<RespuestaOpcion>,
-
-    @InjectRepository(RespuestaVerdaderoFalso)
-    private respuestaVerdaderoFalsoRepository: Repository<RespuestaVerdaderoFalso>,
 
     //DIONI fecha_vencimiento
     @InjectRepository(Encuesta)
@@ -73,38 +68,22 @@ export class RespuestasService {
     return this.obtenerRespuestaCompleta(respuestaGuardada.id);
   }
 
-  // Crear una respuesta verdadero/falso
-  async crearRespuestaVerdaderoFalso(respuestaId: number, dto: CreateRespuestaVerdaderoFalsoDto) {
-    const respuesta = await this.respuestaRepository.findOne({
-      where: { id: respuestaId }
-    });
 
-    if (!respuesta) {
-      throw new NotFoundException(`Respuesta con ID ${respuestaId} no encontrada`);
-    }
-
-    const respuestaVerdaderoFalso = this.respuestaVerdaderoFalsoRepository.create({
-      respuesta: { id: respuestaId },
-      opcion: { id: dto.opcionId }
-    });
-
-    return await this.respuestaVerdaderoFalsoRepository.save(respuestaVerdaderoFalso);
-  }
 
   // Obtener TODAS las respuestas de todas las encuestas
-  async obtenerTodasLasRespuestas() {
-    return await this.respuestaRepository.find({
-      relations: [
-        'encuesta',
-        'respuestasAbiertas',
-        'respuestasAbiertas.pregunta',
-        'respuestasOpciones',
-        'respuestasOpciones.opcion',
-        'respuestasOpciones.opcion.pregunta'
-      ],
-      order: { fechaCreacion: 'DESC' }
-    });
-  }
+async obtenerTodasLasRespuestas() {
+  return await this.respuestaRepository.find({
+    relations: [
+      'encuesta',
+      'respuestasAbiertas',
+      'respuestasAbiertas.pregunta',
+      'respuestasOpciones',
+      'respuestasOpciones.opcion',
+      'respuestasOpciones.opcion.pregunta'
+    ],
+    order: { fechaCreacion: 'DESC' }
+  });
+}
 
   // Obtener una respuesta completa con todas sus sub-respuestas
   async obtenerRespuestaCompleta(respuestaId: number) {
@@ -124,8 +103,11 @@ export class RespuestasService {
       throw new NotFoundException(`Respuesta con ID ${respuestaId} no encontrada`);
     }
 
+
     return respuesta;
   }
+
+  
 
   // Obtener todas las respuestas de una encuesta específica
   async obtenerRespuestasPorEncuesta(encuestaId: number) {
@@ -140,6 +122,7 @@ export class RespuestasService {
       ],
       order: { fechaCreacion: 'DESC' }
     });
+   
   }
 
   // Obtener estadísticas básicas de respuestas por encuesta
@@ -180,14 +163,6 @@ export class RespuestasService {
     };
   }
 
-  // Obtener todas las respuestas verdadero/falso de una respuesta
-  async obtenerRespuestasVerdaderoFalso(respuestaId: number) {
-    return await this.respuestaVerdaderoFalsoRepository.find({
-      where: { respuesta: { id: respuestaId } },
-      relations: ['opcion', 'opcion.pregunta']
-    });
-  }
-
   // Eliminar una respuesta (por si es necesario para testing)
   async eliminarRespuesta(respuestaId: number) {
     const respuesta = await this.respuestaRepository.findOne({
@@ -200,19 +175,5 @@ export class RespuestasService {
 
     await this.respuestaRepository.remove(respuesta);
     return { message: 'Respuesta eliminada correctamente' };
-  }
-
-  // Eliminar una respuesta verdadero/falso
-  async eliminarRespuestaVerdaderoFalso(id: number) {
-    const respuesta = await this.respuestaVerdaderoFalsoRepository.findOne({
-      where: { id }
-    });
-
-    if (!respuesta) {
-      throw new NotFoundException(`Respuesta verdadero/falso con ID ${id} no encontrada`);
-    }
-
-    await this.respuestaVerdaderoFalsoRepository.remove(respuesta);
-    return { message: 'Respuesta verdadero/falso eliminada correctamente' };
   }
 }

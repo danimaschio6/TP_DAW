@@ -2,7 +2,6 @@ import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn
 import { Encuesta } from '../../encuestas/entities/encuestas.entity';
 import { RespuestaAbierta } from './respuesta-abierta.entity';
 import { RespuestaOpcion } from './respuesta-opcion.entity';
-import { RespuestaVerdaderoFalso } from './respuesta-verdadero-falso.entity';
 
 @Entity('respuestas')
 export class Respuesta {
@@ -22,7 +21,4 @@ export class Respuesta {
 
   @OneToMany(() => RespuestaOpcion, respuestaOpcion => respuestaOpcion.respuesta, { cascade: true })
   respuestasOpciones: RespuestaOpcion[];
-
-  @OneToMany(() => RespuestaVerdaderoFalso, respuestaVerdaderoFalso => respuestaVerdaderoFalso.respuesta, { cascade: true })
-  respuestasVerdaderoFalso: RespuestaVerdaderoFalso[];
 }
