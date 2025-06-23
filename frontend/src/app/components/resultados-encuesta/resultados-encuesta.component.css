@@ -1,452 +1,344 @@
-:root {
-  /* Paleta de colores pastel inspirada en la captura */
-  --color-primary: #8b7cf8;
-  --color-primary-light: #a594ff;
-  --color-primary-dark: #7c6aed;
-  --color-secondary: #93c5fd;
-  --color-success: #86efac;
-  --color-error: #fca5a5;
-  --color-warning: #fbbf24;
-  
-  /* Fondos pastel suaves */
-  --color-background-main: #faf8ff;
-  --color-background: #ffffff;
-  --color-background-alt: #f8faff;
-  --color-background-soft: #f1f5f9;
-  
-  /* Textos suaves */
-  --color-text: #475569;
-  --color-text-secondary: #64748b;
-  --color-text-muted: #94a3b8;
-  
-  /* Bordes suaves */
-  --color-border: #e2e8f0;
-  --color-border-light: #f1f5f9;
-  
-  /* Sombras suaves */
-  --shadow-sm: 0 1px 3px 0 rgba(139, 124, 248, 0.08), 0 1px 2px 0 rgba(139, 124, 248, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(139, 124, 248, 0.1), 0 2px 4px -1px rgba(139, 124, 248, 0.06);
-  
-  /* Radios */
-  --radius: 16px;
-  --radius-sm: 12px;
-}
+/* resultados-encuesta.component.css */
+
+/*
+  Harmonizado con los componentes 'comienzo', 'creacion-encuesta' y 'responder-encuesta'.
+  - Paleta de colores consistente utilizando variables.
+  - Sombras y bordes redondeados unificados.
+  - Espaciado y tipografía coherentes.
+  - Mejoras de responsividad para una experiencia uniforme.
+*/
 
 :host {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  width: 100%;
   min-height: 100vh;
-  width: 100vw;
-  background: linear-gradient(135deg, #faf8ff 0%, #f0f4ff 100%);
-  padding: 0;
-  margin: 0;
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: center;
+  /* Fondo consistente con otros componentes, utilizando tonos de gris/azul claro */
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente consistente */
+  padding: 2rem; /* Padding consistente */
+  box-sizing: border-box;
 }
 
 .resultados-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 24px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  background-color: var(--color-background-main);
-  min-height: 100vh;
+  max-width: 900px; /* Ancho máximo consistente para el contenido principal */
+  margin: 0 auto;
+  gap: 1.5rem; /* Espaciado consistente entre secciones */
 }
 
-/* Loading State */
-.loading-section {
+/* --- ESTADOS DE CARGA / ERROR / SIN RESPUESTAS --- */
+.loading-section,
+.error-section,
+.no-responses {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80px 20px;
+  justify-content: center; /* Centrar verticalmente también */
+  padding: 3rem 2rem; /* Mayor padding para estos mensajes */
   text-align: center;
-  background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(139, 124, 248, 0.1);
+  background-color: #ffffff; /* Fondo blanco para las tarjetas de estado */
+  border-radius: 16px; /* Bordes redondeados más pronunciados */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* Sombra consistente */
+  border: 1px solid #e5e7eb; /* Borde suave */
+  min-height: 250px; /* Asegura un tamaño mínimo para la visualización */
 }
 
-::ng-deep .p-card-body {
-    padding: 0 !important;
+.loading-section p,
+.error-section p,
+.no-responses p {
+  margin-top: 1rem;
+  font-size: 1.1em;
+  color: #6b7280; /* Color de texto secundario */
 }
 
-.loading-section p {
-  margin-top: 24px;
-  font-size: 1.125rem;
-  color: var(--color-text-secondary);
-  font-weight: 500;
+.loading-section p-progressSpinner {
+  --p-progress-spinner-color: #2563eb; /* Color azul primario para el spinner */
+  --p-progress-spinner-stroke-width: 4px; /* Ancho del trazo */
 }
 
-/* Error State */
 .error-section {
-  text-align: center;
-  padding: 48px 32px;
-  background: linear-gradient(135deg, #fef2f2 0%, #fef7f7 100%);
-  border-radius: var(--radius);
-  border: 1px solid rgba(252, 165, 165, 0.2);
-  box-shadow: 0 4px 6px -1px rgba(252, 165, 165, 0.1);
+  background-color: #fffafa; /* Tono más claro de rojo para el error */
+  border-left: 5px solid #ef4444; /* Borde izquierdo rojo para indicar error */
 }
 
-.error-section h3 {
-  color: var(--color-error);
-  margin-bottom: 16px;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
+.error-section h3,
 .error-section p {
-  margin-bottom: 24px;
-  color: var(--color-text-secondary);
-  font-size: 1rem;
-  line-height: 1.6;
+  color: #dc2626; /* Texto rojo más intenso */
 }
 
-.error-section p-button {
-  margin: 0 8px;
+.no-responses i {
+  font-size: 3rem; /* Icono más grande */
+  color: #9ca3af; /* Color de texto muted */
+  margin-bottom: 1rem;
 }
 
-/* Survey Header */
+.no-responses h3 {
+  color: #4b5563; /* Color de texto más oscuro */
+  margin-bottom: 0.5rem;
+}
+
+/* --- SECCIÓN DE RESULTADOS (CUANDO HAY DATOS) --- */
+.results-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Espaciado entre tarjetas de preguntas */
+}
+
+/* Header de la encuesta (Tarjeta principal) */
 .survey-header {
   text-align: center;
-  padding: 32px 24px;
-  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-md);
-  border: 1px solid rgba(139, 124, 248, 0.15);
+  padding: 2rem;
+  background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%); /* Degradado suave */
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05); /* Borde sutil */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* Sombra ligera */
 }
 
 .survey-header h2 {
-  margin: 0 0 24px 0;
-  color: var(--color-text);
-  font-size: 2.25rem;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
+  font-size: 2.2rem;
+  color: #1f2937; /* Color de texto principal */
+  margin-bottom: 0.75rem;
+}
+
+.survey-header p {
+  font-size: 1.1rem;
+  color: #6b7280; /* Color de texto secundario */
+  margin-bottom: 1.5rem;
 }
 
 .survey-stats {
   display: flex;
   justify-content: center;
-  gap: 32px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap; /* Permitir que los tags se envuelvan en pantallas pequeñas */
 }
 
 .total-responses {
-  display: flex;
+  display: inline-flex; /* Para alinear icono y texto */
   align-items: center;
-  gap: 12px;
-  font-size: 1.25rem;
+  gap: 0.5rem;
+  background-color: #dbeafe; /* Azul claro de info */
+  color: #1e40af; /* Azul oscuro de info */
+  padding: 0.5rem 1rem;
+  border-radius: 20px; /* Más redondeado para un aspecto de "badge" */
   font-weight: 600;
-  color: var(--color-primary-dark);
-  background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(139, 124, 248, 0.2);
-  padding: 12px 20px;
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.3s ease;
-}
-
-.total-responses:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1); /* Sombra sutil */
 }
 
 .total-responses i {
-  font-size: 1.5rem;
-  color: var(--color-primary);
+  color: #1e40af; /* Asegurar color de icono */
 }
 
-/* Questions Section */
-.questions-section {
+/* Tarjetas de preguntas */
+.question-stats {
+  padding: 2rem;
+  background: linear-gradient(145deg, #ffffff 0%, #f9fafb 100%); /* Fondo ligeramente diferente para destacar */
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1.5rem;
+  /* Animación */
+  animation: fadeInUp 0.6s ease-out forwards; /* Asegura que la animación se mantenga al final */
+  animation-fill-mode: both;
 }
 
-.question-stats {
-  padding: 32px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(139, 124, 248, 0.08);
-  transition: all 0.3s ease;
-}
+.question-stats:nth-child(1) { animation-delay: 0.1s; }
+.question-stats:nth-child(2) { animation-delay: 0.2s; }
+.question-stats:nth-child(3) { animation-delay: 0.3s; }
+.question-stats:nth-child(4) { animation-delay: 0.4s; }
+/* ... añade más para más preguntas si es necesario ... */
 
-.question-stats:hover {
-  box-shadow: var(--shadow-md);
-  border-color: rgba(139, 124, 248, 0.15);
-}
 
 .question-stats h3 {
-  margin: 0 0 24px 0;
-  color: var(--color-text);
-  font-size: 1.5rem;
-  font-weight: 600;
-  border-bottom: 2px solid rgba(139, 124, 248, 0.15);
-  padding-bottom: 16px;
-  line-height: 1.3;
+  font-size: 1.7rem;
+  color: #334155; /* Tono de texto más oscuro para los títulos de pregunta */
+  margin-bottom: 1rem;
+  text-align: center;
+  word-wrap: break-word; /* Para que los textos largos se ajusten */
 }
 
-/* Multiple Choice Options */
-.opciones-stats {
+/* Opciones de selección múltiple y verdadero/falso */
+.opciones-stats-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-}
-
-.opcion-stat {
-  border: 1px solid rgba(139, 124, 248, 0.1);
-  border-radius: var(--radius-sm);
-  padding: 20px;
-  background: linear-gradient(135deg, #fefefe 0%, #f1f5f9 100%);
-  transition: all 0.3s ease;
-}
-
-.opcion-stat:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-primary);
-  transform: translateY(-1px);
-}
-
-.opcion-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.opcion-texto {
-  font-weight: 500;
-  color: var(--color-text);
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.opcion-count {
-  font-size: 0.875rem;
-  color: var(--color-primary-dark);
-  font-weight: 600;
-  background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%);
-  padding: 6px 16px;
-  border-radius: 20px;
-  border: 1px solid rgba(139, 124, 248, 0.2);
-  white-space: nowrap;
-  box-shadow: 0 2px 4px rgba(139, 124, 248, 0.08);
-}
-
-.opcion-progress {
+  gap: 0.75rem; /* Espacio entre opciones */
   width: 100%;
 }
 
-/* Open Questions */
-.respuestas-abiertas {
-  border: 1px solid rgba(139, 124, 248, 0.1);
-  border-radius: var(--radius-sm);
-  padding: 24px;
-  background: linear-gradient(135deg, #fefefe 0%, #f8faff 100%);
+.opcion-stat {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #f8fafc; /* Fondo muy claro para cada opción */
+  border: 1px solid #e5e7eb;
+  border-radius: 10px; /* Bordes ligeramente más pequeños que el contenedor */
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
 }
 
-.respuestas-count {
-  font-weight: 600;
-  color: var(--color-primary-dark);
-  margin-bottom: 20px;
+.opcion-stat:hover {
+  transform: translateY(-2px); /* Efecto hover sutil */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  border-color: #c2d3e6; /* Borde un poco más visible en hover */
+}
+
+.opcion-text {
+  flex-grow: 1; /* Permite que el texto ocupe el espacio */
+  color: #374151; /* Color de texto para la opción */
+  font-weight: 500;
+  word-wrap: break-word;
+}
+
+.opcion-percentage {
+  font-weight: 700;
+  color: #2563eb; /* Color primario para el porcentaje */
+  min-width: 60px; /* Asegura espacio para porcentajes de 2 o 3 dígitos */
+  text-align: right;
+  flex-shrink: 0; /* Evita que el porcentaje se encoja */
+}
+
+/* Barra de progreso de PrimeNG */
+::ng-deep .p-progressbar {
+  height: 1.25rem !important; /* Altura de la barra */
+  border-radius: 8px !important; /* Bordes redondeados */
+  background-color: #e0e7ff !important; /* Fondo de la barra (vacío) */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1) !important; /* Sombra interna para profundidad */
+  overflow: hidden; /* Asegura que el contenido se mantenga dentro del radio */
+}
+
+::ng-deep .p-progressbar-value {
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%) !important; /* Degradado azul para el progreso */
+  transition: width 0.5s ease-in-out !important; /* Animación suave del progreso */
+  border-radius: 8px !important; /* Asegurar que el relleno también tenga bordes redondeados */
+}
+
+::ng-deep .p-progressbar-label {
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Sombra para que el texto sea legible */
+}
+
+
+/* Sección de respuestas abiertas */
+.respuestas-abiertas {
+  background-color: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.respuestas-abiertas h5 {
+  color: #374151;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
   text-align: center;
-  font-size: 1.125rem;
-  background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%);
-  padding: 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(139, 124, 248, 0.2);
-  box-shadow: var(--shadow-sm);
 }
 
 .respuestas-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  max-height: 400px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.respuestas-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.respuestas-list::-webkit-scrollbar-track {
-  background: rgba(139, 124, 248, 0.05);
-  border-radius: 3px;
-}
-
-.respuestas-list::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
-  border-radius: 3px;
-}
-
-.respuestas-list::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-dark);
+  gap: 0.75rem;
 }
 
 .respuesta-abierta {
-  background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
-  border: 1px solid rgba(139, 124, 248, 0.08);
-  border-radius: var(--radius-sm);
-  padding: 16px 20px;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-sm);
-}
-
-.respuesta-abierta:hover {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
+  align-items: flex-start; /* Alinea el icono arriba si el texto es largo */
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: #4b5563;
+  line-height: 1.4;
+  word-wrap: break-word;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.03);
 }
 
 .respuesta-abierta i {
-  color: var(--color-primary);
-  margin-top: 2px;
-  flex-shrink: 0;
-  font-size: 1rem;
+  color: #9ca3af; /* Color muted para el icono de cita */
+  font-size: 1.2rem;
+  flex-shrink: 0; /* Evita que el icono se encoja */
+  margin-top: 0.2rem; /* Pequeño ajuste para alineación visual */
 }
 
-.respuesta-abierta span {
-  line-height: 1.6;
-  color: var(--color-text);
-  font-size: 0.95rem;
-}
-
-/* No Responses State */
-.no-responses {
-  text-align: center;
-  padding: 80px 32px;
-  color: var(--color-text-secondary);
-  background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(139, 124, 248, 0.08);
-}
-
-.no-responses i {
-  font-size: 4rem;
-  margin-bottom: 24px;
-  color: var(--color-primary-light);
-}
-
-.no-responses h3 {
-  margin-bottom: 12px;
-  color: var(--color-text-secondary);
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-.no-responses p {
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-/* Actions Section */
+/* Sección de acciones (botones) */
 .actions-section {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-top: 32px;
-  padding: 24px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(139, 124, 248, 0.08);
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  flex-wrap: wrap; /* Permitir que los botones se envuelvan */
+  gap: 1rem; /* Espacio entre botones */
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .resultados-container {
-    padding: 16px;
-    gap: 20px;
-  }
-  
-  .survey-header {
-    padding: 24px 20px;
-  }
-  
-  .survey-header h2 {
-    font-size: 1.875rem;
-  }
-  
-  .survey-stats {
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
-  
-  .question-stats {
-    padding: 24px 20px;
-  }
-  
-  .opcion-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .actions-section {
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .actions-section p-button {
-    width: 100%;
-  }
+/* Estilos para los botones de PrimeNG dentro de esta sección */
+.actions-section ::ng-deep .p-button {
+  padding: 0.75rem 1.75rem; /* Padding consistente */
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px; /* Bordes redondeados */
+  transition: all 0.2s ease;
+  min-width: 150px; /* Asegura un ancho mínimo para los botones */
+  justify-content: center; /* Centrar el contenido del botón */
 }
 
-@media (max-width: 480px) {
-  .resultados-container {
-    padding: 12px;
-  }
-  
-  .survey-header {
-    padding: 20px 16px;
-  }
-  
-  .survey-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .question-stats {
-    padding: 20px 16px;
-  }
-  
-  .question-stats h3 {
-    font-size: 1.25rem;
-  }
-  
-  .opcion-stat {
-    padding: 16px;
-  }
-  
-  .respuestas-abiertas {
-    padding: 20px 16px;
-  }
-  
-  .actions-section {
-    padding: 20px 16px;
-  }
-  
-  .total-responses {
-    font-size: 1.125rem;
-    padding: 10px 16px;
-  }
+.actions-section ::ng-deep .p-button-label {
+  margin-left: 0.5rem; /* Espacio entre icono y label */
 }
 
-/* Animaciones sutiles */
+/* Botón principal */
+.actions-section ::ng-deep .p-button-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+  border: none !important;
+  color: white !important;
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2) !important;
+}
+
+.actions-section ::ng-deep .p-button-primary:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3) !important;
+}
+
+/* Botón secundario/info */
+.actions-section ::ng-deep .p-button-info {
+  background-color: #e0f2fe !important;
+  color: #0c4a6e !important;
+  border: 1px solid #a7d3f8 !important;
+  box-shadow: 0 2px 4px rgba(147, 197, 253, 0.1) !important;
+}
+
+.actions-section ::ng-deep .p-button-info:hover {
+  background-color: #cbe9fd !important;
+  border-color: #8cc4f7 !important;
+}
+
+/* Botón de recarga (siempre primary en la captura, pero aquí lo puse como secundario para diferenciarlos) */
+.actions-section ::ng-deep .p-button-secondary {
+  background-color: #e5e7eb !important;
+  color: #4b5563 !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+.actions-section ::ng-deep .p-button-secondary:hover {
+  background-color: #d1d5db !important;
+  border-color: #9ca3af !important;
+}
+
+
+/* --- ANIMACIONES --- */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -458,55 +350,109 @@
   }
 }
 
-@keyframes float {
-  0%, 100% {
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
     transform: translateY(0);
   }
-  50% {
-    transform: translateY(-4px);
-  }
 }
 
-.question-stats,
 .survey-header,
 .actions-section {
-  animation: fadeIn 0.6s ease-out;
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
-.total-responses {
-  animation: float 3s ease-in-out infinite;
-}
 
-/* Mejoras de accesibilidad */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 768px) {
+  :host {
+    padding: 1rem;
+  }
+
+  .resultados-container {
+    gap: 1rem;
+  }
+
+  .loading-section,
+  .error-section,
+  .no-responses {
+    padding: 2rem 1rem;
+  }
+
+  .survey-header {
+    padding: 1.5rem;
+  }
+
+  .survey-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .survey-header p {
+    font-size: 1rem;
+  }
+
+  .total-responses {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .question-stats {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+
+  .question-stats h3 {
+    font-size: 1.4rem;
+  }
+
+  .opcion-stat {
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    flex-direction: column; /* Apilar en pantallas pequeñas */
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .opcion-percentage {
+    width: 100%; /* Ocupar el ancho completo */
+    text-align: left; /* Alinear a la izquierda */
+  }
+
+  .respuestas-abiertas {
+    padding: 1rem;
+  }
+
+  .respuesta-abierta {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .actions-section {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .actions-section ::ng-deep .p-button {
+    width: 100%;
+    max-width: none; /* Eliminar el max-width para que ocupen todo el ancho */
+    padding: 0.7rem 1.5rem;
+    font-size: 0.95rem;
   }
 }
 
-/* Efectos adicionales para darle más vida */
-.opcion-stat::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.opcion-stat {
-  position: relative;
-  overflow: hidden;
-}
-
-.opcion-stat:hover::before {
-  opacity: 1;
+/* Mejora de accesibilidad para reducir movimientos */
+@media (prefers-reduced-motion: reduce) {
+  .question-container,
+  .survey-header,
+  .actions-section,
+  .loading-section,
+  .error-section,
+  .no-responses {
+    animation: none !important;
+    transition: none !important;
+  }
 }

@@ -1,299 +1,240 @@
-/* ===== VARIABLES CSS ===== */
-:root {
-  --color-background-main: #f3e8ff;
-  --color-background: #fef7ff;
-  --color-background-alt: #f8fafc;
-  --color-background-card: rgba(254, 247, 255, 0.95);
-  --color-border: #e9d5ff;
-  --color-border-hover: #d8b4fe;
-  --color-text: #581c87;
-  --color-text-secondary: #6b21a8;
-  --color-success: #059669;
-  --color-accent: #a855f7;
-  --color-focus: #7c3aed;
-  --color-danger: #dc2626;
-  --shadow-sm: 0 2px 4px rgba(168, 85, 247, 0.1);
-  --shadow-md: 0 4px 8px rgba(168, 85, 247, 0.15);
-  --shadow-lg: 0 8px 16px rgba(168, 85, 247, 0.2);
-  --shadow-xl: 0 12px 24px rgba(168, 85, 247, 0.25);
-  --radius: 16px;
-  --radius-sm: 12px;
-  --radius-lg: 20px;
-  --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --backdrop-blur: blur(10px);
-}
+/* Eliminamos todas las variables locales, ya se definen en styles.css */
 
-/* ===== CONFIGURACIÓN BASE ===== */
-:host {
-  font-family: var(--font-family);
-  font-weight: 400;
-  line-height: 1.6;
-}
-
-/* ===== CONTENEDOR PRINCIPAL ===== */
+/* Contenedor principal del diálogo de creación/edición de preguntas */
 #contenedor-creacion-pregunta {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding: 1.5rem 0;
-  max-width: 100%;
-}
-
-/* ===== CONTENEDOR DE GESTIÓN ===== */
-#contenedor-gestion {
-  display: flex;
-  flex-direction: column;
+  gap: var(--spacing-xl); /* Espaciado adaptable */
+  padding: var(--spacing-sm); /* Un poco de padding interior */
   align-items: center;
-  background: linear-gradient(
-    135deg, 
-    var(--color-background-card) 0%, 
-    rgba(243, 232, 255, 0.7) 50%,
-    rgba(221, 214, 254, 0.6) 100%
-  );
-  border-radius: var(--radius-lg);
-  padding: 2rem;
-  border: 2px solid var(--color-border);
-  backdrop-filter: var(--backdrop-blur);
-  transition: var(--transition);
-  position: relative;
-  overflow: hidden;
+  width: 100%;
 }
 
-#contenedor-gestion::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-focus));
-  opacity: 0;
-  transition: opacity 0.3s ease;
+/* Estilo del input de texto de la pregunta */
+#input-texto {
+  width: 100%;
+  transition: var(--transition-ease);
 }
 
-#contenedor-gestion:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-xl);
-  border-color: var(--color-accent);
+/* Sobreescritura del input de texto (PrimeNG) */
+::ng-deep #input-texto .p-inputtext {
+  background-color: var(--color-input-bg) !important; /* Adaptable al tema */
+  color: var(--color-text-dark) !important; /* Adaptable al tema */
+  border-color: var(--color-input-border) !important; /* Adaptable al tema */
+  padding: var(--spacing-sm);
+  font-size: 1rem;
 }
 
-#contenedor-gestion:hover::before {
-  opacity: 1;
+::ng-deep #input-texto .p-inputtext:enabled:focus {
+  border-color: var(--color-primary) !important; /* Adaptable al tema */
+  box-shadow: 0 0 0 0.2rem var(--color-primary-light) !important; /* Adaptable al tema */
+  outline: none;
 }
 
-/* ===== CAMPOS DE ENTRADA ===== */
-#input-texto,
+/* Estilo del label flotante (PrimeNG) */
+::ng-deep #input-texto .p-floatlabel label {
+  color: var(--color-input-placeholder) !important; /* Adaptable al tema */
+}
+
+/* Dropdown de tipo de pregunta */
 #dropdown-tipos-pregunta {
   width: 100%;
-  padding: 1.25rem 1.5rem;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius);
-  font-size: 1rem;
-  background: linear-gradient(
-    135deg, 
-    rgba(221, 214, 254, 0.8) 0%, 
-    rgba(196, 181, 253, 0.6) 50%,
-    rgba(254, 247, 255, 0.7) 100%
-  );
-  color: var(--color-text);
-  font-family: var(--font-family);
-  font-weight: 500;
-  transition: var(--transition);
-  letter-spacing: 0.3px;
-  box-sizing: border-box;
+  max-width: 400px;
 }
 
-#input-texto::placeholder {
-  color: var(--color-text-secondary);
-  opacity: 0.8;
-  font-weight: 400;
+/* Sobreescritura del Dropdown (PrimeNG) */
+::ng-deep #dropdown-tipos-pregunta.p-dropdown {
+  background-color: var(--color-input-bg) !important; /* Adaptable al tema */
+  color: var(--color-text-dark) !important; /* Adaptable al tema */
+  border-color: var(--color-input-border) !important; /* Adaptable al tema */
+  transition: var(--transition-ease);
 }
 
-#dropdown-tipos-pregunta option {
-  color: var(--color-text-secondary);
-  background: var(--color-background);
-  padding: 0.5rem;
+::ng-deep #dropdown-tipos-pregunta.p-dropdown .p-dropdown-label {
+  color: var(--color-text-dark) !important; /* Adaptable al tema */
 }
 
-/* Estados focus y hover */
-#input-texto:focus,
-#dropdown-tipos-pregunta:focus {
-  outline: none;
-  border-color: var(--color-focus);
-  box-shadow: 
-    0 0 0 4px rgba(124, 58, 237, 0.2),
-    var(--shadow-md);
-  background: linear-gradient(
-    135deg, 
-    #fef7ff 0%, 
-    #f3e8ff 50%,
-    rgba(254, 247, 255, 0.95) 100%
-  );
-  transform: translateY(-1px);
+::ng-deep #dropdown-tipos-pregunta.p-dropdown:not(.p-disabled):focus {
+  border-color: var(--color-primary) !important; /* Adaptable al tema */
+  box-shadow: 0 0 0 0.2rem var(--color-primary-light) !important; /* Adaptable al tema */
 }
 
-#input-texto:hover:not(:focus),
-#dropdown-tipos-pregunta:hover:not(:focus) {
-  border-color: var(--color-border-hover);
-  background: linear-gradient(
-    135deg, 
-    rgba(196, 181, 253, 0.7) 0%, 
-    rgba(167, 139, 250, 0.6) 50%,
-    rgba(221, 214, 254, 0.8) 100%
-  );
-  box-shadow: var(--shadow-sm);
+::ng-deep .p-dropdown-panel {
+  background-color: var(--color-background-card) !important; /* Fondo del panel adaptable */
+  border: 1px solid var(--color-border) !important; /* Borde del panel adaptable */
+  box-shadow: var(--shadow-md) !important;
 }
 
-/* ===== SECCIÓN DE OPCIONES ===== */
+::ng-deep .p-dropdown-panel .p-dropdown-item {
+  color: var(--color-text-dark) !important; /* Texto de los ítems adaptable */
+  background-color: var(--color-background-card) !important; /* Fondo de los ítems adaptable */
+  padding: var(--spacing-sm) !important;
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-item.p-highlight {
+  background-color: var(--color-primary-light) !important; /* Resaltado adaptable */
+  color: var(--color-text-light) !important;
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+  background-color: var(--color-background-elevated) !important; /* Hover adaptable */
+}
+
+/* Lista de opciones (dentro de sección) */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-md) 0; /* Espaciado adaptable */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm); /* Espaciado adaptable */
+}
+
 .contenedor-opcion {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin: 1rem 0;
-  padding: 1.25rem 1.5rem;
-  background: linear-gradient(
-    135deg, 
-    rgba(254, 247, 255, 0.9) 0%, 
-    rgba(243, 232, 255, 0.7) 50%,
-    rgba(221, 214, 254, 0.6) 100%
-  );
-  border-radius: var(--radius);
-  border: 2px solid var(--color-border);
-  transition: var(--transition);
-  backdrop-filter: blur(8px);
-  position: relative;
-  overflow: hidden;
-}
-
-.contenedor-opcion::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: linear-gradient(180deg, var(--color-accent), var(--color-focus));
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-md); /* Espaciado adaptable */
+  transition: var(--transition-ease);
 }
 
 .contenedor-opcion:hover {
-  background: linear-gradient(
-    135deg, 
-    var(--color-background) 0%, 
-    rgba(221, 214, 254, 0.9) 50%,
-    rgba(196, 181, 253, 0.8) 100%
-  );
-  border-color: var(--color-accent);
-  transform: translateX(4px);
-  box-shadow: var(--shadow-md);
-}
+  transform: translateY(-2px);
 
-.contenedor-opcion:hover::before {
-  opacity: 1;
 }
 
 .texto-opcion {
-  flex: 1;
-  word-wrap: break-word;
-  color: var(--color-text);
-  font-weight: 600;
-  font-size: 1rem;
-  margin-right: 1.5rem;
-  line-height: 1.4;
-  hyphens: auto;
+  margin: 0;
+  color: var(--color-text-dark); /* Texto adaptable */
+  flex-grow: 1;
+  word-break: break-word; /* Para que el texto largo se rompa */
+  padding-right: var(--spacing-sm);
 }
 
-/* ===== HEADING OPCIONES ===== */
-#heading-opciones {
-  color: var(--color-text);
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  text-align: center;
-  position: relative;
+#botonera-opciones {
+  display: flex;
+  gap: var(--spacing-xs); /* Espaciado entre botones pequeños */
 }
 
-#heading-opciones::after {
-  content: '';
-  position: absolute;
-  bottom: -0.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-focus));
-  border-radius: 2px;
-}
-
-/* ===== OPCIONES VACÍO ===== */
 #opciones-vacio {
-  color: var(--color-text-secondary);
+  color: var(--color-text-medium); /* Texto adaptable */
   font-style: italic;
   text-align: center;
-  padding: 2rem;
-  background: rgba(243, 232, 255, 0.5);
-  border-radius: var(--radius);
-  border: 2px dashed var(--color-border);
-  margin: 1rem 0;
+  margin: var(--spacing-lg) 0;
 }
 
-/* ===== BOTONERA ===== */
-#contenedor-boton-finalizar-gestion {
-  margin-top: 2.5rem;
+/* Botonera de acciones (Agregar/Finalizar) */
+#contenedor-gestion {
+  margin-top: var(--spacing-xl); /* Espaciado adaptable */
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-#botonera-opciones {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-}
-
-/* ===== ESTILOS PARA BOTONES PRIMENG ===== */
-::ng-deep #contenedor-boton-finalizar-gestion .p-button {
-  background: linear-gradient(135deg, var(--color-accent), var(--color-focus));
-  border: none;
-  color: white;
-  padding: 1.25rem 2.5rem;
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: var(--transition);
-  box-shadow: var(--shadow-md);
-  min-width: 160px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  position: relative;
-  overflow: hidden;
-}
-
-::ng-deep #contenedor-boton-finalizar-gestion .p-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+/* Estilo del botón "Finalizar" */
+::ng-deep #contenedor-gestion .p-button {
+  background-color: var(--color-primary) !important; /* Adaptable al tema */
+  border-color: var(--color-primary) !important; /* Adaptable al tema */
+  color: var(--color-text-light) !important; /* Texto claro */
+  padding: var(--spacing-md) var(--spacing-xl) !important;
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  border-radius: var(--border-radius-md) !important; /* Adaptable al tema */
+  box-shadow: var(--shadow-md) !important; /* Adaptable al tema */
+  transition: var(--transition-ease);
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
+  max-width: 250px;
 }
 
-::ng-deep #contenedor-boton-finalizar-gestion .p-button:hover {
+::ng-deep #contenedor-gestion .p-button:hover {
+  background-color: var(--color-primary-dark) !important; /* Adaptable al tema */
+  border-color: var(--color-primary-dark) !important;
   transform: translateY(-3px);
-  box-shadow: var(--shadow-xl);
-  background: linear-gradient(135deg, #9333ea, #6b21a8);
+  box-shadow: var(--shadow-lg) !important; /* Sombra más fuerte al pasar el ratón */
 }
 
-::ng-deep #contenedor-boton-finalizar-gestion .p-button:hover::before {
-  left: 100%;
+/* Botón "Agregar Opción" */
+::ng-deep .p-button[label="Agregar Opción"] {
+  background-color: var(--color-secondary) !important; /* Color secundario adaptable */
+  border-color: var(--color-secondary) !important;
+  color: var(--color-text-light) !important;
+  padding: var(--spacing-sm) var(--spacing-lg) !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  border-radius: var(--border-radius-md) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
-::ng-deep #contenedor-boton-finalizar-gestion .p-button:active {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+::ng-deep .p-button[label="Agregar Opción"]:hover {
+  background-color: var(--color-secondary-dark) !important; /* Hover adaptable */
+  border-color: var(--color-secondary-dark) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* Botón "Eliminar Opción" */
+::ng-deep #boton-eliminar-opcion.p-button {
+  background-color: var(--color-danger) !important; 
+  border-color: var(--color-danger) !important;
+  color: var(--color-text-light) !important;
+  padding: var(--spacing-xs) !important; 
+  font-size: 0.5rem !important;
+  /* width: 1.8rem; 
+  height: 1.8rem;  */
+  border-radius: 50% !important; 
+  box-shadow: var(--shadow-sm) !important;
+}
+
+::ng-deep #boton-eliminar-opcion.p-button:hover {
+  background-color: var(--color-danger) !important;
+  filter: brightness(0.9); /* Oscurecer un poco en hover */
+  border-color: var(--color-danger) !important;
+  transform: scale(1.05); /* Ligeramente más grande al pasar el ratón */
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* =========================================== */
+/* Responsive adjustments                      */
+/* =========================================== */
+@media (max-width: 768px) {
+  #contenedor-creacion-pregunta {
+    gap: var(--spacing-lg);
+  }
+
+  ::ng-deep #contenedor-gestion .p-button {
+    font-size: 1rem !important;
+    padding: var(--spacing-sm) var(--spacing-xl) !important;
+    max-width: 200px;
+  }
+
+  ::ng-deep .p-button[label="Agregar Opción"] {
+    font-size: 0.95rem !important;
+    padding: var(--spacing-sm) var(--spacing-lg) !important;
+  }
+
+  .texto-opcion {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #contenedor-creacion-pregunta {
+    gap: var(--spacing-md);
+  }
+
+  ::ng-deep #contenedor-gestion .p-button {
+    font-size: 0.95rem !important;
+    padding: var(--spacing-sm) var(--spacing-lg) !important;
+    max-width: 180px;
+  }
+
+  ::ng-deep .p-button[label="Agregar Opción"] {
+    font-size: 0.9rem !important;
+    padding: var(--spacing-xs) var(--spacing-md) !important;
+  }
+
+  .texto-opcion {
+    font-size: 0.9rem;
+  }
 }

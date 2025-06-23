@@ -1,11 +1,229 @@
 @import "primeicons/primeicons.css"; 
 
- body{
-   margin: 0;
-   height: 100vh;
-   justify-content: center;
- }
+/* Importaciones de PrimeIcons */
+@import "primeicons/primeicons.css";
 
- html{
-    font-size: 1.2rem;
- }
+/* =========================================== */
+/* Variables Globales de Tema                  */
+/* =========================================== */
+:root {
+  /* Modo Claro (Valores por defecto) */
+  --color-primary: #3498db; /* Azul suave y profesional */
+  --color-primary-light: #5dade2;
+  --color-primary-dark: #2874a6;
+
+  --color-secondary: #2ecc71; /* Verde fresco */
+  --color-secondary-light: #58d68d;
+  --color-secondary-dark: #239b56;
+
+  --color-accent: #f1c40f; /* Amarillo vibrante */
+
+  --color-text-dark: #2c3e50; /* Gris oscuro para texto principal */
+  --color-text-medium: #7f8c8d; /* Gris medio para texto secundario */
+  --color-text-light: #ecf0f1; /* Para texto sobre fondos oscuros */
+
+  --color-background-light: #ecf0f1; /* Fondo muy claro */
+  --color-background-card: #ffffff; /* Fondo de tarjetas/componentes */
+  --color-background-elevated: #f0f2f5; /* Fondo ligeramente elevado para secciones */
+
+  --color-border: #bdc3c7; /* Borde gris claro */
+  --color-divider: #e0e0e0; /* Divisores */
+  --color-input-bg: #ffffff;
+  --color-input-border: #dcdcdc;
+  --color-input-placeholder: #a0a0a0;
+
+  --color-success: #28a745;
+  --color-danger: #dc3545;
+  --color-warning: #ffc107;
+  --color-info: #17a2b8;
+
+  /* Sombras sutiles */
+  --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+
+  /* Bordes redondeados */
+  --border-radius-sm: 6px;
+  --border-radius-md: 10px;
+  --border-radius-lg: 16px;
+
+  /* Espaciado uniforme */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
+
+  /* Transiciones suaves */
+  --transition-ease: all 0.3s ease-in-out;
+}
+
+/* =========================================== */
+/* Modo Oscuro                                 */
+/* =========================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #528cff; /* Azul más claro para contraste en oscuro */
+    --color-primary-light: #6a9cff;
+    --color-primary-dark: #3a68c7;
+
+    --color-secondary: #00d970; /* Verde brillante en oscuro */
+    --color-secondary-light: #26e687;
+    --color-secondary-dark: #00b05b;
+
+    --color-accent: #ffeb3b; /* Amarillo vibrante */
+
+    --color-text-dark: #e0e0e0; /* Texto claro */
+    --color-text-medium: #a0a0a0; /* Texto secundario más claro */
+    --color-text-light: #333333; /* Para texto sobre fondos muy claros en modo oscuro (raro, pero útil) */
+
+    --color-background-light: #2c2c2c; /* Fondo oscuro principal */
+    --color-background-card: #3a3a3a; /* Fondo de tarjetas más oscuro */
+    --color-background-elevated: #262626; /* Fondo ligeramente más oscuro */
+
+    --color-border: #555555; /* Borde más oscuro */
+    --color-divider: #444444; /* Divisores más oscuros */
+    --color-input-bg: #4a4a4a;
+    --color-input-border: #666666;
+    --color-input-placeholder: #b0b0b0;
+
+    --color-success: #4caf50;
+    --color-danger: #f44336;
+    --color-warning: #ff9800;
+    --color-info: #03a9f4;
+  }
+}
+
+/* =========================================== */
+/* Estilos Base del Cuerpo y HTML              */
+/* =========================================== */
+html {
+  font-size: 1.2rem; /* Tamaño de fuente base */
+  scroll-behavior: smooth; /* Desplazamiento suave */
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  justify-content: center;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-background-light); /* Fondo global */
+  color: var(--color-text-dark); /* Color de texto global */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transición para el cambio de tema */
+}
+
+/* Ajustes para elementos de PrimeNG que no siempre respetan variables */
+::ng-deep .p-component {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--color-text-dark);
+}
+
+::ng-deep .p-inputtext {
+  background-color: var(--color-input-bg) !important;
+  color: var(--color-text-dark) !important;
+  border-color: var(--color-input-border) !important;
+  transition: var(--transition-ease);
+}
+
+::ng-deep .p-inputtext:enabled:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 0.2rem var(--color-primary-light) !important;
+}
+
+::ng-deep .p-inputtextarea {
+  background-color: var(--color-input-bg) !important;
+  color: var(--color-text-dark) !important;
+  border-color: var(--color-input-border) !important;
+  transition: var(--transition-ease);
+}
+
+::ng-deep .p-inputtextarea:enabled:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 0.2rem var(--color-primary-light) !important;
+}
+
+::ng-deep .p-floatlabel label {
+  color: var(--color-input-placeholder) !important;
+}
+
+::ng-deep .p-dropdown {
+  background-color: var(--color-input-bg) !important;
+  color: var(--color-text-dark) !important;
+  border-color: var(--color-input-border) !important;
+  transition: var(--transition-ease);
+}
+
+::ng-deep .p-dropdown .p-dropdown-label {
+  color: var(--color-text-dark) !important;
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-items {
+  background-color: var(--color-background-card) !important;
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-item {
+  color: var(--color-text-dark) !important;
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-item:hover {
+  background-color: var(--color-background-elevated) !important;
+}
+
+::ng-deep .p-card {
+  background-color: var(--color-background-card) !important;
+  color: var(--color-text-dark) !important;
+  box-shadow: var(--shadow-md) !important;
+  border: 1px solid var(--color-border) !important;
+  transition: var(--transition-ease);
+}
+
+/* Toast */
+::ng-deep .p-toast .p-toast-message {
+  background: var(--color-background-card);
+  color: var(--color-text-dark);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+}
+::ng-deep .p-toast .p-toast-message.p-toast-message-success {
+  border-color: var(--color-success);
+}
+::ng-deep .p-toast .p-toast-message.p-toast-message-error {
+  border-color: var(--color-danger);
+}
+::ng-deep .p-toast .p-toast-message.p-toast-message-info {
+  border-color: var(--color-info);
+}
+::ng-deep .p-toast .p-toast-message.p-toast-message-warn {
+  border-color: var(--color-warning);
+}
+::ng-deep .p-toast-message .p-toast-message-icon,
+::ng-deep .p-toast-message .p-toast-icon-close {
+  color: var(--color-text-medium);
+}
+::ng-deep .p-toast-message-text .p-toast-summary {
+  color: var(--color-text-dark);
+}
+::ng-deep .p-toast-message-text .p-toast-detail {
+  color: var(--color-text-medium);
+}
+
+/* Dialogs (Modals) */
+::ng-deep .p-dialog .p-dialog-header {
+  background: var(--color-background-elevated);
+  color: var(--color-text-dark);
+  border-bottom: 1px solid var(--color-border);
+}
+::ng-deep .p-dialog .p-dialog-content {
+  background: var(--color-background-card);
+  color: var(--color-text-dark);
+}
+::ng-deep .p-dialog .p-dialog-footer {
+  background: var(--color-background-elevated);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Spinners */
+::ng-deep .p-progressspinner .p-progressspinner-circle {
+  stroke: var(--color-primary) !important;
+}

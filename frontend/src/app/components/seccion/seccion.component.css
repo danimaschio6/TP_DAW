@@ -1,51 +1,51 @@
-:root {
-  --color-section-bg: #ddd6fe;
-  --color-section-border: #c4b5fd;
-  --color-text: #581c87;
-  --shadow-soft: 0 4px 8px rgba(196, 181, 253, 0.3);
-  --radius: 16px;
-}
+/* NOTA: Eliminamos las variables locales duplicadas. Ahora usamos las globales de styles.css */
 
 section {
-  background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 50%, #a78bfa 100%);
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-  border-radius: var(--radius);
-  border: 2px solid var(--color-section-border);
+  /* Fondo adaptable al tema, usando un color sólido para simplificar y luego si se quiere, un gradiente adaptativo */
+  background: var(--color-background-elevated); /* Un fondo que se eleva sobre el general */
+  padding: var(--spacing-xl); /* Usar variable global para padding */
+  margin-bottom: var(--spacing-md); /* Usar variable global para margen inferior */
+  margin-top: var(--spacing-md); /* Usar variable global para margen superior */
+  border-radius: var(--border-radius-lg); /* Usar variable global de radio de borde */
+  border: 1px solid var(--color-border); /* Usar variable global para borde */
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: var(--shadow-soft);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
+  box-shadow: var(--shadow-md); /* Usar variable global para sombra */
+  transition: all var(--transition-ease); /* Transición para un cambio de tema y hover suave */
+  /* backdrop-filter: blur(5px);  Se puede mantener si se desea un efecto de desenfoque */
+  width: 100%; /* Asegura que ocupe el ancho disponible */
+  box-sizing: border-box; /* Incluye padding y border en el ancho */
 }
 
 section:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(196, 181, 253, 0.4);
-  border-color: #a78bfa;
+  box-shadow: var(--shadow-lg); /* Sombra más pronunciada en hover */
+  border-color: var(--color-primary-light); /* Resaltar borde en hover */
 }
 
 section * {
-  color: var(--color-text);
+  color: var(--color-text-dark); /* Color de texto adaptable al tema */
   font-weight: 500;
+  transition: color var(--transition-ease); /* Transición para el color del texto */
 }
 
-/* Responsive adjustments */
+/* Para los elementos dentro de la sección que necesiten un color más suave */
+section p {
+  color: var(--color-text-medium);
+}
+
+/* Media Queries para responsividad */
 @media (max-width: 768px) {
   section {
-    padding: 1.25rem;
-    margin-bottom: 0.75rem;
-    margin-top: 0.75rem;
-    border-radius: 12px;
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
   }
 }
 
 @media (max-width: 480px) {
   section {
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
+    padding: var(--spacing-md);
   }
 }

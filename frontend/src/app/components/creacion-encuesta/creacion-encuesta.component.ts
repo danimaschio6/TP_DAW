@@ -165,6 +165,9 @@ export class CreacionEncuestaComponent {
       return;
     }
 
+
+    
+
     //esto es pq da problemas enviar un objeto date al back desde el front
     const fechaFormulario= this.form.value.fechaVencimiento;
     const fechaString= fechaFormulario ? new Date(fechaFormulario).toISOString() : null;
@@ -192,6 +195,8 @@ export class CreacionEncuestaComponent {
         }
       }
     }
+
+    
 
     this.encuestasService.crearEncuesta(encuesta).subscribe({
       next: (res) => {

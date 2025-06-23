@@ -1,383 +1,309 @@
+/* responder-encuesta.component.css */
+
+/*
+  Harmonized with 'encuesta-creada.component.css' and 'comienzo.component.css'
+  - Updated main background gradient to match 'encuesta-creada'.
+  - Refined card/form shadow and border-radius for consistency.
+  - Adjusted button styles to match primary buttons in other components.
+  - Ensured consistent font-family, input focus, and general spacing.
+*/
+
 :host {
   display: block;
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f3e8ff 0%, #e0e7ff 50%, #ecfdf5 100%);
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 1rem;
+  /* Updated background gradient to match 'encuesta-creada.component.css' */
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Consistent font */
+  padding: 2rem; /* Consistent padding */
+  box-sizing: border-box;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  max-width: 900px;
+  max-width: 900px; /* Consistent max-width for content */
   margin: 0 auto;
-  gap: 1rem;
+  gap: 1.5rem; /* Consistent gap for better spacing */
 }
 
-.form-actions {
+.header {
+  text-align: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2c3e50; /* Consistent heading color (from creacion-encuesta) */
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilos para mensajes de carga, error y deshabilitado (adjusted shadows/borders for consistency) */
+.loading,
+.error-message,
+.disabled-message,
+.success-message,
+.expired-message {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
-  gap: 1rem;
+  padding: 2rem;
+  border-radius: 0.75rem; /* Consistent with button/card radius */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Soft shadow */
+  text-align: center;
+  margin-top: 2rem;
 }
 
+.loading {
+  background-color: #f8fafc;
+  color: #64748b;
+}
 
+.loading p {
+  margin-top: 1rem;
+  font-size: 1.1em;
+}
 
+.error-message {
+  background-color: #fef2f2;
+  border-left: 5px solid #f87171;
+  color: #ef4444;
+}
+
+.disabled-message,
+.expired-message {
+  background-color: #fffbeb;
+  border-left: 5px solid #f59e0b;
+  color: #d97706;
+}
+
+.success-message {
+  background-color: #ecfdf5;
+  border-left: 5px solid #34d399;
+  color: #059669;
+}
+
+.error-message h2,
+.disabled-message h2,
+.expired-message h2,
+.success-message h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.error-message p,
+.disabled-message p,
+.expired-message p,
+.success-message p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.disabled-message i,
+.error-message i,
+.success-message i,
+.expired-message i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* Estilos para el formulario de la encuesta (main card, consistent with p-card in encuesta-creada) */
+.survey-form {
+  background: #ffffff; /* Explicit white background */
+  padding: 2rem;
+  border-radius: 0.75rem; /* Consistent border-radius (smaller than 1rem from creacion-encuesta for some cards) */
+  /* Matched shadow from comienzo.component.css --shadow-lg or encuesta-creada .p-card */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: none; /* No extra border if shadow is enough */
+}
+
+.survey-form h2 {
+  font-size: 2rem;
+  color: #2c3e50; /* Consistent heading color */
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.survey-form h3 {
+  font-size: 1.2rem;
+  color: #6b7280; /* Secondary text color */
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: normal;
+}
+
+/* Contenedor para cada pregunta (similar to sections/cards within the form) */
 .question-container {
   margin-bottom: 2rem;
-  padding: 2rem;
-  background: linear-gradient(145deg, #ffffff 0%, #faf5ff 100%);
-  border-radius: 16px;
-  border: 1px solid rgba(139, 92, 246, 0.1);
-  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.08);
+  padding: 1.5rem; /* Consistent padding for internal sections */
+  background-color: #f8fafc; /* Lighter background for nested cards/sections */
+  border-radius: 0.75rem; /* Consistent border-radius */
+  border: 1px solid #e5e7eb; /* Soft border */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Shadow from --shadow-md */
   transition: all 0.3s ease;
 }
 
 .question-container:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Slightly more prominent shadow on hover */
 }
 
-
-.question-container h3 {
-  color: #6366f1;
-  font-size: 1.3rem;
+.question-text {
+  font-size: 1.4rem;
   font-weight: 600;
+  color: #1f2937; /* Darker text for main questions */
   margin-bottom: 1.5rem;
-  text-shadow: 0 1px 2px rgba(99, 102, 241, 0.1);
+  text-align: center;
+  line-height: 1.4;
 }
 
-/* Contenedor para cada opción (radio o checkbox) */
+/* Opciones de respuesta */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .option-wrapper {
   display: flex;
   align-items: center;
-  padding: 1rem;
-  margin-bottom: 0.75rem;
-  border-radius: 12px;
-  border: 2px solid transparent;
+  background-color: #ffffff; /* White background for each option */
+  border: 1px solid #e5e7eb; /* Soft border, consistent with general borders */
+  border-radius: 0.5rem; /* Slightly smaller border-radius for options */
+  padding: 0.8rem 1rem;
+  transition: all 0.2s ease;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: linear-gradient(135deg, #fefbff 0%, #f8fafc 100%);
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Shadow from --shadow-sm */
 }
 
-.option-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-/* Efecto al pasar el cursor sobre una opción */
 .option-wrapper:hover {
-  border-color: rgba(139, 92, 246, 0.3);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+  background-color: #f9fafb; /* Very subtle hover effect */
+  border-color: #a7b7cc; /* A soft blue-gray border on hover */
+  transform: translateY(-1px); /* More subtle lift */
 }
 
-.option-wrapper:hover::before {
-  opacity: 1;
-}
-
-/* Estilo para la opción que ha sido seleccionada */
 .option-wrapper.selected {
-  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-  border-color: #8b5cf6;
-  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.2);
-  transform: translateY(-1px);
+  background-color: #eff6ff; /* Very light blue for selected state (similar to `info` shades) */
+  border-color: #3b82f6; /* Primary blue for selected state */
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.15); /* Shadow with primary blue tint */
 }
 
-.option-wrapper.selected::before {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
-  opacity: 1;
-}
-
-/* Etiqueta de texto de cada opción */
 .option-label {
-  margin-left: 1rem;
-  font-weight: 500;
-  color: #374151;
-  font-size: 1rem;
-  line-height: 1.5;
-  position: relative;
-  z-index: 1;
-}
-
-.option-wrapper.selected .option-label {
-  color: #5b21b6;
-  font-weight: 600;
-}
-
-/* Radio buttons y checkboxes personalizados */
-.option-wrapper input[type="radio"],
-.option-wrapper input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #d1d5db;
-  border-radius: 50%;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.option-wrapper input[type="checkbox"] {
-  border-radius: 6px;
-}
-
-.option-wrapper input[type="radio"]:checked,
-.option-wrapper input[type="checkbox"]:checked {
-  border-color: #8b5cf6;
-  background-color: #8b5cf6;
-}
-
-.option-wrapper input[type="radio"]:checked::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: white;
-}
-
-.option-wrapper input[type="checkbox"]:checked::after {
-  content: '✓';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-/* Contenedor del mensaje de éxito */
-.success-message {
-  margin-top: 2rem;
-  padding: 2.5rem;
-  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-  color: #080808;
-  text-align: center;
-  border-radius: 20px;
-  box-shadow: 0 12px 28px rgba(34, 197, 94, 0.15);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid rgba(34, 197, 94, 0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-.success-message::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
-}
-
-/* Título del mensaje de éxito */
-.success-message h2 {
-  font-size: 2rem;
-  color: #059669;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(5, 150, 105, 0.1);
-}
-
-.success-message p {
   font-size: 1.1rem;
-  color: #374151;
-  line-height: 1.6;
+  color: #1f2937; /* Consistent dark text */
+  margin-left: 0.75rem;
+  flex-grow: 1;
 }
 
-.success-message i {
-  font-size: 4rem;
-  color: #10b981;
-  margin-bottom: 1rem;
-  filter: drop-shadow(0 4px 8px rgba(16, 185, 129, 0.2));
+/* Estilos para los RadioButtons de PrimeNG (using primary blue colors) */
+::ng-deep .p-radiobutton .p-radiobutton-box {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #a8b7cc; /* Borde gris-azulado suave para el radio button */
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  display: flex; /* Asegura que el icono interno se centre */
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Oculta cualquier parte del icono que pueda salirse */
+}
+
+::ng-deep .p-radiobutton .p-radiobutton-box.p-highlight {
+  background-color: #2563eb; /* Azul primario cuando está seleccionado */
+  border-color: #2563eb;
+}
+
+::ng-deep .p-radiobutton .p-radiobutton-box.p-focus {
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.5); 
+}
+
+::ng-deep .p-radiobutton .p-radiobutton-box .p-radiobutton-icon {
+ display: block; /* Asegura que se comporte como un bloque */
+  width: 0.625rem;   /* Tamaño del punto (la mitad del ancho/alto de la caja) */
+  height: 0.625rem;  /* Tamaño del punto */
+  background-color: transparent; /* Por defecto, transparente o sin color */
+  border-radius: 50%; /* Lo convierte en un círculo */
+  transform: scale(0); /* Oculto por defecto (escalado a 0) */
+  transition: transform 0.2s ease, background-color 0.2s ease; /* Transición para el punto */
 }
 
 
-/* Contenedor del mensaje de error */
-.fail-message {
-  margin-top: 2rem;
-  padding: 2rem;
-  background-color: #dcfce7;
-  color: #ff0000;           
-  text-align: center;
-  border-radius: 12px;
-}
-
-/* Título del mensaje de éxito */
-.fail-message h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-/* Mensaje de encuesta deshabilitada - COLORES VERDES PASTEL */
-.disabled-message {
-  margin-top: 2rem;
-  padding: 2.5rem;
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-  color: #080808;
-  text-align: center;
-  border-radius: 20px;
-  box-shadow: 0 12px 28px rgba(34, 197, 94, 0.12);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid rgba(34, 197, 94, 0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-.disabled-message::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #22c55e 0%, #4ade80 100%);
-}
-
-.disabled-message i {
-  font-size: 3.5rem;
-  color: #16a34a;
-  margin-bottom: 1.5rem;
-  filter: drop-shadow(0 4px 8px rgba(22, 163, 74, 0.2));
-}
-
-.disabled-message h2 {
-  font-size: 1.8rem;
-  color: #15803d;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(21, 128, 61, 0.1);
-}
-
-.disabled-message p {
-  font-size: 1.1rem;
-  color: #374151;
-  margin-bottom: 0.5rem;
-  line-height: 1.6;
-}
-
-/* Mensaje de error general */
-.error-message {
-  margin-top: 2rem;
-  padding: 2.5rem;
-  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
-  color: #080808;
-  text-align: center;
-  border-radius: 20px;
-  box-shadow: 0 12px 28px rgba(239, 68, 68, 0.15);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-.error-message::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
-}
-
-.error-message h2 {
-  font-size: 1.8rem;
-  color: #dc2626;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);
-}
-
-.error-message p {
-  font-size: 1.1rem;
-  color: #374151;
-  line-height: 1.6;
-}
-
-.error-message i {
-  font-size: 3.5rem;
-  color: #dc2626;
-  margin-bottom: 1.5rem;
-  filter: drop-shadow(0 4px 8px rgba(220, 38, 38, 0.2));
-}
-
-/* Botones personalizados */
-.btn-primary {
-  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
-  border: none;
-  border-radius: 12px;
-  padding: 1rem 2rem;
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+/* Estilos para Textareas de respuesta abierta (consistent with p-inputtext) */
+.open-answer-textarea {
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.btn-primary:hover::before {
-  left: 100%;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
-  background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
-}
-
-.btn-secondary {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border: 2px solid rgba(139, 92, 246, 0.2);
-  border-radius: 12px;
-  padding: 1rem 2rem;
-  color: #6366f1;
-  font-weight: 600;
+  padding: 0.8rem 1rem;
+  border: 1px solid #d1d5db; /* Light gray border for inputs */
+  border-radius: 0.5rem; /* Consistent smaller border-radius for input fields */
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Consistent font */
   font-size: 1rem;
+  color: #1f2937; /* Consistent text color */
+  background-color: #ffffff; /* White background for inputs */
+  transition: all 0.2s ease;
+  min-height: 80px;
+  box-sizing: border-box;
+}
+
+.open-answer-textarea:focus {
+  border-color: #2563eb; /* Focus border color using primary blue */
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25); /* Focus shadow using primary blue */
+  outline: none;
+}
+
+/* Contenedor para tipos de pregunta específicos como Verdadero/Falso */
+.options-vf {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.opciones-vf .p-button {
+  flex: 1;
+  max-width: 150px;
+}
+
+/* Botonera para el envío del formulario (consistent with comienzo/creacion-encuesta primary button) */
+.form-actions {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.submit-button {
+  /* Using values from --color-primary and --color-primary-dark from comienzo.component.css */
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border: none;
+  color: white;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 0.75rem; /* Consistent with other buttons/elements */
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3); /* Shadow based on primary blue */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.btn-secondary:hover {
-  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-  border-color: rgba(139, 92, 246, 0.4);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+.submit-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.4);
+  
+}
+
+.submit-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  opacity: 0.7;
 }
 
 /* Animaciones */
@@ -404,65 +330,137 @@
 
 .success-message,
 .disabled-message,
-.error-message {
+.error-message,
+.expired-message {
   animation: fadeInUp 0.8s ease-out;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   :host {
-    padding: 0.5rem;
+    padding: 1rem;
   }
   
   .container {
-    gap: 0.5rem;
+    gap: 1rem;
   }
   
-  .question-container {
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .survey-form {
     padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 12px;
+  }
+
+  .question-container {
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0.75rem;
   }
   
+  .question-text {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
   .option-wrapper {
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
-    border-radius: 8px;
-  }
-  
-  .option-label {
-    margin-left: 0.75rem;
+    padding: 0.7rem 0.8rem;
     font-size: 0.95rem;
   }
-  
-  .success-message,
-  .disabled-message,
-  .error-message {
-    padding: 1.5rem;
-    border-radius: 16px;
-  }
-  
-  .success-message h2,
-  .disabled-message h2,
-  .error-message h2 {
-    font-size: 1.5rem;
-  }
-  
-  .success-message p,
-  .disabled-message p,
-  .error-message p {
+
+  .option-label {
     font-size: 1rem;
   }
-  
-  .form-actions {
+
+  .open-answer-textarea {
+    font-size: 0.95rem;
+  }
+
+  .options-vf {
     flex-direction: column;
     gap: 0.75rem;
   }
-  
-  .btn-primary,
-  .btn-secondary {
+
+  .options-vf .p-button {
+    max-width: 100%;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .submit-button {
     width: 100%;
-    max-width: 280px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .loading p,
+  .error-message p,
+  .disabled-message p,
+  .expired-message p,
+  .success-message p {
+    font-size: 1em;
+  }
+
+  .error-message h2,
+  .disabled-message h2,
+  .expired-message h2,
+  .success-message h2 {
+    font-size: 1.5rem;
+  }
+
+  .disabled-message i,
+  .error-message i,
+  .success-message i,
+  .expired-message i {
+    font-size: 2.5rem;
   }
 }
 
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 1.8rem;
+  }
+
+  .survey-form {
+    padding: 1rem;
+  }
+
+  .survey-form h2 {
+    font-size: 1.5rem;
+  }
+
+  .survey-form h3 {
+    font-size: 1rem;
+  }
+
+  .question-container {
+    padding: 1rem;
+  }
+
+  .question-text {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .option-wrapper {
+    padding: 0.6rem 0.7rem;
+  }
+
+  .option-label {
+    font-size: 0.9rem;
+  }
+
+  .open-answer-textarea {
+    min-height: 60px;
+  }
+
+  .submit-button {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}

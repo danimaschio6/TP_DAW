@@ -9,7 +9,6 @@
       <p>Cargando encuesta...</p>
     </div>
 
-
     <!-- Mensaje de error general (encuesta no encontrada, error de red, etc.) -->
     <div *ngIf="!cargando() && mensajeError() && !encuestaDeshabilitada()" class="error-message">
       <h2>Error</h2>
@@ -24,6 +23,13 @@
       <p>Por favor, contacta al administrador para más información.</p>
     </div>
 
+    <!-- Mensaje para encuesta vencida -->
+    <div *ngIf="encuestaVencida()" class="expired-message">
+      <i class="fas fa-clock"></i>
+      <h2>Lo sentimos</h2>
+      <p>No puede contestar esta encuesta porque ya expiró.</p>
+    </div>
+
     <!-- El formulario se muestra solo si la encuesta está cargada, habilitada y no ha sido enviada -->
     <div *ngIf="!cargando() && !mensajeError() && !encuestaDeshabilitada() && encuesta() && !enviadoConExito() && !encuestaVencida()" class="survey-form">
 
@@ -31,21 +37,28 @@
       <h3>{{ encuesta()?.descripcion }}</h3>
       
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div *ngFor="let pregunta of encuesta()?.preguntas" class="question-container">
-          <h3>{{ pregunta.numero }}. {{ pregunta.texto }}</h3>
+        <div *ngFor="let pregunta of encuesta()?.preguntas; let i = index" class="question-container">
+          <h3 class="question-text">{{ pregunta.numero }}. {{ pregunta.texto }}</h3>
           
           <!-- Pregunta Abierta -->
           <div *ngIf="pregunta.tipo === TiposRespuestaEnum.ABIERTA" class="question-input">
             <p-floatlabel>
               <textarea 
-                pTextarea 
+                pInputText 
                 [formControlName]="'pregunta_' + pregunta.id"
+                [id]="'pregunta_' + pregunta.id"
                 rows="3"
-                cols="50">
+                cols="50"
+                class="open-answer-textarea"
+
+                >
               </textarea>
-              <label>Tu respuesta</label>
+              <label [for]="'pregunta_' + pregunta.id">Tu respuesta</label>
             </p-floatlabel>
             <app-texto-error 
+              *ngIf="form.get('pregunta_' + pregunta.id)?.invalid && 
+                      (form.get('pregunta_' + pregunta.id)?.touched || 
+                      form.get('pregunta_' + pregunta.id)?.dirty)"
               [control]="form.get('pregunta_' + pregunta.id)!"
               mensaje="Esta pregunta es requerida">
             </app-texto-error>
@@ -53,8 +66,9 @@
 
           <!-- Selección Múltiple -->
           <div *ngIf="pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_MULTIPLE" 
-            class="question-options"
+            class="question-options options-list"
             [formGroup]="getPreguntaFormGroup(pregunta.id)">
+            
             <div *ngFor="let opcion of pregunta.opciones" 
               class="option-wrapper"
               [ngClass]="{'selected': getPreguntaFormGroup(pregunta.id).get('opcion_' + opcion.id)?.value}">
@@ -67,10 +81,18 @@
                 {{ opcion.texto }}
               </label>
             </div>
+
+            <app-texto-error 
+              *ngIf="getPreguntaFormGroup(pregunta.id)?.invalid &&
+                      (getPreguntaFormGroup(pregunta.id)?.touched || 
+                      getPreguntaFormGroup(pregunta.id)?.dirty)"
+              [control]="getPreguntaFormGroup(pregunta.id)"
+              mensaje="Debes seleccionar al menos una opción">
+            </app-texto-error>
           </div>
 
           <!-- Selección Simple -->
-          <div *ngIf="pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE" class="question-options">
+          <div *ngIf="pregunta.tipo === TiposRespuestaEnum.OPCION_MULTIPLE_SELECCION_SIMPLE" class="question-options options-list">
             <div *ngFor="let opcion of pregunta.opciones" 
               class="option-wrapper" 
               [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === opcion.id}">
@@ -84,7 +106,9 @@
               </label>
             </div>
             <app-texto-error 
-              class="subtle"
+              *ngIf="form.get('pregunta_' + pregunta.id)?.invalid && 
+                      (form.get('pregunta_' + pregunta.id)?.touched || 
+                       form.get('pregunta_' + pregunta.id)?.dirty)"
               [control]="form.get('pregunta_' + pregunta.id)!"
               mensaje="Debes seleccionar una opción">
             </app-texto-error>
@@ -92,8 +116,8 @@
 
           <!-- Verdadero/Falso -->
           <div *ngIf="pregunta.tipo === TiposRespuestaEnum.VERDADERO_FALSO" class="question-options">
-            <div class="opciones-vf">
-              <div class="option-wrapper" [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === 1}">
+            <div class="options-vf">
+              <div class="option-wrapper" [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === true}">
                 <p-radioButton 
                   [formControlName]="'pregunta_' + pregunta.id"
                   [value]="true"
@@ -103,7 +127,7 @@
                   Verdadero
                 </label>
               </div>
-              <div class="option-wrapper" [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === 2}">
+              <div class="option-wrapper" [ngClass]="{'selected': form.get('pregunta_' + pregunta.id)?.value === false}">
                 <p-radioButton 
                   [formControlName]="'pregunta_' + pregunta.id"
                   [value]="false"
@@ -116,6 +140,9 @@
             </div>
 
             <app-texto-error 
+              *ngIf="form.get('pregunta_' + pregunta.id)?.invalid && 
+                      (form.get('pregunta_' + pregunta.id)?.touched || 
+                       form.get('pregunta_' + pregunta.id)?.dirty)"
               [control]="form.get('pregunta_' + pregunta.id)!"
               mensaje="Debes seleccionar una opción">
             </app-texto-error>
@@ -137,13 +164,9 @@
     
     <!-- Mensaje de éxito que se muestra después de enviar la respuesta -->
     <div *ngIf="enviadoConExito()" class="success-message">
-        <h2>¡Respuesta Enviada!</h2>
-        <p>Gracias por completar la encuesta.</p>
-    </div>
-
-    <div *ngIf="encuestaVencida()" class="fail-message">
-        <h2>Lo sentimos.</h2>
-        <p>No puede contestar esta encuesta porque ya expiró.</p>
+      <i class="fas fa-check-circle"></i>
+      <h2>¡Respuesta Enviada!</h2>
+      <p>Gracias por completar la encuesta.</p>
     </div>
   </div>
 </app-seccion>

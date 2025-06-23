@@ -7,6 +7,8 @@
         pInputText
         formControlName="nombre"
         autocomplete="off"
+        rows="3"
+        style="width: 100%;"
       />
       <label for="input-nombre">Nombre de la encuesta</label>
     </p-floatlabel>
@@ -15,7 +17,7 @@
   <div class="campo">
     <p-floatlabel variant="on">
       <textarea
-        pInputTextarea
+        pInputText
         formControlName="descripcion"
         rows="3"
         style="width: 100%;"
@@ -34,12 +36,6 @@
         ¿Desea que la encuesta tenga vencimiento?
       </p>
       <label for="input-fecha-vencimiento">Elija una fecha si lo desea:</label>
-      <!--
-      <input type="datetime-local"
-        id="input-fecha-vencimiento"
-        formControlName="fechaVencimiento"
-        />
-      -->
       <input type="date"
         id="input-fecha-vencimiento"
         formControlName="fechaVencimiento"
@@ -66,16 +62,8 @@
             @if (!pregunta.opciones?.length && pregunta.tipo === 'VERDADERO_FALSO') {
               <li>
                 <div class="opciones-vf">
-                  <p-button
-                    label="Verdadero"
-                    [disabled]="true"
-                    styleClass="p-button-secondary"
-                  ></p-button>
-                  <p-button
-                    label="Falso"
-                    [disabled]="true"
-                    styleClass="p-button-secondary"
-                  ></p-button>
+                  <p class="texto-opcion">Verdadero</p>
+                  <p class="texto-opcion">Falso</p>
                 </div>
               </li>
             }
@@ -101,8 +89,13 @@
     class="boton-agregar"
   ></p-button>
 
-  @if (preguntas.invalid && form.touched) {
-    <app-texto-error>Debe agregar al menos una pregunta</app-texto-error>
+  @if (preguntas.invalid && (form.touched || preguntas.length === 0)) {
+    <app-texto-error 
+      [control]="preguntas" 
+      mensaje="Debe agregar al menos una pregunta"
+      
+      >
+    </app-texto-error>
   }
 
   <button

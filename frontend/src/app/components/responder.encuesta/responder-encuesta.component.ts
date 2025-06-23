@@ -59,11 +59,8 @@ export class ResponderEncuestaComponent {
   enviando = signal(false);
   enviadoConExito = signal(false);
   mensajeError = signal<string | null>(null);
-  encuestaDeshabilitada = signal(false); // Signal agregado para manejar encuesta deshabilitada
-
-  //DIONI fecha_vencimiento
-    encuestaVencida = signal<Boolean>(false);
-  //
+  encuestaDeshabilitada = signal(false);
+  encuestaVencida = signal<Boolean>(false);
 
   // Form
   form: FormGroup = this.fb.group({});
@@ -85,24 +82,14 @@ export class ResponderEncuestaComponent {
     this.cargando.set(true);
     this.encuestasService.obtenerEncuestaPorCodigoRespuesta(codigo).subscribe({
       next: (encuesta) => {
-        //DIONI fecha_vencimiento Es necesario? El back no deberia ni darlo?
         if (encuesta.fechaVencimiento && new Date() > new Date(encuesta.fechaVencimiento)) {
-          //debug
-          // const fechaAhora= new Date();
-          // const fechaEncuesta=new Date(encuesta.fechaVencimiento);
-          // console.log(fechaAhora);
-          // console.log(fechaEncuesta);
-          // console.log(fechaAhora>fechaEncuesta);//true
-          // console.log(fechaAhora<fechaEncuesta);//false
-          
           this.encuestaVencida.set(true);
           this.cargando.set(false);
-          return ;
+          return;
         }
 
         this.encuesta.set(encuesta);
         
-        // Verificar si la encuesta está deshabilitada
         if (!encuesta.habilitada) {
           this.encuestaDeshabilitada.set(true);
         } else {
@@ -115,7 +102,6 @@ export class ResponderEncuestaComponent {
         console.error('Error al cargar encuesta:', error);
         this.cargando.set(false);
         
-        // Verificar si el error es específicamente por encuesta deshabilitada
         if (error.status === 403 || error.error?.message?.includes('deshabilitada') || error.error?.message?.includes('disabled')) {
           this.encuestaDeshabilitada.set(true);
         } else {
@@ -123,7 +109,6 @@ export class ResponderEncuestaComponent {
         }
       }
     });
-    
   }
 
   private inicializarFormulario(encuesta: EncuestaDTO): void {
@@ -166,11 +151,20 @@ export class ResponderEncuestaComponent {
   }
 
   onSubmit(): void {
+    // Marcar todos los controles como touched para mostrar errores
+    this.form.markAllAsTouched();
+    this.markAllGroupsAsTouched(this.form);
+
+    // Debug: Mostrar el estado del formulario
+    console.log('Form valid:', this.form.valid);
+    console.log('Form value:', this.form.value);
+    console.log('Form errors:', this.getFormErrors());
+
     if (this.form.invalid) {
-      this.form.markAllAsTouched();
       this.mensajeError.set('Por favor, completa todos los campos requeridos.');
       return;
     }
+
     if (!this.encuesta()) return;
 
     this.enviando.set(true);
@@ -206,6 +200,29 @@ export class ResponderEncuestaComponent {
     });
   }
 
+  // Método auxiliar para marcar todos los FormGroups anidados como touched
+  private markAllGroupsAsTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      if (control instanceof FormGroup) {
+        this.markAllGroupsAsTouched(control);
+      }
+      control?.markAsTouched();
+    });
+  }
+
+  // Método auxiliar para obtener todos los errores del formulario (para debugging)
+  private getFormErrors(): any {
+    const errors: any = {};
+    Object.keys(this.form.controls).forEach(key => {
+      const control = this.form.get(key);
+      if (control?.errors) {
+        errors[key] = control.errors;
+      }
+    });
+    return errors;
+  }
+
   private construirRespuestas(): CrearRespuestaPayloadDTO {
     const encuesta = this.encuesta()!;
     const respuestasAbiertas: RespuestaAbiertaPayloadDTO[] = [];
@@ -216,9 +233,11 @@ export class ResponderEncuestaComponent {
       const nombreControl = `pregunta_${pregunta.id}`;
       const valor = this.form.get(nombreControl)?.value;
 
+      console.log(`Pregunta ${pregunta.id} (${pregunta.tipo}):`, valor); // Debug
+
       switch (pregunta.tipo) {
         case TiposRespuestaEnum.ABIERTA:
-          if (valor && valor.trim()) {
+          if (valor && typeof valor === 'string' && valor.trim()) {
             respuestasAbiertas.push({
               preguntaId: pregunta.id,
               texto: valor.trim(),
@@ -237,14 +256,16 @@ export class ResponderEncuestaComponent {
             Object.keys(valor).forEach(key => {
               if (valor[key] === true) {
                 const opcionId = parseInt(key.replace('opcion_', ''));
-                respuestasOpciones.push({ opcionId: opcionId });
+                if (!isNaN(opcionId)) {
+                  respuestasOpciones.push({ opcionId: opcionId });
+                }
               }
             });
           }
           break;
 
         case TiposRespuestaEnum.VERDADERO_FALSO:
-          if (valor !== null && valor !== undefined) {
+          if (valor !== null && valor !== undefined && typeof valor === 'boolean') {
             respuestasVerdaderoFalso.push({ 
               preguntaId: pregunta.id,
               valorRespuesta: valor 
@@ -254,12 +275,15 @@ export class ResponderEncuestaComponent {
       }
     });
 
-    return {
+    const payload = {
       encuestaId: encuesta.id,
-      respuestasAbiertas: respuestasAbiertas.length > 0 ? respuestasAbiertas : [],
-      respuestasOpciones: respuestasOpciones.length > 0 ? respuestasOpciones : [],
-      respuestasVerdaderoFalso: respuestasVerdaderoFalso.length > 0 ? respuestasVerdaderoFalso : []
+      respuestasAbiertas: respuestasAbiertas,
+      respuestasOpciones: respuestasOpciones,
+      respuestasVerdaderoFalso: respuestasVerdaderoFalso
     };
+
+    console.log('Payload final:', payload); // Debug
+    return payload;
   }
   
   getPreguntaFormGroup(preguntaId: number): FormGroup {

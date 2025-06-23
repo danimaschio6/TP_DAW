@@ -1,250 +1,91 @@
-/* ===== VARIABLES CSS ===== */
-:root {
-  --color-background-main: #f3e8ff;
-  --color-background: #fef7ff;
-  --color-background-secondary: #f8fafc;
-  --color-border: #e9d5ff;
-  --color-border-hover: #d8b4fe;
-  --color-text: #581c87;
-  --color-text-light: #7c3aed;
-  --color-accent: #a855f7;
-  --color-focus: #7c3aed;
-  --color-placeholder: #9333ea;
-  --shadow-sm: 0 2px 4px rgba(168, 85, 247, 0.1);
-  --shadow-md: 0 4px 8px rgba(168, 85, 247, 0.15);
-  --shadow-lg: 0 8px 16px rgba(168, 85, 247, 0.2);
-  --radius: 16px;
-  --radius-sm: 12px;
-  --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --backdrop-blur: blur(12px);
-}
+/* Eliminamos todas las variables locales, ya se definen en styles.css */
 
-/* ===== CONFIGURACIÓN BASE ===== */
-:host {
-  font-family: var(--font-family);
-  font-weight: 400;
-  line-height: 1.5;
-}
-
-/* ===== CONTENEDOR PRINCIPAL ===== */
+/* Contenedor principal de la opción en el diálogo */
 #contenedor-agregar-opcion {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(
-    135deg, 
-    var(--color-background) 0%, 
-    rgba(243, 232, 255, 0.9) 50%,
-    rgba(254, 247, 255, 0.8) 100%
-  );
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  border: 2px solid var(--color-border);
-  font-family: var(--font-family);
-  transition: var(--transition);
-  padding: 1rem;
-  backdrop-filter: var(--backdrop-blur);
-  position: relative;
-  overflow: hidden;
+  gap: var(--spacing-lg); /* Usar variable global de espaciado */
+  padding: var(--spacing-md); /* Ajuste de padding */
+  align-items: center;
+  transition: var(--transition-ease); /* Transición para cambios de tema */
 }
 
-/* Efecto de brillo sutil */
-#contenedor-agregar-opcion::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg, 
-    transparent, 
-    rgba(168, 85, 247, 0.1), 
-    transparent
-  );
-  transition: left 0.5s ease;
-}
-
-#contenedor-agregar-opcion:hover {
-  box-shadow: var(--shadow-lg);
-  border-color: var(--color-accent);
-  transform: translateY(-2px) scale(1.01);
-}
-
-#contenedor-agregar-opcion:hover::before {
-  left: 100%;
-}
-
-
+/* Estilo del input de texto de la opción */
 #input-texto {
   width: 100%;
-  margin-bottom: 1rem;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius);
+  transition: var(--transition-ease);
+}
+
+/* Sobreescritura del input de texto (PrimeNG) */
+::ng-deep #input-opcion.p-inputtext {
+  background-color: var(--color-input-bg) !important; /* Adaptable al tema */
+  color: var(--color-text-dark) !important; /* Adaptable al tema */
+  border-color: var(--color-input-border) !important; /* Adaptable al tema */
+  padding: var(--spacing-sm);
   font-size: 1rem;
-  background: linear-gradient(
-    135deg, 
-    rgba(221, 214, 254, 0.7) 0%, 
-    rgba(196, 181, 253, 0.5) 50%,
-    rgba(254, 247, 255, 0.6) 100%
-  );
-  color: var(--color-text);
-  font-weight: 500;
-  transition: var(--transition);
-  font-family: var(--font-family);
-  letter-spacing: 0.3px;
-  line-height: 1.4;
-  box-sizing: border-box;
 }
 
-#input-texto::placeholder {
-  color: var(--color-placeholder);
-  opacity: 0.8;
-  font-weight: 400;
-  transition: opacity 0.3s ease;
-}
-
-#input-texto:focus::placeholder {
-  opacity: 0.5;
-}
-
-/* Estados del input */
-#input-texto:focus {
+::ng-deep #input-opcion.p-inputtext:enabled:focus {
+  border-color: var(--color-primary) !important; /* Adaptable al tema */
+  box-shadow: 0 0 0 0.2rem var(--color-primary-light) !important; /* Adaptable al tema */
   outline: none;
-  border-color: var(--color-focus);
-  box-shadow: 
-    0 0 0 4px rgba(124, 58, 237, 0.2),
-    var(--shadow-md);
-  background: linear-gradient(
-    135deg, 
-    #fef7ff 0%, 
-    #f3e8ff 50%,
-    rgba(254, 247, 255, 0.95) 100%
-  );
-  transform: translateY(-1px);
 }
 
-#input-texto:hover:not(:focus) {
-  border-color: var(--color-border-hover);
-  background: linear-gradient(
-    135deg, 
-    rgba(254, 247, 255, 0.95) 0%, 
-    rgba(243, 232, 255, 0.8) 50%,
-    rgba(216, 180, 254, 0.6) 100%
-  );
-  box-shadow: var(--shadow-sm);
+/* Estilo del label flotante (PrimeNG) */
+::ng-deep #input-texto .p-floatlabel label {
+  color: var(--color-input-placeholder) !important; /* Adaptable al tema */
 }
 
-/* Estado de validación */
-#input-texto:invalid {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+/* Estilo del botón "Finalizar" */
+::ng-deep .p-button[type="submit"] {
+  background-color: var(--color-primary) !important; /* Adaptable al tema */
+  border-color: var(--color-primary) !important; /* Adaptable al tema */
+  color: var(--color-text-light) !important; /* Texto claro */
+  padding: var(--spacing-sm) var(--spacing-lg) !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  border-radius: var(--border-radius-md) !important; /* Adaptable al tema */
+  box-shadow: var(--shadow-sm) !important; /* Adaptable al tema */
+  transition: var(--transition-ease);
+  width: 100%;
+  max-width: 200px; /* Para que no ocupe todo el ancho en pantallas grandes */
 }
 
-#input-texto:valid {
-  border-color: #10b981;
+::ng-deep .p-button[type="submit"]:hover {
+  background-color: var(--color-primary-dark) !important; /* Adaptable al tema */
+  border-color: var(--color-primary-dark) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md) !important; /* Sombra más fuerte al pasar el ratón */
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* =========================================== */
+/* Responsive adjustments                      */
+/* =========================================== */
 @media (max-width: 768px) {
   #contenedor-agregar-opcion {
-    border-radius: var(--radius-sm);
-    padding: 0.75rem;
+    gap: var(--spacing-md);
   }
-  
-  #input-texto {
-    padding: 1rem 1.25rem;
-    font-size: 0.95rem;
-    border-radius: var(--radius-sm);
-    margin-bottom: 0.75rem;
+
+  ::ng-deep .p-button[type="submit"] {
+    font-size: 0.95rem !important;
+    padding: var(--spacing-xs) var(--spacing-lg) !important;
+    max-width: 180px;
   }
 }
 
 @media (max-width: 480px) {
   #contenedor-agregar-opcion {
-    padding: 0.5rem;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
   }
-  
-  #input-texto {
-    padding: 0.875rem 1rem;
+
+  ::ng-deep #input-opcion.p-inputtext {
     font-size: 0.9rem;
-    letter-spacing: 0.2px;
   }
-}
 
-/* ===== MEJORAS DE ACCESIBILIDAD ===== */
-#input-texto:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-}
-
-/* Reducir movimiento para usuarios con preferencias de movimiento reducido */
-@media (prefers-reduced-motion: reduce) {
-  #contenedor-agregar-opcion,
-  #input-texto {
-    transition: none;
+  ::ng-deep .p-button[type="submit"] {
+    font-size: 0.9rem !important;
+    padding: var(--spacing-xs) var(--spacing-md) !important;
+    max-width: 160px;
   }
-  
-  #contenedor-agregar-opcion:hover {
-    transform: none;
-  }
-  
-  #input-texto:focus {
-    transform: none;
-  }
-}
-
-/* ===== SOPORTE PARA MODO OSCURO ===== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background-main: #2d1b69;
-    --color-background: #1e1b4b;
-    --color-border: #4c1d95;
-    --color-text: #c4b5fd;
-    --color-placeholder: #a78bfa;
-  }
-  
-  #input-texto {
-    background: linear-gradient(
-      135deg, 
-      rgba(30, 27, 75, 0.8) 0%, 
-      rgba(76, 29, 149, 0.6) 100%
-    );
-    color: var(--color-text);
-  }
-  
-  #input-texto:focus {
-    background: linear-gradient(
-      135deg, 
-      rgba(30, 27, 75, 0.95) 0%, 
-      rgba(76, 29, 149, 0.8) 100%
-    );
-  }
-}
-
-/* ===== ANIMACIONES MEJORADAS ===== */
-@keyframes inputFocus {
-  0% {
-    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4);
-  }
-  100% {
-    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
-  }
-}
-
-#input-texto:focus {
-  animation: inputFocus 0.3s ease-out;
-}
-
-/* ===== ESTADOS ESPECIALES ===== */
-#input-texto:disabled {
-  opacity: 0.6;
-  background: #f3f4f6;
-  border-color: #d1d5db;
-  cursor: not-allowed;
-}
-
-#input-texto:read-only {
-  background: rgba(243, 232, 255, 0.5);
-  border-color: var(--color-border);
 }

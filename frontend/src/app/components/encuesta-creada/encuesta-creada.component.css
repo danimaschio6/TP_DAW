@@ -2,282 +2,162 @@
   display: block;
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 1rem;
+  padding: var(--spacing-md, 1rem); 
+  box-sizing: border-box; 
+  border: none !important;
+  color: white !important;
 }
 
 .container-exito {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 20px;
+
+  min-height: calc(100vh - var(--spacing-md, 1rem) * 2); 
+  padding: var(--spacing-lg, 20px); 
 }
 
-.header-exito {
+
+::ng-deep .p-card {
+  background: var(--color-background, #ffffff); /* Fondo de la tarjeta */
+  border-radius: var(--border-radius-lg, 12px); /* Bordes redondeados */
+  box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1)); /* Sombra más pronunciada para la tarjeta principal */
+  max-width: 800px; /* Ancho máximo para la tarjeta */
+  width: 100%; /* Ocupa todo el ancho disponible hasta el max-width */
+  overflow: hidden; /* Para que los bordes redondeados apliquen bien */
+  border: 1px solid var(--color-border, #e5e7eb); /* Borde sutil */
+}
+
+/* El header de la tarjeta (donde está el ícono de éxito) */
+::ng-deep .p-card .p-card-header {
+  padding: var(--spacing-md, 1.25rem); /* Padding para el header de la tarjeta */
   display: flex;
   justify-content: center;
-  padding: 20px;
+  align-items: center;
+  background-color: var(--color-background-alt, #f8fafc); /* Fondo ligeramente diferente para el header */
+  border-bottom: 1px solid var(--color-border, #e5e7eb); /* Separador visual */
 }
 
 .icon-exito {
   font-size: 4rem;
-  color: #34d399; /* Verde menta pastel */
-  filter: drop-shadow(0 4px 8px rgba(52, 211, 153, 0.2));
+  color: var(--color-success, #059669); /* Usar el color de éxito de tus variables */
+  filter: drop-shadow(0 4px 8px rgba(5, 150, 105, 0.2)); /* Sombra basada en el color de éxito */
 }
 
 .contenido-exito {
   text-align: center;
-  padding: 20px;
+  padding: var(--spacing-md, 1.25rem); /* Padding para el contenido principal */
 }
 
 .contenido-exito h2 {
-  color: #6366f1; /* Violeta pastel */
-  margin-bottom: 1rem;
-  font-weight: 600;
-  text-shadow: 0 2px 4px rgba(99, 102, 241, 0.1);
+  color: var(--color-primary-dark, #1d4ed8); /* Color más oscuro para el título principal */
+  margin-bottom: var(--spacing-md, 1rem); /* Espaciado con variable */
+  font-weight: 700; /* Más audaz para el título */
+  font-size: 2.2rem; /* Tamaño de fuente para el título */
+  text-shadow: 0 2px 4px rgba(29, 78, 216, 0.1); /* Sombra de texto sutil */
 }
 
+.contenido-exito p {
+  color: var(--color-text-secondary, #6b7280); /* Color de texto secundario */
+  margin-bottom: var(--spacing-lg, 1.5rem); /* Espaciado con variable */
+  font-size: 1.1rem;
+}
+
+/* Estilos para el spinner de carga */
 .cargando {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  margin: 2rem 0;
-  color: #8b5cf6; /* Púrpura suave */
+  padding: var(--spacing-md, 1.25rem);
+  color: var(--color-text-secondary, #6b7280);
+}
+.cargando p {
+  margin-top: var(--spacing-sm, 0.5rem);
+  font-size: 1rem;
 }
 
 .urls-container {
-  margin-top: 2rem;
-  text-align: left;
+  display: grid;
+  gap: var(--spacing-lg, 1.5rem); /* Espacio entre los bloques de URL/QR */
+  grid-template-columns: 1fr; /* Una columna por defecto */
+  margin-top: var(--spacing-lg, 1.5rem); /* Espacio superior */
+}
+
+@media (min-width: 768px) {
+  .urls-container {
+    grid-template-columns: 1fr 1fr; /* Dos columnas en pantallas más grandes */
+  }
 }
 
 .url-item {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(139, 92, 246, 0.1);
-  transition: all 0.3s ease;
+  background-color: var(--color-background, #ffffff); /* Fondo blanco */
+  border: 1px solid var(--color-border, #e5e7eb); /* Borde sutil */
+  border-radius: var(--border-radius-lg, 0.75rem); /* Bordes redondeados */
+  padding: var(--spacing-md, 1.25rem); /* Padding interno */
+  box-shadow: var(--shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05)); /* Sombra sutil */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transiciones para hover */
 }
 
 .url-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+  transform: translateY(-2px); /* Efecto levantar al pasar el ratón */
+  box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1)); /* Sombra más pronunciada al pasar el ratón */
 }
 
 .url-item h3 {
-  font-size: 1.1rem;
-  color: #6366f1; /* Violeta pastel */
-  margin-bottom: 0.8rem;
+  color: var(--color-primary-dark, #1d4ed8); /* Color para los títulos de URL */
+  margin-bottom: var(--spacing-sm, 0.75rem); /* Espacio con el contenido */
   font-weight: 600;
+  font-size: 1.2rem;
+  text-align: center;
 }
 
 .url-box {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  background: linear-gradient(135deg, #fef7ff 0%, #f3f4f6 100%);
-  padding: 1rem;
-  border-radius: 12px;
-  border: 2px solid rgba(139, 92, 246, 0.1);
-  transition: border-color 0.3s ease;
-}
-
-.url-box:hover {
-  border-color: rgba(139, 92, 246, 0.2);
+  background-color: var(--color-background-alt, #f0f4f8); /* Fondo para el recuadro de la URL */
+  border: 1px solid var(--color-border-light, #dbe2ea); /* Borde más claro */
+  border-radius: var(--border-radius-md, 0.5rem); /* Bordes redondeados */
+  padding: var(--spacing-xs, 0.5rem) var(--spacing-sm, 0.75rem); /* Padding interno */
+  width: 100%; /* Ocupa todo el ancho disponible */
+  box-sizing: border-box; /* Incluye padding en el ancho */
+  margin-bottom: var(--spacing-sm, 0.75rem); /* Espacio con el QR */
 }
 
 .url-text {
-  flex: 1;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  color: #4c1d95; /* Púrpura más oscuro */
-  word-break: break-all;
-  font-size: 0.9rem;
+  flex-grow: 1; /* Permite que el texto ocupe el espacio */
+  font-family: monospace; /* Fuente monoespacio para URLs */
+  color: var(--color-text-secondary, #4a5568); /* Color del texto de la URL */
+  font-size: 0.95rem;
+  overflow-wrap: break-word; /* Para URLs largas */
+  word-break: break-all; /* Rompe la palabra si es necesario */
+  line-height: 1.4;
 }
 
 .url-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--spacing-xs, 0.5rem); /* Espacio entre acciones */
+  margin-left: var(--spacing-sm, 0.75rem); /* Espacio a la izquierda del texto */
+  flex-shrink: 0; /* Evita que los botones se encojan */
 }
 
-.qr-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #ffffff 0%, #fef7ff 100%);
-  border-radius: 16px;
-  border: 2px solid rgba(139, 92, 246, 0.1);
-  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);
-}
-
-.qr-code {
-  width: 200px;
-  height: 200px;
-  padding: 0.75rem;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.1);
-}
 
 .botones-exito {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
-  padding: 1.5rem;
+  flex-direction: column; /* Apilados en móvil */
+  gap: var(--spacing-md, 1rem);
+  margin-top: var(--spacing-sm, 0.5rem);
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente cuando es columna */
 }
 
-p-card {
-  max-width: 500px;
-  width: 100%;
-  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
-  border-radius: 20px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #ffffff 0%, #fefbff 100%);
-  border: 1px solid rgba(139, 92, 246, 0.1);
-}
-
-/* Estilos adicionales para botones */
-.btn-primary {
-  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
-  border: none;
-  border-radius: 12px;
-  padding: 0.75rem 1.5rem;
-  color: white;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
-  background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
-}
-
-.btn-secondary {
-  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-  border: 2px solid rgba(139, 92, 246, 0.2);
-  border-radius: 12px;
-  padding: 0.75rem 1.5rem;
-  color: #6366f1;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.btn-secondary:hover {
-  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-  border-color: rgba(139, 92, 246, 0.4);
-  transform: translateY(-1px);
-}
-
-/* Badges y elementos destacados */
-.badge-success {
-  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(52, 211, 153, 0.2);
-}
-
-.badge-info {
-  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(96, 165, 250, 0.2);
-}
-
-.badge-warning {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(251, 191, 36, 0.2);
-}
-
-/* Animaciones suaves */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.contenido-exito {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.url-item {
-  animation: fadeInUp 0.6s ease-out;
-  animation-fill-mode: both;
-}
-
-.url-item:nth-child(1) { animation-delay: 0.1s; }
-.url-item:nth-child(2) { animation-delay: 0.2s; }
-.url-item:nth-child(3) { animation-delay: 0.3s; }
-
-/* Responsive */
-@media (max-width: 768px) {
-  :host {
-    padding: 0.5rem;
-  }
-  
-  .container-exito {
-    padding: 1rem;
-    min-height: 50vh;
-  }
-  
+@media (min-width: 600px) {
   .botones-exito {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  p-card {
-    border-radius: 16px;
-  }
-  
-  .url-item {
-    padding: 1rem;
-    border-radius: 12px;
-  }
-  
-  .url-box {
-    padding: 0.75rem;
-    border-radius: 8px;
-  }
-  
-  .qr-container {
-    padding: 1rem;
-    border-radius: 12px;
-  }
-  
-  .qr-code {
-    width: 150px;
-    height: 150px;
-    border-radius: 8px;
-  }
-  
-  .icon-exito {
-    font-size: 3rem;
-  }
-  
-  .contenido-exito h2 {
-    font-size: 1.5rem;
+    flex-direction: row; /* En fila en pantallas más grandes */
+    /* justify-content: center; ya definido */
+    /* align-items: center; ya definido */
   }
 }
